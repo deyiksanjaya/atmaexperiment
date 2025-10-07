@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - CNN Indonesia</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Custom Fonts (simulating CNN's look) */
+        @font-face {
+            font-family: 'CNN Sans Display';
+            src: url('fonts/cnn_sans_display-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'CNN Sans Display';
+            src: url('fonts/cnn_sans_display-medium-v1.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'CNN Sans Display';
+            src: url('fonts/cnn_sans_display-bold-v1.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Serif';
+            src: url('fonts/noto_serif-bold-v1.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Serif';
+            src: url('fonts/noto_serif-bold_italic-v1.woff2') format('woff2');
+            font-weight: 700;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: 'Noto Serif Extra Condensed Black';
+            src: url('fonts/noto_serif_extra_condensed_black-v1.woff2') format('woff2');
+            font-weight: 900; /* Assuming black is 900 */
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Sans Arabic';
+            src: url('fonts/noto_sans_arabic-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Sans Arabic';
+            src: url('fonts/noto_sans_arabic-v1.ttf') format('truetype'); /* Fallback for TTF */
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Serif Semi Condensed';
+            src: url('fonts/noto_serif_semi_condensed-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Helvetica Neue';
+            src: url('fonts/helveticaneue-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Apply fonts to specific elements */
+        body {
+            font-family: 'CNN Sans Display', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none; /* Add this to prevent text selection */
+            background-color: #f7f7f7; /* Background color for the page */
+            color: #333;
+            line-height: 1.6;
+            box-sizing: border-box;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Noto Serif Extra Condensed Black', serif; /* Or a bold CNN Sans if preferred */
+        }
+
+        /* Ensure main content is centered and has padding consistent with the article page */
+        main {
+            /* Removed fixed width and padding from here, now handled by Tailwind classes */
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        /* Existing custom styles from previous script */
+        #loadingOverlay {
+            position: absolute; /* Changed to absolute to fit within main content */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007bff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Styles for homepage content */
+        .homepage-headline {
+            font-family: 'Noto Serif Extra Condensed Black', serif;
+            font-size: 2.2em;
+            line-height: 1.2;
+            margin-top: 20px; /* Adjusted with Tailwind mt-4 */
+            margin-bottom: 30px; /* Adjusted with Tailwind mb-6 */
+            color: #222;
+            font-weight: 700;
+            text-align: left; /* Changed to left-aligned */
+        }
+
+        .article-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding-bottom: 20px;
+        }
+
+        .article-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-card-content {
+            padding: 15px;
+            flex-grow: 1; /* Memastikan konten mengisi sisa ruang */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .article-card-content h3 {
+            font-family: 'Noto Serif', serif; /* Use Noto Serif for headlines */
+            font-size: 1.2em;
+            color: #222;
+            margin-top: 0;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .article-card-content p {
+            font-family: 'CNN Sans Display', sans-serif; /* Use CNN Sans Display for body text */
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            flex-grow: 1; /* Memastikan paragraf mengisi ruang */
+        }
+
+        .article-card-content .category {
+            font-size: 0.75em;
+            padding: 3px 6px;
+            margin-bottom: 10px;
+            align-self: flex-start; /* Agar kategori tidak memenuhi lebar */
+            /* MODIFIED: Changed highlight color and removed border-radius */
+            background-color: rgba(204, 0, 0, 0.7); /* More faded CNN Red (70% opacity) */
+            color: white;
+            border-radius: 0; /* Removed rounded corners */
+            font-weight: bold;
+        }
+
+        .article-card-content .read-more {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85em;
+            transition: background-color 0.2s ease-in-out;
+            align-self: flex-start; /* Agar tombol tidak memenuhi lebar */
+        }
+
+        .article-card-content .read-more:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styles for article card image */
+        .article-card-image {
+            width: 100%;
+            height: 200px; /* Fixed height for consistency */
+            object-fit: cover; /* Cover the area, cropping if necessary */
+            object-position: center; /* Center the image within the frame */
+            display: block;
+            pointer-events: none; /* Prevent direct interaction like right-click or long-press */
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+
+        /* Search Modal / Overlay Styles (Adjusted for Tailwind-like appearance) */
+        /* Removed .search-modal-overlay, .search-modal-content, .search-modal-close styles */
+
+        .search-categories {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .search-categories h3 {
+            font-family: 'CNN Sans Display', sans-serif;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee; /* Subtle separator */
+            padding-bottom: 5px;
+        }
+
+        .category-grid {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Responsive grid for categories */
+            gap: 10px;
+            text-align: left;
+        }
+
+        .category-grid li {
+            margin-bottom: 0;
+            display: block;
+        }
+
+        .category-grid a {
+            font-family: 'CNN Sans Display', sans-serif;
+            color: #333;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .category-grid a:hover {
+            text-decoration: underline;
+            color: #CC0000; /* CNN Red on hover */
+        }
+
+        /* MODIFIED: Removed highlight for main category links */
+        .main-category-link {
+            font-size: 1.1em;
+            font-weight: normal; /* Changed from bold to normal */
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #333; /* Changed from red to a standard dark gray */
+        }
+
+        .sub-category-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .sub-category-list li {
+            margin-bottom: 3px;
+        }
+
+        .sub-category-list a {
+            font-size: 0.9em;
+            font-weight: normal;
+            padding: 2px 0;
+            color: #555; /* Sub-categories in a slightly lighter shade */
+        }
+
+        .search-query-display {
+            font-family: 'CNN Sans Display', sans-serif;
+            font-size: 1.1em;
+            font-weight: 500; /* Medium weight */
+            color: #555;
+            margin-bottom: 20px;
+            text-align: left;
+            padding-left: 0; /* Remove padding-left to align with main content */
+        }
+
+
+        /* Responsive Adjustments (keeping original as base, but adjusted for new fonts) */
+        @media (max-width: 768px) {
+            /* main padding handled by Tailwind classes */
+
+            .homepage-headline {
+                font-size: 1.8em;
+            }
+
+            .article-list {
+                grid-template-columns: 1fr; /* Satu kolom di layar kecil */
+            }
+
+            .article-card-content h3 {
+                font-size: 1.1em;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 kolom di layar tablet */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .homepage-headline {
+                font-size: 1.6em;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr; /* 1 kolom di layar ponsel */
+            }
+            /* Removed search modal specific responsive styles */
+        }
+
+        /* CNN-specific elements from article page */
+        .cnn-red-bar {
+            width: 6px;
+            background-color: #CC0000;
+            flex-shrink: 0;
+            margin-right: 16px;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <!-- Header -->
+    <header id="mainHeader" class="flex items-center justify-between py-2 bg-white sticky top-0 z-10 px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center space-x-2 max-w-4xl mx-auto w-full">
+            <button class="text-gray-600 focus:outline-none">
+                <!-- Ikon menu diganti dengan gambar menu.png -->
+                <img src="menu.png" alt="Menu Icon" oncontextmenu="return false;" ondragstart="return false;" draggable="false" class="w-6 h-6">
+            </button>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/960px-CNN.svg.png" alt="Logo CNN" class="h-5">
+            <span class="font-semibold text-lg">World</span>
+            <!-- Removed Search Icon from header -->
+        </div>
+    </header>
+
+    <!-- Garis hitam di bawah header (menempel dan mengikuti lebar header) -->
+    <div class="max-w-4xl mx-auto border-t-2 border-black"></div>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-8">
+        <!-- Loading Overlay for dynamic content -->
+        <div id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- Default Homepage Content -->
+        <div id="defaultHomepageContent">
+            <h1 class="homepage-headline text-left mt-4 mb-6">Berita Utama: Terkini dari Seluruh Dunia</h1>
+            <section class="article-list" id="defaultArticleListContainer">
+                <!-- Initial articles loaded here -->
+            </section>
+        </div>
+
+        <!-- Search Results Content -->
+        <div id="searchResultsContent" style="display: none;">
+            <p id="searchQueryDisplay" class="search-query-display"></p>
+            <section class="article-list" id="searchArticleListContainer">
+                <!-- Search results loaded here -->
+            </section>
+        </div>
+    </main>
+
+    <!-- New section above footer (from article page) -->
+    <section class="bg-black text-white py-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="relative mb-8">
+                <input type="text" placeholder="Search CNN..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-md py-3 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500" id="secondarySearchInput">
+                <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white" id="secondarySearchButton">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="border-b border-gray-700 mb-8 pb-8">
+                <a href="#" class="block text-center text-white text-lg font-semibold hover:underline">Sign in</a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">Live TV</a></li>
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">Listen</a></li>
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">Watch</a></li>
+                </ul>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">World</a></li>
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">US Politics</a></li>
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">Business</a></li>
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">Markets</a></li>
+                </ul>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">Health</a></li>
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">Entertainment</a></li>
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">Tech</a></li>
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">Style</a></li>
+                    <li class="mb-2"><a href="#" class="text-white hover:text-gray-400">Travel</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-300 py-8 text-center">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center mb-6">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/960px-CNN.svg.png" alt="CNN Logo" class="h-6 mr-2 filter grayscale">
+                <span class="font-bold text-xl text-white">World</span>
+            </div>
+
+            <p class="text-sm font-semibold mb-6">FOLLOW CNN</p>
+
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-twitter"></i></a> <!-- Using Twitter for X icon -->
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+
+            <div class="border-t border-gray-700 pt-8 mb-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-2 text-sm">
+                    <a href="#" class="text-gray-400 hover:text-white mx-2">Terms of Use</a>
+                    <a href="#" class="text-gray-400 hover:text-white mx-2">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white mx-2">Cookie Settings</a>
+                    <a href="#" class="text-gray-400 hover:text-white mx-2">Ad Choices</a>
+                    <a href="#" class="text-gray-400 hover:text-white mx-2">Accessibility & CC</a>
+                    <a href="#" class="text-gray-400 hover:text-white mx-2">About</a>
+                    <a href="#" class="text-gray-400 hover:text-white mx-2">Newsletters</a>
+                    <a href="#" class="text-gray-400 hover:text-white mx-2">Transcripts</a>
+                </div>
+            </div>
+
+            <p class="text-xs text-gray-500 leading-relaxed">
+                &copy; 2025 Cable News Network. A Warner Bros. Discovery Company. All Rights Reserved.<br>
+                CNN Sans &trade; &copy; 2016 Cable News Network.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const defaultHomepageContent = document.getElementById('defaultHomepageContent');
+            const defaultArticleListContainer = document.getElementById('defaultArticleListContainer');
+            const searchResultsContent = document.getElementById('searchResultsContent');
+            const searchArticleListContainer = document.getElementById('searchArticleListContainer');
+            const searchQueryDisplay = document.getElementById('searchQueryDisplay');
+
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const secondarySearchInput = document.getElementById('secondarySearchInput');
+            const secondarySearchButton = document.getElementById('secondarySearchButton');
+
+            // Changed base URL to a relative path
+            const SMITH_FAMILY_ARTICLE_BASE_URL = `smith-family.html`;
+
+            // Dummy articles for fallback
+            const dummyArticles = [
+                {
+                    title: "Mahkamah Internasional: Negara Berkewajiban Hadapi Ancaman Perubahan Iklim",
+                    description: "ICJ menyatakan bahwa negara memiliki kewajiban hukum untuk meredam emisi dan bisa diminta pertanggungjawaban oleh negara terdampak.",
+                    category: "LINGKUNGAN",
+                    url: "#",
+                    urlToImage: 'https://assetd.kompas.id/ZRm64A8l3xjP6V13dfWhwAbQUvk=/fit-in/1024x720/filters:format(webp):quality(80):watermark(https://cdn-content.kompas.id/umum/kompas_main_logo.png,-16p,-13p,0)/https://cdn-dam.kompas.id/photo/ori/2021/09/16/b85a49bc-7878-4bd0-a75a-6ff24d3950d6.jpg',
+                    source: { name: 'Reuters' }
+                },
+                {
+                    title: "Eropa dan AS Capai Kesepakatan Tarif Baru, Hindari Krisis Dagang",
+                    description: "AS menurunkan tarif impor Uni Eropa dari 30% menjadi 15% sebagai imbalan atas investasi besar dari UE ke AS.",
+                    category: "EKONOMI",
+                    url: "#",
+                    urlToImage: 'https://i0.wp.com/asiatimes.com/wp-content/uploads/2025/07/EU-Ursula-Trump-US-Trade-Deal.jpg',
+                    source: { name: 'Reuters' }
+                },
+                {
+                    title: "IMF Meningkatkan Proyeksi Pertumbuhan Pasar Berkembang Tahun 2025",
+                    description: "IMF menaikkan outlook pertumbuhan menjadi 4,1% untuk negara berkembang, didorong oleh ekonomi China yang membaik.",
+                    category: "EKONOMI",
+                    url: "#",
+                    urlToImage: 'https://akcdn.detik.net.id/visual/2025/07/29/logo-dana-moneter-internasional-imf-reutersyuri-gripasfile-photo-1753790541445_169.jpeg?w=900&q=80',
+                    source: { name: 'Reuters' }
+                },
+                {
+                    title: "Pasar Asia Anjlok Usai Data Ekonomi China Mengecewakan",
+                    description: "Indeks Asia tergelincir di tengah lonjakan tarif AS terhadap tembaga dan terus menurunnya data PMI China.",
+                    category: "EKONOMI",
+                    url: "#",
+                    urlToImage: 'https://images.bloombergtechnoz.com/data/2023/08/image-20230831094600.jpeg',
+                    source: { name: 'Reuters' }
+                },
+                {
+                    title: "Perekonomian AS Melesat 3% di Q2, Tapi Dianggap Lemah Secara Domestik",
+                    description: "GDP tumbuh 3%, tapi kontribusinya datang dari impor rendah; konsumsi domestik paling lambat dalam 2,5 tahun.",
+                    category: "EKONOMI",
+                    url: "#",
+                    urlToImage: 'https://cdn25.metrotvnews.com/dynamic/content/2025/07/31/kBVC9Apw/a_688ac3e439b47.jpg?w=720',
+                    source: { name: 'Reuters' }
+                },
+                {
+                    title: "Pendapatan Perusahaan Amblas Kecuali Sektor AI",
+                    description: "Hampir semua sektor alami kerugian total mendekati US$7,8 miliar, kecuali perusahaan AI besar seperti Meta dan Microsoft.",
+                    category: "TEKNOLOGI",
+                    url: "#",
+                    urlToImage: 'https://cdn.antaranews.com/cache/1200x800/2023/01/03/NH673ZNLL5NVPMXSVZZFBDBTXY.jpg',
+                    source: { name: 'Reuters' }
+                },
+                {
+                    title: "Meta Platforms Melonjak: Iklan AI Jadi Penggerak Utama",
+                    description: "Meta memproyeksikan pendapatan Q3 jauh melebihi ekspektasi karena peningkatan iklan bertenaga AI.",
+                    category: "TEKNOLOGI",
+                    url: "#",
+                    urlToImage: 'https://image-cdn.pluang.com/web/financial-content/news-articles/lvank34fiaihaefmec%3Ashutterstock_2303237423.webp',
+                    source: { name: 'Reuters' }
+                },
+                {
+                    title: "UE Investasi €15 Miliar untuk Konservasi Air Eropa",
+                    description: "European Investment Bank alokasikan €15 miliar dalam tiga tahun untuk proyek air bersih dan inovasi di sektor air.",
+                    category: "LINGKUNGAN",
+                    url: "#",
+                    urlToImage: 'https://beta.co.id/hubfs/Imported_Blog_Media/Konservasi-Air.jpg',
+                    source: { name: 'Reuters' }
+                },
+                {
+                    title: "AS Siapkan Rencana Batalkan Regulasi Emisi Gas Rumah Kaca",
+                    description: "EPA AS berencana mencabut temuan emisi gas rumah kaca, yang merupakan dasar hukum utama regulasi iklim domestik.",
+                    category: "LINGKUNGAN",
+                    url: "#",
+                    urlToImage: 'https://www.sustainlifetoday.com/wp-content/uploads/2025/05/Ilustrasi-Emisi-Karbon-850x600.jpeg',
+                    source: { name: 'Reuters' }
+                },
+                {
+                    title: "Pasar Global Bersiap Jelang Keputusan The Fed dan BoJ",
+                    description: "Investor menunggu data tenaga kerja AS, kebijakan suku bunga Jepang, dan hasil pendapatan utama dari Microsoft dan Meta.",
+                    category: "EKONOMI",
+                    url: "#",
+                    urlToImage: 'https://i-invdn-com.investing.com/news/moved_LYNXMPEI7L03X_L.jpg',
+                    source: { name: 'Reuters' }
+                }
+            ];
+
+
+            async function fetchAndDisplayArticles(searchParams = {}, prependSmithArticleData = null) {
+                loadingOverlay.style.opacity = '1';
+                loadingOverlay.style.visibility = 'visible';
+                
+                let targetContainer;
+                let articlesToDisplay = [];
+
+                if (searchParams.isSearch) {
+                    defaultHomepageContent.style.display = 'none';
+                    searchResultsContent.style.display = 'block';
+                    targetContainer = searchArticleListContainer;
+                    // Set the search query display text
+                    searchQueryDisplay.textContent = `Hasil Pencarian : "${searchParams.displayQuery || ''}"`;
+
+                    // Only add the Smith article if it's a search result
+                    if (prependSmithArticleData) {
+                        articlesToDisplay.push(prependSmithArticleData);
+                    }
+                } else {
+                    defaultHomepageContent.style.display = 'block';
+                    searchResultsContent.style.display = 'none';
+                    targetContainer = defaultArticleListContainer;
+                    // Add all dummy articles for the default homepage
+                    dummyArticles.forEach(dummyArticle => {
+                        articlesToDisplay.push(dummyArticle);
+                    });
+                }
+
+                targetContainer.innerHTML = ''; // Clear existing content
+
+                await new Promise(resolve => setTimeout(resolve, 500)); // Simulate loading time
+
+                loadingOverlay.style.opacity = '0';
+                loadingOverlay.style.visibility = 'hidden';
+
+                function createArticleCard(article) {
+                    const card = document.createElement('div');
+                    card.classList.add('article-card');
+
+                    let linkHtml;
+                    if (article.title === "Tragedi Keluarga Smith: Anak Dibunuh, Jasadnya Menghilang") {
+                        // Directly replace current page with smith-family.html
+                        linkHtml = `<a href="${article.url}" class="read-more" onclick="event.preventDefault(); window.location.replace('${article.url}');">Baca Selengkapnya</a>`;
+                    } else {
+                        linkHtml = `<a href="${article.url || '#'}" class="read-more" target="_blank">Baca Selengkapnya</a>`;
+                    }
+
+                    card.innerHTML = `
+                        <img src="${article.urlToImage}" alt="${article.title || 'Gambar Artikel'}" class="article-card-image" onerror="
+                            if ('${article.title}' !== 'Tragedi Keluarga Smith: Anak Dibunuh, Jasadnya Menghilang') {
+                                this.closest('.article-card').style.display = 'none';
+                            } else {
+                                this.src = 'https://placehold.co/300x200/cccccc/333333?text=No+Image'; // Fallback for Smith Family if its specific image fails
+                            }
+                        ">
+                        <div class="article-card-content">
+                            <h3>${article.title || 'Judul Tidak Tersedia'}</h3>
+                            <p>${article.description || 'Deskripsi tidak tersedia.'}</p>
+                            ${linkHtml}
+                        </div>
+                    `;
+                    return card;
+                }
+
+                if (articlesToDisplay.length > 0) {
+                    articlesToDisplay.forEach(article => {
+                        targetContainer.appendChild(createArticleCard(article));
+                    });
+                } else {
+                    const noArticlesMessage = document.createElement('p');
+                    noArticlesMessage.textContent = 'Tidak ada artikel yang tersedia untuk kategori/pencarian ini.';
+                    noArticlesMessage.style.textAlign = 'center';
+                    noArticlesMessage.style.marginTop = '20px';
+                    targetContainer.appendChild(noArticlesMessage);
+                }
+
+                // Scroll to top if the Smith family article is displayed
+                if (prependSmithArticleData && searchParams.isSearch) {
+                    window.scrollTo(0, 0);
+                }
+            }
+
+            function translateInputForSecretId(input) {
+                let translated = '';
+                const maxLength = 3; // Number of original characters (namaKorban, lokasi, alat)
+                
+                // Define a mapping for characters 'a' through 'e' to 2-character encoded strings
+                const encodingMap = {
+                    'a': 'Fl',
+                    'b': 'uC',
+                    'c': 'Xy',
+                    'd': 'zW',
+                    'e': 'Qr'
+                };
+
+                for (let i = 0; i < input.length && i < maxLength; i++) {
+                    const char = input[i].toLowerCase();
+                    if (encodingMap[char]) { // Check if character exists in our map
+                        translated += encodingMap[char];
+                    } else {
+                        // If character is not in 'a' through 'e', default to 'Fl'
+                        translated += encodingMap['a']; 
+                    }
+                }
+                
+                // Pad with default encoded character ('Fl' for 'a') if the input is shorter than 3 original characters
+                while (translated.length < maxLength * 2) { // Total length will be maxLength * 2
+                    translated += encodingMap['a']; // Default to 'Fl'
+                }
+                return translated;
+            }
+
+            fetchAndDisplayArticles(); // Initial load of dummy articles
+
+            const prewrittenText = "keluarga smith";
+            let actualUserInput = '';
+
+            // Using 'beforeinput' for more control over input composition
+            secondarySearchInput.addEventListener('beforeinput', (event) => {
+                // Prevent default behavior for all input types we want to control
+                // This is crucial for Peter Answer effect.
+                event.preventDefault();
+
+                if (event.inputType === 'insertText') {
+                    const char = event.data;
+                    if (char && actualUserInput.length < prewrittenText.length) {
+                        actualUserInput += char;
+                    }
+                } else if (event.inputType === 'deleteContentBackward' || event.inputType === 'deleteContentForward') {
+                    actualUserInput = actualUserInput.slice(0, -1);
+                }
+                // Handle other input types if necessary, e.g., 'insertFromPaste'
+
+                // Update the displayed value immediately
+                secondarySearchInput.value = prewrittenText.substring(0, actualUserInput.length);
+                
+                // Maintain cursor position
+                const cursorPosition = secondarySearchInput.value.length;
+                secondarySearchInput.setSelectionRange(cursorPosition, cursorPosition);
+            });
+
+            // The 'input' event listener can now be simpler, mostly for fallback or ensuring consistency
+            secondarySearchInput.addEventListener('input', () => {
+                // This event might still fire due to composition or other browser behaviors.
+                // Ensure the display is consistent with our Peter Answer logic.
+                const peterAnswerDisplay = prewrittenText.substring(0, actualUserInput.length);
+                if (secondarySearchInput.value !== peterAnswerDisplay) {
+                    secondarySearchInput.value = peterAnswerDisplay;
+                    const cursorPosition = secondarySearchInput.value.length;
+                    secondarySearchInput.setSelectionRange(cursorPosition, cursorPosition);
+                }
+            });
+
+            // Keydown is primarily for non-character keys like Enter to trigger search
+            secondarySearchInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent default form submission if any
+                    secondarySearchButton.click(); // Trigger search button click
+                }
+                // For character inputs and backspace/delete, 'beforeinput' handles it.
+            });
+
+
+            secondarySearchButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                const translatedSecretId = translateInputForSecretId(actualUserInput);
+                // Changed 'articleId' to 'id' to match the new format
+                const smithArticleUrl = `${SMITH_FAMILY_ARTICLE_BASE_URL}?id=${translatedSecretId}`;
+
+                const smithArticleData = {
+                    title: "Tragedi Keluarga Smith: Anak Dibunuh, Jasadnya Menghilang",
+                    description: "Sebuah kasus yang menggemparkan masyarakat, di mana seorang anak perempuan ditemukan tewas namun jasadnya raib secara misterius.",
+                    url: smithArticleUrl,
+                    urlToImage: 'image1.jpg' // Ensure this image exists or use a placeholder
+                };
+
+                // Pass the smithArticleData directly for search results
+                fetchAndDisplayArticles({ param: 'keluarga smith', type: 'query', isSearch: true, displayQuery: secondarySearchInput.value }, smithArticleData);
+                
+                secondarySearchInput.value = '';
+                actualUserInput = '';
+            });
+        });
+    </script>
+</body>
+</html>

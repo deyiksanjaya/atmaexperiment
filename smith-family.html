@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Tragedi Keluarga Smith: Anak Dibunuh, Jasadnya Menghilang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom Fonts (simulating CNN's look) */
+        @font-face {
+            font-family: 'CNN Sans Display';
+            src: url('fonts/cnn_sans_display-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'CNN Sans Display';
+            src: url('fonts/cnn_sans_display-medium-v1.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'CNN Sans Display';
+            src: url('fonts/cnn_sans_display-bold-v1.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Serif';
+            src: url('fonts/noto_serif-bold-v1.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Serif';
+            src: url('fonts/noto_serif-bold_italic-v1.woff2') format('woff2');
+            font-weight: 700;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: 'Noto Serif Extra Condensed Black';
+            src: url('fonts/noto_serif_extra_condensed_black-v1.woff2') format('woff2');
+            font-weight: 900; /* Assuming black is 900 */
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Sans Arabic';
+            src: url('fonts/noto_sans_arabic-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Sans Arabic';
+            src: url('fonts/noto_sans_arabic-v1.ttf') format('truetype'); /* Fallback for TTF */
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Serif Semi Condensed';
+            src: url('fonts/noto_serif_semi_condensed-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Helvetica Neue';
+            src: url('fonts/helveticaneue-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Apply fonts to specific elements */
+        body {
+            font-family: 'CNN Sans Display', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none;
+        }
+
+        h1 {
+            font-family: 'Noto Serif Extra Condensed Black', serif; /* Or a bold CNN Sans if preferred */
+        }
+
+        .article-content p {
+            font-family: 'Noto Serif Semi Condensed', serif;
+        }
+
+        .article-content h2,
+        .article-content h3 {
+            font-family: 'Noto Serif', serif; /* Bold Noto Serif for subheadings */
+        }
+
+        .font-semibold { /* For elements using font-semibold utility */
+            font-weight: 500; /* CNN Sans Display Medium */
+        }
+
+        .font-extrabold { /* For elements using font-extrabold utility */
+            font-weight: 800; /* CNN Sans Display Black - if available, otherwise bold */
+        }
+
+        /* Existing custom styles */
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007bff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        main {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        }
+
+        .gallery-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .gallery-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .gallery-content {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        /* Styles for images in the article block (cropped from top) */
+        .article-image-block img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Crop and fill the container */
+            object-position: top; /* Ensure cropping is from the top */
+            display: block;
+            pointer-events: none; /* Prevent direct interaction like right-click or long-press */
+        }
+
+        /* Styles for images in the gallery content (full view) */
+        .gallery-content img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Show full image, fit within container */
+            object-position: center; /* Center the image */
+            display: block;
+            pointer-events: none; /* Prevent direct interaction like right-click or long-press */
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 2001;
+        }
+
+        .cnn-red-bar {
+            width: 6px;
+            background-color: #CC0000;
+            flex-shrink: 0;
+        }
+        .evidence-figure {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            background-color: #f7fafc;
+        }
+        .evidence-figure img {
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            pointer-events: none;
+        }
+        .evidence-figure figcaption {
+            margin-top: 0.75rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #4a5568;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <header id="mainHeader" class="flex items-center justify-between py-2 bg-white sticky top-0 z-10 px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center space-x-2 max-w-4xl mx-auto w-full">
+            <button class="text-gray-600 focus:outline-none">
+                <img src="menu.png" alt="Menu Icon" class="w-6 h-6" oncontextmenu="return false;" ondragstart="return false;" draggable="false">
+            </button>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/960px-CNN.svg.png" alt="Logo CNN" class="h-5">
+            <span id="headerWorld" class="font-semibold text-lg">World</span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-8">
+        <div class="border-t-2 border-black"></div>
+        <article>
+            <div class="flex items-center text-xs text-gray-500 mt-4 mb-4">
+                <span id="breadcrumbWorld" class="font-semibold">WORLD</span>
+                <svg class="w-3 h-3 mx-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span id="breadcrumbAmerica">AMERIKA</span>
+                <span class="mx-2">•</span>
+                <span id="readTime">5 MIN READ</span>
+            </div>
+
+            <div class="flex items-start mb-6 -ml-4 sm:-ml-6 lg:-ml-8">
+                <div class="cnn-red-bar self-stretch"></div>
+                <h1 id="articleTitle" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight pl-4 sm:pl-6 lg:pl-8">
+                    Tragedi Keluarga Smith: Anak Dibunuh, Jasadnya Menghilang
+                </h1>
+            </div>
+
+            <div class="flex items-center text-gray-600 mb-1 text-xs">
+                <span id="publishedLabel" class="font-semibold">DITERBITKAN</span>
+                <time id="publishedTime" datetime="2010-03-15 10:00" class="ml-1">15 Maret 2010</time>
+                <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+            <p class="text-gray-700 mb-4 text-sm">
+                <span id="authorPrefix">Oleh</span> <span id="authorName" class="font-semibold">Tim Misteri CNN Indonesia</span>
+            </p>
+
+            <figure class="relative w-screen h-0 pb-[75%] bg-gray-300 overflow-hidden mb-8
+                            ml-[calc(50%-50vw)] article-image-block" id="articleImageContainer">
+                <img id="image2" src="image2.jpg" alt="Potret keluarga vintage 2" class="absolute inset-0 w-full h-full object-cover" style="object-position: top;" oncontextmenu="return false;" ondragstart="return false;" draggable="false">
+                <img id="image1" src="image1.jpg" alt="Potret keluarga vintage 1" class="absolute inset-0 w-full h-full object-cover" style="object-position: top;" oncontextmenu="return false;" ondragstart="return false;" draggable="false">
+                <figcaption id="imageFigcaption" class="absolute bottom-0 left-0 w-full bg-white bg-opacity-80 p-2 text-xs text-gray-600">
+                    Potret keluarga Smith pasca kepergian putri keempatnya.
+                </figcaption>
+            </figure>
+
+            <div class="article-content text-lg leading-relaxed mb-4" id="articleContent">
+                </div>
+        </article>
+
+        <section class="border-t border-gray-200 pt-6 mt-8">
+            <h2 id="relatedTitle" class="text-2xl font-bold mb-4">Baca Baca</h2>
+            <ul class="list-none p-0">
+                <li class="mb-2"><a id="relatedLink1" href="#" class="text-blue-600 hover:underline">Kasus Kriminal Paling Misterius di Abad ke-20</a></li>
+                <li class="mb-2"><a id="relatedLink2" href="#" class="text-blue-600 hover:underline">Sejarah Psikologi Kriminal Awal Abad 20</a></li>
+                <li class="mb-2"><a id="relatedLink3" href="#" class="text-blue-600 hover:underline">Dampak Tragedi Keluarga pada Komunitas</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <section class="bg-black text-white py-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="relative mb-8">
+                <input id="searchPlaceholder" type="text" placeholder="Search CNN..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-md py-3 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="border-b border-gray-700 mb-8 pb-8">
+                <a id="signIn" href="#" class="block text-center text-white text-lg font-semibold hover:underline">Sign in</a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a id="liveTv" href="#" class="text-white hover:text-gray-400">Live TV</a></li>
+                    <li class="mb-2"><a id="listen" href="#" class="text-white hover:text-gray-400">Listen</a></li>
+                    <li class="mb-2"><a id="watch" href="#" class="text-white hover:text-gray-400">Watch</a></li>
+                </ul>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a id="world" href="#" class="text-white hover:text-gray-400">World</a></li>
+                    <li class="mb-2"><a id="usPolitics" href="#" class="text-white hover:text-gray-400">US Politics</a></li>
+                    <li class="mb-2"><a id="business" href="#" class="text-white hover:text-gray-400">Business</a></li>
+                    <li class="mb-2"><a id="markets" href="#" class="text-white hover:text-gray-400">Markets</a></li>
+                </ul>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a id="health" href="#" class="text-white hover:text-gray-400">Health</a></li>
+                    <li class="mb-2"><a id="entertainment" href="#" class="text-white hover:text-gray-400">Entertainment</a></li>
+                    <li class="mb-2"><a id="tech" href="#" class="text-white hover:text-gray-400">Tech</a></li>
+                    <li class="mb-2"><a id="style" href="#" class="text-white hover:text-gray-400">Style</a></li>
+                    <li class="mb-2"><a id="travel" href="#" class="text-white hover:text-gray-400">Travel</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-300 py-8 text-center">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center mb-6">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/960px-CNN.svg.png" alt="CNN Logo" class="h-6 mr-2 filter grayscale">
+                <span class="font-bold text-xl text-white">World</span>
+            </div>
+
+            <p id="followCnn" class="text-sm font-semibold mb-6">FOLLOW CNN</p>
+
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+
+            <div class="border-t border-gray-700 pt-8 mb-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-2 text-sm">
+                    <a id="termsOfUse" href="#" class="text-gray-400 hover:text-white mx-2">Terms of Use</a>
+                    <a id="privacyPolicy" href="#" class="text-gray-400 hover:text-white mx-2">Privacy Policy</a>
+                    <a id="cookieSettings" href="#" class="text-gray-400 hover:text-white mx-2">Cookie Settings</a>
+                    <a id="adChoices" href="#" class="text-gray-400 hover:text-white mx-2">Ad Choices</a>
+                    <a id="accessibility" href="#" class="text-gray-400 hover:text-white mx-2">Accessibility & CC</a>
+                    <a id="about" href="#" class="text-gray-400 hover:text-white mx-2">About</a>
+                    <a id="newsletters" href="#" class="text-gray-400 hover:text-white mx-2">Newsletters</a>
+                    <a id="transcripts" href="#" class="text-gray-400 hover:text-white mx-2">Transcripts</a>
+                </div>
+            </div>
+
+            <p id="copyright" class="text-xs text-gray-500 leading-relaxed">
+                &copy; 2025 Cable News Network. A Warner Bros. Discovery Company. All Rights Reserved.<br>
+                CNN Sans &trade; &copy; 2016 Cable News Network.
+            </p>
+        </div>
+    </footer>
+
+    <div id="galleryOverlay" class="gallery-overlay">
+        <span class="close-button">&times;</span>
+        <div class="gallery-content">
+            <img id="galleryImage2" src="image2.jpg" alt="Full size image 2" oncontextmenu="return false;" ondragstart="return false;" draggable="false">
+            <img id="galleryImage1" src="image1.jpg" alt="Full size image 1" oncontextmenu="return false;" ondragstart="return false;" draggable="false">
+        </div>
+    </div>
+
+    <script type="module">
+        // Import translations from the external file
+        import { translations } from './languages.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- LANGUAGE AND CONTENT SETUP ---
+            
+            // 1. Determine the language from URL parameter (?lang=eng)
+            function getLanguage() {
+                const params = new URLSearchParams(window.location.search);
+                const lang = params.get('lang');
+                return (lang === 'eng') ? 'eng' : 'id';
+            }
+
+            // 2. Apply all static translations to the page
+            function applyTranslations(lang) {
+                const t = translations[lang];
+                if (!t) {
+                    console.error(`Translations for language "${lang}" not found.`);
+                    return;
+                }
+
+                const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+                const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+                const setPlaceholder = (id, text) => { const el = document.getElementById(id); if (el) el.placeholder = text; };
+
+                document.documentElement.lang = t.htmlLang;
+                setText('pageTitle', t.title);
+                setText('headerWorld', t.headerWorld);
+                setText('breadcrumbWorld', t.breadcrumbWorld);
+                setText('breadcrumbAmerica', t.breadcrumbAmerica);
+                setText('readTime', t.readTime);
+                setText('articleTitle', t.articleTitle);
+                setText('publishedLabel', t.publishedLabel);
+                setText('publishedTime', t.publishedTime);
+                setText('authorPrefix', t.authorPrefix);
+                setText('authorName', t.authorName);
+                setText('imageFigcaption', t.imageFigcaption);
+                setText('relatedTitle', t.relatedTitle);
+                setText('relatedLink1', t.relatedLink1);
+                setText('relatedLink2', t.relatedLink2);
+                setText('relatedLink3', t.relatedLink3);
+                setPlaceholder('searchPlaceholder', t.searchPlaceholder);
+                setText('signIn', t.signIn);
+                setText('liveTv', t.liveTv);
+                setText('listen', t.listen);
+                setText('watch', t.watch);
+                setText('world', t.world);
+                setText('usPolitics', t.usPolitics);
+                setText('business', t.business);
+                setText('markets', t.markets);
+                setText('health', t.health);
+                setText('entertainment', t.entertainment);
+                setText('tech', t.tech);
+                setText('style', t.style);
+                setText('travel', t.travel);
+                setText('followCnn', t.followCnn);
+                setText('termsOfUse', t.termsOfUse);
+                setText('privacyPolicy', t.privacyPolicy);
+                setText('cookieSettings', t.cookieSettings);
+                setText('adChoices', t.adChoices);
+                setText('accessibility', t.accessibility);
+                setText('about', t.about);
+                setText('newsletters', t.newsletters);
+                setText('transcripts', t.transcripts);
+                setHTML('copyright', t.copyright);
+            }
+            
+            // 3. Get decoded parameters from URL using the correct language maps
+            function getArticleParams(lang) {
+                const params = new URLSearchParams(window.location.search);
+                const idParam = params.get('id') || 'FlFlFl';
+
+                const decodingMap = { 'Fl': 'a', 'uC': 'b', 'Xy': 'c', 'zW': 'd', 'Qr': 'e' };
+                let decodedChars = [];
+                for (let i = 0; i < idParam.length; i += 2) {
+                    const encodedSegment = idParam.substring(i, i + 2);
+                    decodedChars.push(decodingMap[encodedSegment] || 'a');
+                }
+                while (decodedChars.length < 3) decodedChars.push('a');
+                decodedChars = decodedChars.slice(0, 3);
+
+                const [namaKorbanChar, lokasiChar, alatChar] = decodedChars;
+                
+                const { namaKorbanMap, lokasiMap, alatMap } = translations[lang].articleParams;
+                
+                const alatObject = alatMap[alatChar] || { name: 'a sharp object', image: '' };
+
+                return {
+                    namaKorban: namaKorbanMap[namaKorbanChar] || 'Jane Eleanor',
+                    lokasi: lokasiMap[lokasiChar] || 'a room in the house',
+                    alat: alatObject.name,
+                    alatImage: alatObject.image
+                };
+            }
+
+            // 4. Populate dynamic article content using translated text and parameters
+            function populateArticleContent(lang, articleParams) {
+                const t = translations[lang];
+                const { namaKorban, lokasi, alat, alatImage } = articleParams;
+
+                const evidenceFigureHTML = alatImage ? `
+                    <figure class="evidence-figure">
+                        <img src="./evidences/${alatImage}" alt="${t.evidenceCaption.replace('${alat}', alat)}" oncontextmenu="return false;" ondragstart="return false;" draggable="false">
+                        <figcaption>${t.evidenceCaption.replace('${alat}', alat)}</figcaption>
+                    </figure>
+                ` : '';
+
+                const articleHTML = `
+                    <p>${t.articleP1}</p>
+                    <p>${t.articleP2}</p>
+                    <p>${t.articleP3}</p>
+                    ${evidenceFigureHTML}
+                    <h2 class="text-xl font-bold mb-4 mt-6">${t.articleH2}</h2>
+                    <p>${t.articleP4}</p>
+                    <p>${t.articleP5}</p>
+                    <h3 class="text-lg font-bold mb-4 mt-6">${t.articleH3}</h3>
+                    <p>${t.articleP6}</p>
+                    <p>${t.articleP7}</p>
+                    <p>${t.articleP8}</p>
+                `;
+
+                let finalArticleHtml = articleHTML;
+                finalArticleHtml = finalArticleHtml.replace(/\$\{namaKorban\}/g, capitalizeFirstLetter(namaKorban));
+                finalArticleHtml = finalArticleHtml.replace(/\$\{lokasi\}/g, lokasi);
+                finalArticleHtml = finalArticleHtml.replace(/\$\{alat\}/g, alat);
+
+                const articleContentDiv = document.getElementById('articleContent');
+                if (articleContentDiv) {
+                    articleContentDiv.innerHTML = finalArticleHtml;
+                }
+            }
+
+            // --- HELPER FUNCTIONS ---
+            function capitalizeFirstLetter(string) {
+                if (!string) return '';
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            // --- INITIALIZATION ---
+            
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const mainContent = document.querySelector('main');
+            
+            // Run the setup
+            const currentLang = getLanguage();
+            const articleParams = getArticleParams(currentLang);
+            applyTranslations(currentLang);
+            populateArticleContent(currentLang, articleParams);
+
+            // Hide loading overlay and show content
+            if (loadingOverlay && mainContent) {
+                loadingOverlay.style.opacity = '0';
+                loadingOverlay.style.visibility = 'hidden';
+                mainContent.style.visibility = 'visible';
+                mainContent.style.opacity = '1';
+            }
+
+            // --- INTERACTIVITY LOGIC ---
+
+            const articleImageContainer = document.getElementById('articleImageContainer');
+            const image1 = document.getElementById('image1');
+            const image2 = document.getElementById('image2');
+            const galleryOverlay = document.getElementById('galleryOverlay');
+            const galleryImage1 = document.getElementById('galleryImage1');
+            const galleryImage2 = document.getElementById('galleryImage2');
+            const closeButton = document.querySelector('.gallery-overlay .close-button');
+            const mainHeader = document.getElementById('mainHeader');
+            const IMAGE_STATE_KEY = 'smithFamilyImageState';
+            let isImage2Active = localStorage.getItem(IMAGE_STATE_KEY) === 'true';
+
+            function updateImageVisibility() {
+                if (image1 && galleryImage1 && image2 && galleryImage2) {
+                    image1.style.opacity = isImage2Active ? '0' : '1';
+                    galleryImage1.style.opacity = isImage2Active ? '0' : '1';
+                    image2.style.opacity = '1';
+                    galleryImage2.style.opacity = '1';
+                }
+            }
+            
+            updateImageVisibility();
+
+            if (articleImageContainer) {
+                articleImageContainer.addEventListener('click', () => {
+                    if (galleryOverlay) galleryOverlay.classList.add('active');
+                });
+            }
+
+            if (galleryOverlay) {
+                galleryOverlay.addEventListener('click', (event) => {
+                    if (event.target === galleryOverlay) galleryOverlay.classList.remove('active');
+                });
+            }
+            
+            if (closeButton) {
+                closeButton.addEventListener('click', () => {
+                    if (galleryOverlay) galleryOverlay.classList.remove('active');
+                });
+            }
+
+            window.addEventListener('scroll', () => {
+                const article = document.getElementById('articleContent');
+                if (article && image1 && galleryImage1) {
+                    const articleRect = article.getBoundingClientRect();
+                    const scrollMidPoint = window.innerHeight / 2;
+                    if (articleRect.top + articleRect.height / 2 <= scrollMidPoint && !isImage2Active) {
+                        image1.style.opacity = '0';
+                        galleryImage1.style.opacity = '0';
+                        localStorage.setItem(IMAGE_STATE_KEY, 'true');
+                        isImage2Active = true;
+                    }
+                }
+            });
+            
+            let lastTap = 0;
+            let tapCount = 0;
+            if (mainHeader) {
+                mainHeader.addEventListener('click', () => {
+                    const currentTime = new Date().getTime();
+                    if (currentTime - lastTap < 500) {
+                        tapCount++;
+                    } else {
+                        tapCount = 1;
+                    }
+                    lastTap = currentTime;
+                    if (tapCount === 3) {
+                        localStorage.removeItem(IMAGE_STATE_KEY);
+                        isImage2Active = false;
+                        updateImageVisibility();
+                        tapCount = 0;
+                    }
+                });
+            }
+
+            let inactivityRedirectTimer;
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    inactivityRedirectTimer = setTimeout(() => {
+                        window.location.replace("https://www.cnid.my.id/index.html");
+                    }, 60000);
+                } else {
+                    clearTimeout(inactivityRedirectTimer);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
