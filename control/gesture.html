@@ -237,8 +237,8 @@
 
         // --- LANGUAGE & TRANSLATIONS ---
         const translations = {
-            id: { victimName: 'Nama Korban:', crimeScene: 'Lokasi Kejadian:', weapon: 'Alat yang Dipakai:', noHistory: 'Tidak ada riwayat gerakan.', settingsTitle: 'Pengaturan', languageLabel: 'Bahasa:', closeButton: 'Tutup', readInstructions: 'Baca Instruksi', langId: 'Indonesia', langEng: 'English' },
-            eng: { victimName: "Victim's Name:", crimeScene: 'Crime Scene:', weapon: 'Weapon Used:', noHistory: 'No gesture history.', settingsTitle: 'Settings', languageLabel: 'Language:', closeButton: 'Close', readInstructions: 'Read Instructions', langId: 'Indonesia', langEng: 'English' }
+            id: { victimName: 'Nama Korban:', crimeScene: 'Lokasi Kejadian:', weapon: 'Alat yang Dipakai:', noHistory: 'Tidak ada riwayat gerakan.', settingsTitle: 'Pengaturan', languageLabel: 'Bahasa:', closeButton: 'Tutup', readInstructions: 'Baca Instruksi', langId: 'Indonesia', langEng: 'English', mustSetId: 'ID kustom harus diisi sebelum keluar.' },
+            eng: { victimName: "Victim's Name:", crimeScene: 'Crime Scene:', weapon: 'Weapon Used:', noHistory: 'No gesture history.', settingsTitle: 'Settings', languageLabel: 'Language:', closeButton: 'Close', readInstructions: 'Read Instructions', langId: 'Indonesia', langEng: 'English', mustSetId: 'Custom ID must be set before exiting.' }
         };
 
         // --- APP CONTENT ---
@@ -454,13 +454,17 @@
         }
 
         function closeSettingsModal() { 
+            // If trying to close without a Custom ID, show an error and prevent closing.
+            if (!customId) {
+                customIdError.textContent = translations[currentLanguage].mustSetId;
+                return; // Stop the function here.
+            }
+
+            // If an ID exists, proceed with closing as normal.
             resetDeleteButtonState();
             oldIdToReplace = null; // Ensure state is reset on close
             settingsModal.classList.add('hidden'); 
-             // If user closes settings without setting an ID, re-open it.
-            if (!customId) {
-                openSettingsModal();
-            }
+            customIdError.textContent = ''; // Clear any previous errors
         }
 
         function updateLanguageUI(lang) {
