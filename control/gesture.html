@@ -513,11 +513,6 @@
         }
 
         function closeSettingsModal() { 
-            // Before closing, if no save happened, revert the language UI to its initial state.
-            if (currentLanguage !== initialSettings.lang) {
-                updateLanguageUI(initialSettings.lang);
-            }
-
             if (!customId) {
                 customIdError.textContent = translations[currentLanguage].mustSetId;
                 return;
@@ -698,7 +693,15 @@
         downloadQrBtn.addEventListener('click', downloadQrCode);
         deleteIdBtn.addEventListener('click', deleteId);
         customIdInput.addEventListener('input', updateSaveButtonState);
-        settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) closeSettingsModal(); });
+        settingsModal.addEventListener('click', (e) => { 
+            if (e.target === settingsModal) { 
+                // Revert language state if it was changed but not saved
+                if (currentLanguage !== initialSettings.lang) {
+                    updateLanguageUI(initialSettings.lang);
+                }
+                closeSettingsModal(); 
+            }
+        });
 
         // --- NEW SECURITY & HELPER FUNCTIONS ---
         async function updatePerformingStatus(isPerforming) {
