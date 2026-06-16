@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="manifest" href="manifest.json">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <!-- Meta tags for PWA -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -12,36 +11,36 @@
     <link rel="apple-touch-icon" href="/control/icons/image512.png" onerror="this.onerror=null;this.src='https://placehold.co/180x180/000000/FFFFFF?text=Icon';">
     <link rel="icon" href="/control/icons/image512.png" onerror="this.onerror=null;this.src='https://placehold.co/32x32/000000/FFFFFF?text=Icon';">
 
-    <title>Atma by Heri Sanjaya</title>
-    <!-- Google Fonts -->
+    <title>Atma</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- QR Code Generator Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <style>
-        /* Custom styles for the app */
         body {
             font-family: "Inter", sans-serif;
             color: #000;
             overflow: hidden;
             position: fixed;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100dvh;
             margin: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            background-color: #000;
         }
         #app-wrapper {
             display: none;
+            width: 100%;
+            height: 100%;
         }
         #app-wrapper.unlocked {
             display: block;
         }
-        #app-container {
+        #classic-mode-container {
             width: 100vw;
-            height: 100vh;
-            background-color: #000;
+            height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -50,7 +49,7 @@
             position: relative;
             width: 100vw;
             height: 100vw;
-            max-height: 100vh;
+            max-height: 100dvh;
             box-sizing: border-box;
             overflow: hidden;
         }
@@ -113,16 +112,139 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        #passcode-ui {
+            background: linear-gradient(170deg, #626e8d 0%, #157991 45%, #018793 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #ffffff;
+            height: 100dvh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+        }
+        .passcode-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .passcode-title {
+            font-size: 20px;
+            margin-bottom: 24px;
+            font-weight: 400;
+            letter-spacing: -0.2px;
+        }
+        .passcode-dots {
+            display: flex;
+            gap: 22px;
+            margin-bottom: 60px;
+        }
+        .passcode-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #ffffff;
+            transition: background-color 0.2s ease;
+        }
+        .passcode-dot.filled {
+            background-color: #ffffff;
+            transition: none;
+        }
+        .passcode-numpad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px 26px;
+        }
+        .passcode-btn {
+            width: 78px;
+            height: 78px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: none;
+        }
+        .passcode-btn.pressed {
+            background: rgba(255, 255, 255, 0.3);
+            transition: none;
+        }
+        .passcode-btn .number {
+            font-size: 36px;
+            font-weight: 400;
+            line-height: 1;
+        }
+        .passcode-btn.has-letters .number {
+            margin-top: -4px;
+        }
+        .passcode-btn .letters {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-top: 4px;
+        }
+        .passcode-empty {
+            visibility: hidden;
+        }
+        .passcode-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 32px 36px 32px;
+            font-size: 16px;
+            font-weight: 400;
+        }
+        .passcode-footer-btn {
+            color: white;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+            touch-action: none;
+        }
+        .passcode-footer-btn.pressed {
+            opacity: 0.5;
+            transition: none;
+        }
+        #lockscreen-image-view {
+            background-color: #fff;
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            display: none;
+        }
+        #lockscreen-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+        }
     </style>
 </head>
-<body id="touchArea" class="bg-black">
+<body id="touchArea">
 
-    <!-- License Modal -->
+    <div id="invisible-settings-trigger" class="fixed top-0 right-0 w-20 h-20 z-50"></div>
+
     <div id="license-modal" class="fixed inset-0 bg-black bg-opacity-90 flex justify-center items-center z-50 p-4" style="display: none;">
         <div class="font-lora bg-[#fdfaf3] rounded-sm p-6 w-full max-w-sm text-[#1a1a1a] border-2 border-black shadow-2xl text-center">
             <h2 class="font-playfair text-2xl mb-4 border-b-2 border-gray-400 pb-2 uppercase">License Activation</h2>
             <p class="mb-6">Please enter your license key to unlock the app.</p>
-            <input type="text" id="license-key-input" placeholder="ABC-123-XYZ" class="w-full p-3 text-center border-2 border-black rounded-sm mb-4 bg-white text-lg tracking-widest">
+            <input type="text" id="license-key-input" class="w-full p-3 text-center border-2 border-black rounded-sm mb-4 bg-white text-lg tracking-widest">
             <button id="verify-license-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-3 rounded-sm uppercase tracking-wider transition-colors duration-300 flex items-center justify-center">
                 <span>Activate</span>
             </button>
@@ -130,46 +252,83 @@
         </div>
     </div>
 
-    <!-- App Wrapper -->
     <div id="app-wrapper">
-        <!-- One-time Settings Notification -->
         <div id="settings-toast" class="hidden fixed top-4 left-1/2 -translate-x-1/2 w-11/12 max-w-sm bg-[#fdfaf3] text-[#1a1a1a] p-3 rounded-sm shadow-lg z-30 flex items-center justify-between font-lora border-2 border-black">
             <p>Tip: Tap the top-right corner for settings.</p>
             <button id="close-toast-btn" class="text-2xl font-bold leading-none pl-4">&times;</button>
         </div>
 
-        <!-- Main container -->
-        <div id="app-container">
+        <div id="classic-mode-container" class="hidden">
             <div id="display-area">
                 <div id="slide-container"></div>
             </div>
         </div>
 
-        <!-- History overlay -->
+        <div id="passcode-ui" class="hidden">
+            <div class="passcode-main">
+                <div class="passcode-title">Enter Passcode</div>
+                <div class="passcode-dots">
+                    <div class="passcode-dot"></div>
+                    <div class="passcode-dot"></div>
+                    <div class="passcode-dot"></div>
+                    <div class="passcode-dot"></div>
+                </div>
+                <div class="passcode-numpad">
+                    <button class="passcode-btn key-btn"><span class="number">1</span></button>
+                    <button class="passcode-btn key-btn has-letters"><span class="number">2</span><span class="letters">A B C</span></button>
+                    <button class="passcode-btn key-btn has-letters"><span class="number">3</span><span class="letters">D E F</span></button>
+                    <button class="passcode-btn key-btn has-letters"><span class="number">4</span><span class="letters">G H I</span></button>
+                    <button class="passcode-btn key-btn has-letters"><span class="number">5</span><span class="letters">J K L</span></button>
+                    <button class="passcode-btn key-btn has-letters"><span class="number">6</span><span class="letters">M N O</span></button>
+                    <button class="passcode-btn key-btn has-letters"><span class="number">7</span><span class="letters">P Q R S</span></button>
+                    <button class="passcode-btn key-btn has-letters"><span class="number">8</span><span class="letters">T U V</span></button>
+                    <button class="passcode-btn key-btn has-letters"><span class="number">9</span><span class="letters">W X Y Z</span></button>
+                    <div class="passcode-empty"></div>
+                    <button class="passcode-btn key-btn"><span class="number">0</span></button>
+                    <div class="passcode-empty"></div>
+                </div>
+            </div>
+            <div class="passcode-footer">
+                <button class="passcode-footer-btn">Emergency</button>
+                <button class="passcode-footer-btn">Cancel</button>
+            </div>
+        </div>
+
+        <div id="lockscreen-image-view">
+            <img id="lockscreen-img" src="" alt="Secret">
+        </div>
+
         <div id="history-overlay"></div>
 
-        <!-- Settings Modal -->
         <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center hidden z-50 p-4">
-            <div class="font-lora bg-[#fdfaf3] rounded-sm p-6 w-11/12 max-w-sm text-[#1a1a1a] border-2 border-black shadow-2xl">
+            <div class="font-lora bg-[#fdfaf3] rounded-sm p-6 w-11/12 max-w-sm text-[#1a1a1a] border-2 border-black shadow-2xl h-[85vh] overflow-y-auto">
                 <h2 id="settings-title" class="font-playfair text-2xl mb-4 border-b-2 border-gray-400 pb-2 uppercase">Settings</h2>
                 
-                <!-- Custom ID Input (for Printed QR mode) -->
+                <div class="my-6">
+                    <label id="app-mode-label" class="font-playfair block mb-2 font-bold">App Mode:</label>
+                    <select id="app-mode-select" class="w-full p-3 border-2 border-black rounded-sm bg-white text-lg transition-colors duration-200">
+                        <option value="classic">Classic (Swipe)</option>
+                        <option value="lockscreen">Lockscreen</option>
+                    </select>
+                </div>
+
+                <div id="delay-setting-container" class="my-6 hidden">
+                    <label id="transition-delay-label" class="font-playfair block mb-2 font-bold">Transition Delay (Sec):</label>
+                    <input type="number" id="transition-delay-input" class="w-full p-3 text-center border-2 border-black rounded-sm bg-white text-lg transition-colors duration-200" value="3" min="1" max="15">
+                </div>
+
                 <div id="custom-id-section" class="my-6">
-                    <label for="custom-id-input" class="font-playfair block mb-2 font-bold">Custom ID:</label>
-                    <p class="text-sm mb-2">Set a 6-digit ID to link with your printed QR code.</p>
-                    <input type="number" id="custom-id-input" placeholder="6-digit number" class="w-full p-3 text-center border-2 border-black rounded-sm bg-white text-lg tracking-widest transition-colors duration-200" oninput="this.value=this.value.slice(0,6)">
-                    
+                    <label id="custom-id-label" for="custom-id-input" class="font-playfair block mb-2 font-bold">Custom ID:</label>
+                    <p id="custom-id-desc" class="text-sm mb-2">Set a 6-digit ID to link with your printed QR code.</p>
+                    <input type="number" id="custom-id-input" class="w-full p-3 text-center border-2 border-black rounded-sm bg-white text-lg tracking-widest transition-colors duration-200" oninput="this.value=this.value.slice(0,6)">
                     <button id="change-id-btn" class="hidden font-playfair w-full mt-2 p-2 rounded-sm border-2 border-black uppercase tracking-wider hover:bg-gray-200">Change ID</button>
-                    
                     <p id="custom-id-error" class="text-red-600 mt-2 text-sm h-5"></p>
-                    
                     <div id="id-actions-container" class="flex space-x-2 mt-4">
                         <button id="download-qr-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider transition-colors duration-300">Download QR</button>
                         <button id="delete-id-btn" class="font-playfair w-full block bg-red-700 hover:bg-red-800 text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider transition-colors duration-300">Delete ID</button>
                     </div>
                 </div>
 
-                <!-- Language Selection -->
                 <div class="my-6">
                     <label id="language-label" class="font-playfair block mb-2 font-bold">Language:</label>
                     <div class="flex space-x-4">
@@ -179,19 +338,16 @@
                 </div>
                 
                 <a href="user-guide.html" id="read-instructions-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider transition-colors duration-300 mt-6">Read Instructions</a>
-                
                 <button id="save-settings-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-2 rounded-sm uppercase tracking-wider transition-colors duration-300 mt-2">Save & Close</button>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-        // --- DOM ELEMENT REFERENCES ---
         const licenseModal = document.getElementById('license-modal');
         const licenseKeyInput = document.getElementById('license-key-input');
         const verifyLicenseBtn = document.getElementById('verify-license-btn');
@@ -209,7 +365,6 @@
         const langIdButton = document.getElementById('lang-id');
         const langEngButton = document.getElementById('lang-eng');
         const readInstructionsButton = document.getElementById('read-instructions-btn');
-        // Settings elements
         const customIdSection = document.getElementById('custom-id-section');
         const customIdInput = document.getElementById('custom-id-input');
         const customIdError = document.getElementById('custom-id-error');
@@ -218,9 +373,24 @@
         const downloadQrBtn = document.getElementById('download-qr-btn');
         const deleteIdBtn = document.getElementById('delete-id-btn');
         const saveSettingsBtn = document.getElementById('save-settings-btn');
+        const invisibleSettingsTrigger = document.getElementById('invisible-settings-trigger');
 
+        const appModeSelect = document.getElementById('app-mode-select');
+        const delaySettingContainer = document.getElementById('delay-setting-container');
+        const transitionDelayInput = document.getElementById('transition-delay-input');
+        const appModeLabel = document.getElementById('app-mode-label');
+        const transitionDelayLabel = document.getElementById('transition-delay-label');
+        const customIdLabel = document.getElementById('custom-id-label');
+        const customIdDesc = document.getElementById('custom-id-desc');
 
-        // --- FIREBASE CONFIG ---
+        const classicModeContainer = document.getElementById('classic-mode-container');
+        const passcodeUi = document.getElementById('passcode-ui');
+        const lockscreenImageView = document.getElementById('lockscreen-image-view');
+        const lockscreenImg = document.getElementById('lockscreen-img');
+        const passcodeDots = document.querySelectorAll('.passcode-dot');
+        const passcodeButtons = document.querySelectorAll('.key-btn');
+        const passcodeFooterBtns = document.querySelectorAll('.passcode-footer-btn');
+
         const firebaseConfig = {
             apiKey: "AIzaSyCFDxFe2PnyxaLRb7VctQSHhQh7ZKoSDaU",
             authDomain: "atmamagicbyheri.firebaseapp.com",
@@ -230,12 +400,10 @@
             appId: "1:672288947327:web:4ee5d222045bfaf6ed934a"
         };
 
-        // --- Initialize Firebase ---
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- LANGUAGE & TRANSLATIONS ---
         const translations = {
             id: {
                 victimName: 'Nama Korban:',
@@ -249,12 +417,11 @@
                 langEng: 'English',
                 mustSetId: 'ID kustom harus diisi sebelum keluar.',
                 licenseActivation: 'Aktivasi Lisensi',
-                licensePrompt: 'Silakan masukkan kunci lisensi Anda untuk membuka aplikasi.',
+                licensePrompt: 'Silakan masukkan kunci lisensi Anda.',
                 activateBtn: 'Aktifkan',
                 settingsTip: 'Kiat: Ketuk sudut kanan atas untuk pengaturan.',
                 customIdLabel: 'ID Kustom:',
-                customIdPrompt: 'Atur 6-digit ID untuk dihubungkan dengan kode QR cetak Anda.',
-                customIdPlaceholder: '6-digit angka',
+                customIdPrompt: 'Atur 6-digit ID untuk kode QR.',
                 changeIdBtn: 'Ganti ID',
                 downloadQrBtn: 'Unduh QR',
                 deleteIdBtn: 'Hapus ID',
@@ -264,10 +431,14 @@
                 errorIdDigits: 'ID harus terdiri dari 6 digit.',
                 errorIdTaken: 'ID ini sudah digunakan.',
                 errorIdUpdateFailed: 'Gagal memperbarui ID. Periksa koneksi.',
-                errorIdMismatch: 'Kesalahan: ID tidak cocok atau tidak valid.',
+                errorIdMismatch: 'Kesalahan: ID tidak cocok.',
                 idDeletedSuccess: 'ID {id} telah dihapus.',
-                errorIdDeleteFailed: 'Gagal menghapus ID. Periksa koneksi.',
-                errorSetIdFirstDownload: 'Harap atur dan simpan 6-digit ID terlebih dahulu.'
+                errorIdDeleteFailed: 'Gagal menghapus ID.',
+                errorSetIdFirstDownload: 'Harap atur ID terlebih dahulu.',
+                appModeLabel: 'Mode Aplikasi:',
+                transitionDelayLabel: 'Jeda Transisi Gambar (Detik):',
+                modeClassic: 'Klasik (Usap)',
+                modeLockscreen: 'Kunci Layar'
             },
             eng: {
                 victimName: "Victim's Name:",
@@ -285,8 +456,7 @@
                 activateBtn: 'Activate',
                 settingsTip: 'Tip: Tap the top-right corner for settings.',
                 customIdLabel: 'Custom ID:',
-                customIdPrompt: 'Set a 6-digit ID to link with your printed QR code.',
-                customIdPlaceholder: '6-digit number',
+                customIdPrompt: 'Set a 6-digit ID for your printed QR code.',
                 changeIdBtn: 'Change ID',
                 downloadQrBtn: 'Download QR',
                 deleteIdBtn: 'Delete ID',
@@ -296,14 +466,17 @@
                 errorIdDigits: 'ID must be exactly 6 digits.',
                 errorIdTaken: 'This ID is already taken.',
                 errorIdUpdateFailed: 'Failed to update ID. Check connection.',
-                errorIdMismatch: 'Error: ID mismatch or invalid.',
+                errorIdMismatch: 'Error: ID mismatch.',
                 idDeletedSuccess: 'ID {id} has been deleted.',
-                errorIdDeleteFailed: 'Failed to delete ID. Check connection.',
-                errorSetIdFirstDownload: 'Please set and save a 6-digit ID first.'
+                errorIdDeleteFailed: 'Failed to delete ID.',
+                errorSetIdFirstDownload: 'Please set a 6-digit ID first.',
+                appModeLabel: 'App Mode:',
+                transitionDelayLabel: 'Image Transition Delay (Sec):',
+                modeClassic: 'Classic (Swipe)',
+                modeLockscreen: 'Lockscreen'
             }
         };
 
-        // --- APP CONTENT ---
         const displayContent = {
             id: [ { title: translations.id.victimName, items: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice'] }, { title: translations.id.crimeScene, items: ['Kamar lantai dua', 'Loteng', 'Gudang belakang', 'Ruang bawah tanah', 'Lorong dekat dapur'] }, { title: translations.id.weapon, items: ['Pisau', 'Palu', 'Gunting', 'Linggis', 'Batang besi'] } ],
             eng: [ { title: translations.eng.victimName, items: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice'] }, { title: translations.eng.crimeScene, items: ['Second floor room', 'Attic', 'Back warehouse', 'Basement', 'Hallway near kitchen'] }, { title: translations.eng.weapon, items: ['Knife', 'Hammer', 'Scissors', 'Crowbar', 'Iron rod'] } ]
@@ -314,36 +487,35 @@
             { 'Up': 'pisau', 'Right': 'palu', 'Down': 'gunting', 'Left': 'linggis', 'Tap': 'batang besi' }
         ];
 
-        // --- STATE & CONSTANTS ---
         let startX = 0, startY = 0, gestureCount = 0, currentSlideIndex = 0;
         const gestureSequence = [], gestureTextHistory = [];
         let isSessionActive = true, tapCount = 0, lastTapTime = 0, tapHoldTimeout = null;
         let startArea = null, isDragging = false, initialTranslate = 0;
-        let isImageRevealed = false; // Tracks if the secret image has been shown
+        let isImageRevealed = false;
         let deleteConfirmationTimeout = null;
         let oldIdToReplace = null;
-        let initialSettings = {}; // For tracking changes in settings
+        let initialSettings = {};
         
-        // App settings state
-        const appMode = 'printed'; // Mode is now fixed to 'printed'
         let customId = '';
         let currentLanguage = 'eng';
+        let currentAppMode = 'classic';
+        let currentTransitionDelay = 3;
+        let inputPasscodeLength = 0;
+        let isProcessingPasscode = false;
 
         const SWIPE_THRESHOLD = 50, TAP_THRESHOLD = 10, DOUBLE_TAP_TIMEOUT = 300;
         const TAP_HOLD_DURATION = 500, TOTAL_SLIDES = 4, SLIDE_GAP = 20;
-        const SETTINGS_CORNER_SIZE = 60;
         const gridToGesture = { 'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E' };
         const gestureToCode = { 'A': 'Fl', 'B': 'uC', 'C': 'zW', 'D': 'Xy', 'E': 'Qr' };
         const gestureToTextKey = { 'A': 'Up', 'B': 'Right', 'C': 'Left', 'D': 'Down', 'E': 'Tap' };
 
-        // --- LICENSE LOGIC (using Firestore) ---
         const showLicenseModal = () => { licenseModal.style.display = 'flex'; appWrapper.classList.remove('unlocked'); };
         const showSettingsToastIfNeeded = () => { if (!localStorage.getItem('atmaSettingsToastShown')) { settingsToast.classList.remove('hidden'); localStorage.setItem('atmaSettingsToastShown', 'true'); } };
         
         const unlockApp = () => {
             licenseModal.style.display = 'none';
             appWrapper.classList.add('unlocked');
-            loadSettings(); // Load settings after unlock
+            loadSettings();
             showSettingsToastIfNeeded();
         };
 
@@ -382,7 +554,6 @@
                     licenseError.textContent = 'Invalid or already used license key.';
                 }
             } catch (error) {
-                console.error("Error verifying license:", error);
                 licenseError.textContent = 'Verification failed. Please try again.';
             } finally {
                 setButtonLoading(false);
@@ -405,24 +576,19 @@
                 } else {
                     localStorage.removeItem('atmaLicense');
                     showLicenseModal();
-                    licenseError.textContent = 'License re-validation failed. Please enter again.';
+                    licenseError.textContent = 'License re-validation failed.';
                 }
             } catch (error) {
-                console.error("Error re-verifying license:", error);
-                unlockApp(); // Fallback
+                unlockApp();
             }
         };
 
-        // --- INITIALIZATION ---
         window.onload = () => {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    // User is signed in (persistently).
                     checkLicenseOnLoad();
                 } else {
-                    // No user is signed in, sign in anonymously.
-                    signInAnonymously(auth).catch((error) => {
-                        console.error("Anonymous auth failed:", error);
+                    signInAnonymously(auth).catch(() => {
                         showLicenseModal();
                         licenseError.textContent = "Could not connect to authentication service.";
                     });
@@ -430,14 +596,11 @@
             });
         };
 
-
-        // --- EVENT LISTENERS ---
         verifyLicenseBtn.addEventListener('click', verifyLicense);
         licenseKeyInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') verifyLicense(); });
         closeToastBtn.addEventListener('click', () => settingsToast.classList.add('hidden'));
-        window.onresize = () => { if (appWrapper.classList.contains('unlocked')) animateToSlide(currentSlideIndex); };
+        window.onresize = () => { if (appWrapper.classList.contains('unlocked') && currentAppMode === 'classic') animateToSlide(currentSlideIndex); };
         
-        // --- SETTINGS MODAL LOGIC ---
         function lockIdInputUI() {
             customIdInput.value = customId;
             customIdInput.readOnly = true;
@@ -462,20 +625,21 @@
             customIdInput.classList.remove('bg-gray-200', 'cursor-not-allowed');
             customIdInput.focus();
             changeIdBtn.classList.add('hidden');
-            idActionsContainer.style.display = 'flex'; // Actions should still be visible
+            idActionsContainer.style.display = 'flex';
         }
         
         function updateSaveButtonState() {
             const t = translations[currentLanguage];
             const selectedLang = langIdButton.classList.contains('bg-black') ? 'id' : 'eng';
+            const selectedMode = appModeSelect.value;
+            const selectedDelay = parseInt(transitionDelayInput.value, 10);
             
             let idChanged = false;
             if (!customIdInput.readOnly) {
                 idChanged = customIdInput.value !== customId;
             }
 
-            // BUG FIX: Compare with initialSettings.lang, not currentLanguage
-            if (selectedLang !== initialSettings.lang || idChanged) {
+            if (selectedLang !== initialSettings.lang || idChanged || selectedMode !== initialSettings.mode || selectedDelay !== initialSettings.delay) {
                 saveSettingsBtn.textContent = t.saveAndCloseBtn;
             } else {
                 saveSettingsBtn.textContent = t.closeBtn;
@@ -495,20 +659,22 @@
         async function openSettingsModal() {
             initialSettings = {
                 lang: currentLanguage,
-                id: customId 
+                id: customId,
+                mode: currentAppMode,
+                delay: currentTransitionDelay
             };
             
+            appModeSelect.value = currentAppMode;
+            transitionDelayInput.value = currentTransitionDelay;
+            delaySettingContainer.style.display = currentAppMode === 'lockscreen' ? 'block' : 'none';
+
             updateLanguageUI(currentLanguage);
             
-            if (customId) {
-                lockIdInputUI();
-            } else {
-                unlockIdInputUIForCreation();
-            }
+            if (customId) lockIdInputUI();
+            else unlockIdInputUIForCreation();
 
             customIdError.textContent = '';
             resetDeleteButtonState();
-            
             settingsModal.classList.remove('hidden');
         }
 
@@ -517,7 +683,6 @@
                 customIdError.textContent = translations[currentLanguage].mustSetId;
                 return;
             }
-
             resetDeleteButtonState();
             oldIdToReplace = null;
             settingsModal.classList.add('hidden'); 
@@ -528,23 +693,24 @@
             currentLanguage = lang;
             const t = translations[lang];
 
-            // Update all UI text
             licenseModal.querySelector('h2').textContent = t.licenseActivation;
             licenseModal.querySelector('p').textContent = t.licensePrompt;
             verifyLicenseBtn.querySelector('span').textContent = t.activateBtn;
             settingsToast.querySelector('p').textContent = t.settingsTip;
             settingsTitle.textContent = t.settingsTitle;
-            customIdSection.querySelector('label').textContent = t.customIdLabel;
-            customIdSection.querySelector('p.text-sm').textContent = t.customIdPrompt;
-            customIdInput.placeholder = t.customIdPlaceholder;
+            customIdLabel.textContent = t.customIdLabel;
+            customIdDesc.textContent = t.customIdPrompt;
             changeIdBtn.textContent = t.changeIdBtn;
             downloadQrBtn.textContent = t.downloadQrBtn;
             languageLabel.textContent = t.languageLabel;
             readInstructionsButton.textContent = t.readInstructions;
             langIdButton.textContent = t.langId;
             langEngButton.textContent = t.langEng;
+            appModeLabel.textContent = t.appModeLabel;
+            transitionDelayLabel.textContent = t.transitionDelayLabel;
+            appModeSelect.options[0].text = t.modeClassic;
+            appModeSelect.options[1].text = t.modeLockscreen;
             
-            // Update button classes
             if (lang === 'id') {
                  langIdButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-black text-[#fdfaf3]';
                  langEngButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-transparent text-black';
@@ -552,8 +718,6 @@
                  langEngButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-black text-[#fdfaf3]';
                  langIdButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-transparent text-black';
             }
-             
-            // Update buttons that depend on other states
             updateSaveButtonState();
             resetDeleteButtonState();
         }
@@ -569,10 +733,11 @@
             
             const finalLang = langIdButton.classList.contains('bg-black') ? 'id' : 'eng';
             const finalIdInput = customIdInput.value;
+            const finalMode = appModeSelect.value;
+            let finalDelay = parseInt(transitionDelayInput.value, 10);
+            if (isNaN(finalDelay) || finalDelay < 1) finalDelay = 3;
 
-            // BUG FIX: Compare with initialSettings.lang, not currentLanguage
-            const needsReset = finalLang !== initialSettings.lang || (finalIdInput !== customId && finalIdInput);
-
+            const needsReset = finalLang !== initialSettings.lang || (finalIdInput !== customId && finalIdInput) || finalMode !== initialSettings.mode || finalDelay !== initialSettings.delay;
             const idChanged = finalIdInput !== customId;
             const isCreating = !customId && finalIdInput;
             const isReplacing = customId && idChanged;
@@ -582,7 +747,6 @@
                     customIdError.textContent = t.errorIdDigits;
                     return;
                 }
-
                 try {
                     const newDocRef = doc(db, 'printedQR', finalIdInput);
                     const docSnap = await getDoc(newDocRef);
@@ -590,50 +754,40 @@
                         customIdError.textContent = t.errorIdTaken;
                         return;
                     }
-
                     if (isReplacing) {
                         const oldDocRef = doc(db, 'printedQR', customId);
                         await deleteDoc(oldDocRef);
                     }
-
                     await setDoc(newDocRef, { id: '', lang: finalLang, updatedAt: serverTimestamp() });
                     customId = finalIdInput;
-
                 } catch (error) {
-                    console.error("Error creating/replacing ID:", error);
                     customIdError.textContent = t.errorIdUpdateFailed;
                     return;
                 }
-            }
-            // BUG FIX: Compare with initialSettings.lang, not currentLanguage
-            else if (finalLang !== initialSettings.lang && customId) {
+            } else if (finalLang !== initialSettings.lang && customId) {
                  try {
                       const docRef = doc(db, 'printedQR', customId);
                       await setDoc(docRef, { lang: finalLang }, { merge: true });
-                 } catch (error) {
-                      console.error("Error updating language in Firestore:", error);
-                 }
+                 } catch (error) {}
             }
 
             currentLanguage = finalLang;
-            localStorage.setItem('atmaSettings', JSON.stringify({ id: customId, lang: currentLanguage }));
+            currentAppMode = finalMode;
+            currentTransitionDelay = finalDelay;
             
+            localStorage.setItem('atmaSettings', JSON.stringify({ id: customId, lang: currentLanguage, mode: currentAppMode, delay: currentTransitionDelay }));
             closeSettingsModal();
-
-            if (needsReset) {
-                resetApp();
-            }
+            if (needsReset) resetApp();
         }
         
         function loadSettings() {
             const savedSettings = JSON.parse(localStorage.getItem('atmaSettings')) || {};
             customId = savedSettings.id || '';
             currentLanguage = savedSettings.lang || 'eng';
+            currentAppMode = savedSettings.mode || 'classic';
+            currentTransitionDelay = savedSettings.delay || 3;
             resetApp();
-
-            if (!customId) {
-                openSettingsModal();
-            }
+            if (!customId) openSettingsModal();
         }
 
         function downloadQrCode() {
@@ -667,25 +821,22 @@
                 const docRef = doc(db, 'printedQR', idToDelete);
                 await deleteDoc(docRef);
                 customIdError.textContent = t.idDeletedSuccess.replace('{id}', idToDelete);
-                
-                const currentLang = currentLanguage;
                 customId = '';
-                localStorage.setItem('atmaSettings', JSON.stringify({
-                    id: '',
-                    lang: currentLang
-                }));
-
+                localStorage.setItem('atmaSettings', JSON.stringify({ id: '', lang: currentLanguage, mode: currentAppMode, delay: currentTransitionDelay }));
                 unlockIdInputUIForCreation();
                 updateSaveButtonState();
-
             } catch (error) {
-                console.error('Error deleting ID:', error);
                 customIdError.textContent = t.errorIdDeleteFailed;
             } finally {
                 resetDeleteButtonState();
             }
         }
 
+        appModeSelect.addEventListener('change', (e) => {
+            delaySettingContainer.style.display = e.target.value === 'lockscreen' ? 'block' : 'none';
+            updateSaveButtonState();
+        });
+        transitionDelayInput.addEventListener('input', updateSaveButtonState);
         langIdButton.addEventListener('click', () => updateLanguageUI('id'));
         langEngButton.addEventListener('click', () => updateLanguageUI('eng'));
         changeIdBtn.addEventListener('click', unlockIdInputUIForChange);
@@ -695,27 +846,25 @@
         customIdInput.addEventListener('input', updateSaveButtonState);
         settingsModal.addEventListener('click', (e) => { 
             if (e.target === settingsModal) { 
-                // Revert language state if it was changed but not saved
-                if (currentLanguage !== initialSettings.lang) {
-                    updateLanguageUI(initialSettings.lang);
-                }
+                if (currentLanguage !== initialSettings.lang) updateLanguageUI(initialSettings.lang);
                 closeSettingsModal(); 
             }
         });
+        invisibleSettingsTrigger.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openSettingsModal();
+        });
+        invisibleSettingsTrigger.addEventListener('mousedown', openSettingsModal);
 
-        // --- NEW SECURITY & HELPER FUNCTIONS ---
         async function updatePerformingStatus(isPerforming) {
             if (!customId || !auth.currentUser) return;
             try {
                 const docRef = doc(db, 'printedQR', customId);
                 await setDoc(docRef, { isPerforming: isPerforming, updatedAt: serverTimestamp() }, { merge: true });
-                console.log(`Set isPerforming to ${isPerforming} for ID:`, customId);
-            } catch (error) {
-                console.error('Failed to update performing status in Firestore:', error);
-            }
+            } catch (error) {}
         }
 
-        // --- APP CORE FUNCTIONS ---
         function createSlide(slideIndex) {
             const slide = document.createElement('div');
             slide.className = 'slide';
@@ -730,10 +879,9 @@
                         <h2 class="text-3xl font-bold mb-4">${contentData.title}</h2>
                         <ul class="list-none space-y-2">${listItems}</ul>
                     </div>`;
-            } else { // Last slide logic - always the image now
-                // Remove padding for the image slide to fill the container
+            } else {
                 slideContent.style.padding = '0';
-                slideContent.innerHTML = `<img src="https://deyiksanjaya.github.io/atma/image1.jpg" alt="Initial image">`;
+                slideContent.innerHTML = `<img src="https://cnid.my.id/image1.jpg">`;
             }
             slide.appendChild(slideContent);
             return slide;
@@ -741,21 +889,19 @@
         
         function animateToSlide(slideIndex, isInstant = false) {
             const previousSlideIndex = currentSlideIndex;
-            const transitionDuration = isInstant ? 0 : 400; // in ms
+            const transitionDuration = isInstant ? 0 : 400;
             slideContainer.style.transition = isInstant ? 'none' : `transform ${transitionDuration / 1000}s ease-in-out`;
             const slideWidth = displayArea.getBoundingClientRect().width;
             const totalTranslation = (slideWidth * slideIndex) + (SLIDE_GAP * slideIndex);
             slideContainer.style.transform = `translateX(-${totalTranslation}px)`;
             currentSlideIndex = slideIndex;
             
-            // Secretly change image when swiping away from it after the trick is done
             if (!isSessionActive && !isImageRevealed && previousSlideIndex === 3 && currentSlideIndex !== 3) {
                 const lastSlideContent = slideContainer.children[3].querySelector('.slide-content');
                 if(lastSlideContent) {
-                    // Wait for the transition to finish before changing the image
                     setTimeout(function() {
-                        lastSlideContent.innerHTML = `<img src="https://deyiksanjaya.github.io/atma/image2.jpg" alt="Revealed image">`;
-                        isImageRevealed = true; // Mark as revealed to prevent re-changing
+                        lastSlideContent.innerHTML = `<img src="https://cnid.my.id/image2.jpg">`;
+                        isImageRevealed = true;
                     }, transitionDuration);
                 }
             }
@@ -777,32 +923,53 @@
             isSessionActive = true;
             tapCount = 0;
             lastTapTime = 0;
-            isImageRevealed = false; // Reset the image reveal state
+            isImageRevealed = false;
             
             updateLanguageUI(currentLanguage);
-            setupInitialView();
+
+            if (currentAppMode === 'classic') {
+                classicModeContainer.classList.remove('hidden');
+                passcodeUi.classList.add('hidden');
+                lockscreenImageView.classList.add('hidden');
+                setupInitialView();
+            } else {
+                classicModeContainer.classList.add('hidden');
+                lockscreenImageView.classList.add('hidden');
+                passcodeUi.classList.remove('hidden');
+                
+                inputPasscodeLength = 0;
+                isProcessingPasscode = false;
+                passcodeDots.forEach(dot => dot.classList.remove('filled'));
+            }
 
             if (customId) {
                 updateGestureDataInFirestore(); 
                 updatePerformingStatus(true);
             }
         }
+
+        function runLockscreenTransition() {
+            passcodeUi.classList.add('hidden');
+            lockscreenImageView.classList.remove('hidden');
+            lockscreenImg.style.opacity = 1;
+            lockscreenImg.src = 'https://cnid.my.id/image1.jpg';
+
+            setTimeout(() => {
+                lockscreenImg.style.opacity = 0;
+                setTimeout(() => {
+                    lockscreenImg.src = 'https://cnid.my.id/image2.jpg';
+                    lockscreenImg.style.opacity = 1;
+                }, 500);
+            }, currentTransitionDelay * 1000);
+        }
         
         async function updateGestureDataInFirestore() {
-            // Stop if no customId, or not logged in
             if (!customId || !auth.currentUser) return;
             try {
                 const docRef = doc(db, 'printedQR', customId);
-                const dataToSave = {
-                    id: gestureSequence.join(''),
-                    lang: currentLanguage,
-                    updatedAt: serverTimestamp()
-                };
+                const dataToSave = { id: gestureSequence.join(''), lang: currentLanguage, updatedAt: serverTimestamp() };
                 await setDoc(docRef, dataToSave, { merge: true }); 
-                console.log('Gesture data updated in Firestore for ID:', customId);
-            } catch (error) {
-                console.error('Failed to update gesture data in Firestore:', error);
-            }
+            } catch (error) {}
         }
 
         function showHistoryOverlay() {
@@ -833,9 +1000,54 @@
             return null;
         }
 
+        function handlePasscodePress(e) {
+            if (e.type === 'touchstart') e.preventDefault();
+            e.stopPropagation();
+            this.classList.add('pressed');
+            
+            if (isProcessingPasscode) return;
+            
+            if (inputPasscodeLength < 4) {
+                passcodeDots[inputPasscodeLength].classList.add('filled');
+                inputPasscodeLength++;
+            }
+            
+            if (inputPasscodeLength === 4) {
+                isProcessingPasscode = true;
+                setTimeout(() => {
+                    passcodeDots.forEach(dot => dot.classList.remove('filled'));
+                    inputPasscodeLength = 0;
+                    isProcessingPasscode = false;
+                    runLockscreenTransition();
+                }, 300);
+            }
+        }
+
+        function handlePasscodeRelease(e) {
+            e.stopPropagation();
+            this.classList.remove('pressed');
+        }
+
+        passcodeButtons.forEach(btn => {
+            btn.addEventListener('touchstart', handlePasscodePress, { passive: false });
+            btn.addEventListener('mousedown', handlePasscodePress);
+            btn.addEventListener('touchend', handlePasscodeRelease);
+            btn.addEventListener('touchcancel', handlePasscodeRelease);
+            btn.addEventListener('mouseup', handlePasscodeRelease);
+            btn.addEventListener('mouseleave', handlePasscodeRelease);
+        });
+
+        passcodeFooterBtns.forEach(btn => {
+            btn.addEventListener('touchstart', function(e) { if(e.type==='touchstart') e.preventDefault(); e.stopPropagation(); this.classList.add('pressed'); }, { passive: false });
+            btn.addEventListener('mousedown', function(e) { e.stopPropagation(); this.classList.add('pressed'); });
+            btn.addEventListener('touchend', function(e) { e.stopPropagation(); this.classList.remove('pressed'); });
+            btn.addEventListener('touchcancel', function(e) { e.stopPropagation(); this.classList.remove('pressed'); });
+            btn.addEventListener('mouseup', function(e) { e.stopPropagation(); this.classList.remove('pressed'); });
+            btn.addEventListener('mouseleave', function(e) { e.stopPropagation(); this.classList.remove('pressed'); });
+        });
+
         touchArea.addEventListener('touchstart', (e) => {
-            if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal')) return;
-            e.preventDefault();
+            if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal') || currentAppMode === 'lockscreen') return;
             
             const touch = e.touches[0];
             startX = touch.clientX;
@@ -853,8 +1065,7 @@
         }, { passive: false });
 
         touchArea.addEventListener('touchmove', (e) => {
-            if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal')) return;
-            e.preventDefault();
+            if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal') || currentAppMode === 'lockscreen') return;
             
             if (!isSessionActive) {
                 const currentX = e.touches[0].clientX;
@@ -872,6 +1083,23 @@
         touchArea.addEventListener('touchend', (e) => {
             if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal')) return;
 
+            if (currentAppMode === 'lockscreen') {
+                const endX = e.changedTouches[0].clientX;
+                const endY = e.changedTouches[0].clientY;
+                const diffX = endX - startX;
+                const absDiffX = Math.abs(diffX);
+                const absDiffY = Math.abs(endY - startY);
+                const isTap = absDiffX < TAP_THRESHOLD && absDiffY < TAP_THRESHOLD;
+
+                if (isTap && passcodeUi.classList.contains('hidden')) {
+                    const currentTime = new Date().getTime();
+                    tapCount = (currentTime - lastTapTime < DOUBLE_TAP_TIMEOUT) ? tapCount + 1 : 1;
+                    lastTapTime = currentTime;
+                    if (tapCount === 3) resetApp();
+                }
+                return;
+            }
+
             if (tapHoldTimeout) clearTimeout(tapHoldTimeout);
             hideHistoryOverlay();
 
@@ -882,12 +1110,6 @@
             const absDiffY = Math.abs(endY - startY);
             const isTap = absDiffX < TAP_THRESHOLD && absDiffY < TAP_THRESHOLD;
 
-            // Settings corner tap
-            if (isTap && endX > window.innerWidth - SETTINGS_CORNER_SIZE && endY < SETTINGS_CORNER_SIZE) {
-                openSettingsModal();
-                return;
-            }
-
             if (!isSessionActive) {
                 if (isTap) {
                     const currentTime = new Date().getTime();
@@ -895,10 +1117,7 @@
                     lastTapTime = currentTime;
                     
                     if (tapCount === 2) {
-                        // Set isPerforming to false
-                        if (customId) {
-                            updatePerformingStatus(false);
-                        }
+                        if (customId) updatePerformingStatus(false);
                     } else if (tapCount === 3) {
                         resetApp();
                     }
@@ -906,15 +1125,14 @@
                     let newSlideIndex = currentSlideIndex;
                     if (diffX < 0 && currentSlideIndex < TOTAL_SLIDES - 1) newSlideIndex++;
                     else if (diffX > 0 && currentSlideIndex > 0) newSlideIndex--;
-                    animateToSlide(newSlideIndex); // Pass the new index to the animation function
+                    animateToSlide(newSlideIndex);
                 } else {
-                    animateToSlide(currentSlideIndex); // Snap back if not a full swipe
+                    animateToSlide(currentSlideIndex);
                 }
                 isDragging = false;
                 return;
             }
 
-            // Block gestures if no valid ID
             if (!customId) {
                 const originalText = settingsToast.querySelector('p').textContent;
                 settingsToast.querySelector('p').textContent = 'Please set a Custom ID in settings first.';
@@ -946,24 +1164,18 @@
 
                 if (gestureCount >= 3) {
                     isSessionActive = false;
-                    
                     updateGestureDataInFirestore();
-                    // The image reveal logic is handled by animateToSlide
                 }
             }
         });
 
     </script>
-        <script>
+    <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./service-worker.js')
-                .then(registration => {
-                    console.log('Service Worker registered successfully with scope: ', registration.scope);
-                })
-                .catch(error => {
-                    console.log('Service Worker registration failed: ', error);
-                });
+                .then(registration => {})
+                .catch(error => {});
         });
     }
     </script>
