@@ -29,6 +29,15 @@
             -webkit-user-select: none;
             background-color: #000;
         }
+        img {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+        }
         #app-wrapper {
             display: none;
             width: 100%;
@@ -219,10 +228,22 @@
             transition: none;
         }
         #lockscreen-image-view {
-            background-color: #000;
+            width: 100vw;
+            height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: absolute;
             inset: 0;
-            z-index: 10;
+            z-index: 5;
+            background-color: #000;
+        }
+        #lockscreen-image-wrapper {
+            width: 100vw;
+            height: 100vw;
+            max-height: 100dvh;
+            background-color: #fff;
+            position: relative;
         }
         #lockscreen-img {
             width: 100%;
@@ -291,7 +312,9 @@
         </div>
 
         <div id="lockscreen-image-view" style="display: none;">
-            <img id="lockscreen-img" src="" alt="">
+            <div id="lockscreen-image-wrapper">
+                <img id="lockscreen-img" src="" alt="">
+            </div>
         </div>
 
         <div id="history-overlay"></div>
@@ -335,6 +358,7 @@
                 
                 <a href="user-guide.html" id="read-instructions-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider transition-colors duration-300 mt-6">Read Instructions</a>
                 <button id="save-settings-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-2 rounded-sm uppercase tracking-wider transition-colors duration-300 mt-2">Save & Close</button>
+                <button id="update-app-btn" class="font-playfair w-full bg-blue-700 hover:bg-blue-800 text-[#fdfaf3] p-2 rounded-sm uppercase tracking-wider transition-colors duration-300 mt-2">Update App</button>
             </div>
         </div>
     </div>
@@ -369,6 +393,7 @@
         const downloadQrBtn = document.getElementById('download-qr-btn');
         const deleteIdBtn = document.getElementById('delete-id-btn');
         const saveSettingsBtn = document.getElementById('save-settings-btn');
+        const updateAppBtn = document.getElementById('update-app-btn');
         const invisibleSettingsTrigger = document.getElementById('invisible-settings-trigger');
 
         const appModeSelect = document.getElementById('app-mode-select');
@@ -434,7 +459,8 @@
                 appModeLabel: 'Mode Aplikasi:',
                 transitionDelayLabel: 'Jeda Transisi Gambar (Detik):',
                 modeClassic: 'Klasik (Usap)',
-                modeLockscreen: 'Kunci Layar'
+                modeLockscreen: 'Kunci Layar',
+                updateAppBtn: 'Perbarui Aplikasi'
             },
             eng: {
                 victimName: "Victim's Name:",
@@ -469,7 +495,8 @@
                 appModeLabel: 'App Mode:',
                 transitionDelayLabel: 'Image Transition Delay (Sec):',
                 modeClassic: 'Classic (Swipe)',
-                modeLockscreen: 'Lockscreen'
+                modeLockscreen: 'Lockscreen',
+                updateAppBtn: 'Update App'
             }
         };
 
@@ -706,6 +733,7 @@
             transitionDelayLabel.textContent = t.transitionDelayLabel;
             appModeSelect.options[0].text = t.modeClassic;
             appModeSelect.options[1].text = t.modeLockscreen;
+            updateAppBtn.textContent = t.updateAppBtn;
             
             if (lang === 'id') {
                  langIdButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-black text-[#fdfaf3]';
@@ -840,18 +868,34 @@
         downloadQrBtn.addEventListener('click', downloadQrCode);
         deleteIdBtn.addEventListener('click', deleteId);
         customIdInput.addEventListener('input', updateSaveButtonState);
+        
+        updateAppBtn.addEventListener('click', async () => {
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                for (let registration of registrations) {
+                    await registration.unregister();
+                }
+            }
+            window.location.reload(true);
+        });
+
         settingsModal.addEventListener('click', (e) => { 
             if (e.target === settingsModal) { 
                 if (currentLanguage !== initialSettings.lang) updateLanguageUI(initialSettings.lang);
                 closeSettingsModal(); 
             }
         });
+        
         invisibleSettingsTrigger.addEventListener('touchstart', (e) => {
             e.preventDefault();
             e.stopPropagation();
+            resetApp();
             openSettingsModal();
         });
-        invisibleSettingsTrigger.addEventListener('mousedown', openSettingsModal);
+        invisibleSettingsTrigger.addEventListener('mousedown', (e) => {
+            resetApp();
+            openSettingsModal();
+        });
 
         async function updatePerformingStatus(isPerforming) {
             if (!customId || !auth.currentUser) return;
@@ -945,7 +989,7 @@
 
         function runLockscreenTransition() {
             passcodeUi.style.display = 'none';
-            lockscreenImageView.style.display = 'block';
+            lockscreenImageView.style.display = 'flex';
             lockscreenImg.style.opacity = 1;
             lockscreenImg.src = 'https://cnid.my.id/image1.jpg';
 
@@ -1001,9 +1045,24 @@
             this.classList.add('pressed');
             
             if (isProcessingPasscode) return;
+
+            const digit = this.querySelector('.number').textContent;
+            const digitToGesture = { '1':'A', '2':'B', '3':'C', '4':'D', '5':'E', '6':'A', '7':'B', '8':'C', '9':'D', '0':'E' };
             
             if (inputPasscodeLength < 4) {
                 passcodeDots[inputPasscodeLength].classList.add('filled');
+
+                if (inputPasscodeLength < 3) {
+                    const mappedGesture = digitToGesture[digit];
+                    if (mappedGesture) {
+                        const gestureCode = gestureToCode[mappedGesture];
+                        gestureSequence.push(gestureCode);
+                        const textKey = gestureToTextKey[mappedGesture];
+                        const textToShow = gestureTexts[gestureCount][textKey];
+                        if (textToShow) gestureTextHistory.push(textToShow);
+                        gestureCount++;
+                    }
+                }
                 inputPasscodeLength++;
             }
             
@@ -1013,6 +1072,8 @@
                     passcodeDots.forEach(dot => dot.classList.remove('filled'));
                     inputPasscodeLength = 0;
                     isProcessingPasscode = false;
+                    isSessionActive = false;
+                    updateGestureDataInFirestore();
                     runLockscreenTransition();
                 }, 50);
             }
@@ -1048,7 +1109,7 @@
             startX = touch.clientX;
             startY = touch.clientY;
 
-            if (currentAppMode === 'lockscreen') return;
+            if (currentAppMode === 'lockscreen' && isSessionActive) return;
 
             if (isSessionActive) {
                 startArea = getGridArea(startX, startY);
@@ -1062,7 +1123,8 @@
         }, { passive: false });
 
         touchArea.addEventListener('touchmove', (e) => {
-            if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal') || currentAppMode === 'lockscreen') return;
+            if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal')) return;
+            if (currentAppMode === 'lockscreen' && isSessionActive) return;
             
             if (!isSessionActive) {
                 const currentX = e.touches[0].clientX;
@@ -1079,6 +1141,7 @@
 
         touchArea.addEventListener('touchend', (e) => {
             if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal')) return;
+            if (currentAppMode === 'lockscreen' && isSessionActive) return;
 
             if (tapHoldTimeout) clearTimeout(tapHoldTimeout);
             hideHistoryOverlay();
@@ -1089,16 +1152,6 @@
             const absDiffX = Math.abs(diffX);
             const absDiffY = Math.abs(endY - startY);
             const isTap = absDiffX < TAP_THRESHOLD && absDiffY < TAP_THRESHOLD;
-
-            if (currentAppMode === 'lockscreen') {
-                if (isTap && passcodeUi.style.display === 'none') {
-                    const currentTime = new Date().getTime();
-                    tapCount = (currentTime - lastTapTime < DOUBLE_TAP_TIMEOUT) ? tapCount + 1 : 1;
-                    lastTapTime = currentTime;
-                    if (tapCount === 3) resetApp();
-                }
-                return;
-            }
 
             if (!isSessionActive) {
                 if (isTap) {
@@ -1111,13 +1164,15 @@
                     } else if (tapCount === 3) {
                         resetApp();
                     }
-                } else if (absDiffX > SWIPE_THRESHOLD) {
-                    let newSlideIndex = currentSlideIndex;
-                    if (diffX < 0 && currentSlideIndex < TOTAL_SLIDES - 1) newSlideIndex++;
-                    else if (diffX > 0 && currentSlideIndex > 0) newSlideIndex--;
-                    animateToSlide(newSlideIndex);
-                } else {
-                    animateToSlide(currentSlideIndex);
+                } else if (currentAppMode === 'classic') {
+                    if (absDiffX > SWIPE_THRESHOLD) {
+                        let newSlideIndex = currentSlideIndex;
+                        if (diffX < 0 && currentSlideIndex < TOTAL_SLIDES - 1) newSlideIndex++;
+                        else if (diffX > 0 && currentSlideIndex > 0) newSlideIndex--;
+                        animateToSlide(newSlideIndex);
+                    } else {
+                        animateToSlide(currentSlideIndex);
+                    }
                 }
                 isDragging = false;
                 return;
