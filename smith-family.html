@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title id="pageTitle">Tragedi Keluarga Smith: Anak Dibunuh, Jasadnya Menghilang</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -472,7 +472,8 @@
 
         function getArticleParams(secretCode, lang) {
             const idParam = secretCode || 'FlFlFl';
-            const decodingMap = { 'Fl': 'a', 'uC': 'b', 'Xy': 'c', 'zW': 'd', 'Qr': 'e' };
+            // UPDATE: Support 9 options mapping based on gesture/passcode sequences
+            const decodingMap = { 'Fl': 'a', 'uC': 'b', 'zW': 'c', 'Xy': 'd', 'Qr': 'e', 'aA': 'f', 'bB': 'g', 'cC': 'h', 'dD': 'i' };
             let decodedChars = [];
             for (let i = 0; i < idParam.length; i += 2) {
                 const encodedSegment = idParam.substring(i, i + 2);
