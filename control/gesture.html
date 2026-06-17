@@ -308,7 +308,7 @@
                     <div class="passcode-dot"></div>
                 </div>
                 <div class="passcode-numpad">
-                    <button class="passcode-btn key-btn"><span class="number">1</span></button>
+                    <button class="passcode-btn key-btn"><span class="number">1</span><span class="letters"></span></button>
                     <button class="passcode-btn key-btn has-letters"><span class="number">2</span><span class="letters">A B C</span></button>
                     <button class="passcode-btn key-btn has-letters"><span class="number">3</span><span class="letters">D E F</span></button>
                     <button class="passcode-btn key-btn has-letters"><span class="number">4</span><span class="letters">G H I</span></button>
@@ -463,7 +463,7 @@
                 victimName: 'Nama Korban:',
                 crimeScene: 'Lokasi Kejadian:',
                 weapon: 'Alat yang Dipakai:',
-                noHistory: 'Tidak ada riwayat gerakan.',
+                noHistory: 'Tidak ada riwayat pilihan.',
                 settingsTitle: 'Pengaturan',
                 languageLabel: 'Bahasa:',
                 readInstructions: 'Baca Instruksi',
@@ -494,14 +494,14 @@
                 modeClassic: 'Klasik (Usap)',
                 modeLockscreen: 'Kunci Layar',
                 checkUpdateBtn: 'Periksa Pembaruan',
-                upToDate: 'Your app is up to date!',
-                updateCompleted: 'Update completed!'
+                upToDate: 'Aplikasi Anda sudah versi terbaru!',
+                updateCompleted: 'Pembaruan selesai!'
             },
             eng: {
                 victimName: "Victim's Name:",
                 crimeScene: 'Crime Scene:',
                 weapon: 'Weapon Used:',
-                noHistory: 'No gesture history.',
+                noHistory: 'No selection history.',
                 settingsTitle: 'Settings',
                 languageLabel: 'Language:',
                 readInstructions: 'Read Instructions',
@@ -538,8 +538,16 @@
         };
 
         const displayContent = {
-            id: [ { title: translations.id.victimName, items: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice'] }, { title: translations.id.crimeScene, items: ['Kamar lantai dua', 'Loteng', 'Gudang belakang', 'Ruang bawah tanah', 'Lorong dekat dapur'] }, { title: translations.id.weapon, items: ['Pisau', 'Palu', 'Gunting', 'Linggis', 'Batang besi'] } ],
-            eng: [ { title: translations.eng.victimName, items: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice'] }, { title: translations.eng.crimeScene, items: ['Second floor room', 'Attic', 'Back warehouse', 'Basement', 'Hallway near kitchen'] }, { title: translations.eng.weapon, items: ['Knife', 'Hammer', 'Scissors', 'Crowbar', 'Iron rod'] } ]
+            id: [
+                { title: translations.id.victimName, items: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice', 'Dorothy', 'Florence', 'Mildred', 'Virginia'] },
+                { title: translations.id.crimeScene, items: ['Kamar lantai dua', 'Loteng', 'Gudang belakang', 'Ruang bawah tanah', 'Lorong dekat dapur', 'Perpustakaan', 'Teras samping', 'Garasi tua', 'Ruang makan'] },
+                { title: translations.id.weapon, items: ['Pisau', 'Palu', 'Gunting', 'Linggis', 'Batang besi'] }
+            ],
+            eng: [
+                { title: translations.eng.victimName, items: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice', 'Dorothy', 'Florence', 'Mildred', 'Virginia'] },
+                { title: translations.eng.crimeScene, items: ['Second floor room', 'Attic', 'Back warehouse', 'Basement', 'Hallway near kitchen', 'Library', 'Side porch', 'Old garage', 'Dining room'] },
+                { title: translations.eng.weapon, items: ['Knife', 'Hammer', 'Scissors', 'Crowbar', 'Iron rod'] }
+            ]
         };
 
         let startX = 0, startY = 0, gestureCount = 0, currentSlideIndex = 0;
@@ -562,7 +570,7 @@
         const SWIPE_THRESHOLD = 50, TAP_THRESHOLD = 10, DOUBLE_TAP_TIMEOUT = 300;
         const TAP_HOLD_DURATION = 500, TOTAL_SLIDES = 4, SLIDE_GAP = 20;
         const gridToGesture = { 'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E' };
-        const gestureToCode = { 'A': 'Fl', 'B': 'uC', 'C': 'zW', 'D': 'Xy', 'E': 'Qr' };
+        const gestureToCode = { 'A': 'Fl', 'B': 'uC', 'C': 'zW', 'D': 'Xy', 'E': 'Qr', 'F': 'aA', 'G': 'bB', 'H': 'cC', 'I': 'dD' };
 
         const showLicenseModal = () => { licenseModal.style.display = 'flex'; appWrapper.classList.remove('unlocked'); };
         
@@ -986,7 +994,8 @@
 
             if (slideIndex < 3) {
                 const contentData = displayContent[currentLanguage][slideIndex];
-                const listItems = contentData.items.map(item => `<li class="ml-4 text-xl">• ${item}</li>`).join('');
+                const listClass = contentData.items.length > 5 ? "ml-4 text-lg" : "ml-4 text-xl";
+                const listItems = contentData.items.map(item => `<li class="${listClass}">• ${item}</li>`).join('');
                 slideContent.innerHTML = `
                     <div class="text-left w-full h-full flex flex-col justify-center">
                         <h2 class="text-3xl font-bold mb-4">${contentData.title}</h2>
@@ -1089,7 +1098,7 @@
             if (rawGestures.length === 0) {
                 historyOverlayElement.innerHTML = `<ul><li>${translations[currentLanguage].noHistory}</li></ul>`;
             } else {
-                const gestureToIndex = { 'A': 0, 'B': 1, 'D': 2, 'C': 3, 'E': 4 };
+                const gestureToIndex = { 'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8 };
                 const historyHtml = `<ul>${rawGestures.map((gesture, i) => {
                     const itemIndex = gestureToIndex[gesture];
                     const itemText = displayContent[currentLanguage][i].items[itemIndex];
@@ -1126,7 +1135,7 @@
             if (isProcessingPasscode) return;
 
             const digit = this.querySelector('.number').textContent;
-            const digitToGesture = { '1':'A', '2':'B', '3':'D', '4':'C', '5':'E' };
+            const digitToGesture = { '1':'A', '2':'B', '3':'C', '4':'D', '5':'E', '6':'F', '7':'G', '8':'H', '9':'I' };
             
             if (inputPasscodeLength < 4) {
                 passcodeDots[inputPasscodeLength].classList.add('filled');
@@ -1146,7 +1155,15 @@
             
             if (inputPasscodeLength === 4) {
                 isProcessingPasscode = true;
-                const isInvalid = currentPasscodeInput.slice(0, 3).some(d => !['1', '2', '3', '4', '5'].includes(d));
+                
+                const d1 = parseInt(currentPasscodeInput[0]);
+                const d2 = parseInt(currentPasscodeInput[1]);
+                const d3 = parseInt(currentPasscodeInput[2]);
+
+                const isInvalid = 
+                    isNaN(d1) || d1 < 1 || d1 > 9 ||
+                    isNaN(d2) || d2 < 1 || d2 > 9 ||
+                    isNaN(d3) || d3 < 1 || d3 > 5;
 
                 setTimeout(() => {
                     if (isInvalid) {
