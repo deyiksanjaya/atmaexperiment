@@ -10,7 +10,6 @@
     <meta name="apple-mobile-web-app-title" content="Photos">
     <link rel="apple-touch-icon" href="/control/icons/image512.png" onerror="this.onerror=null;this.src='https://placehold.co/180x180/000000/FFFFFF?text=Icon';">
     <link rel="icon" href="/control/icons/image512.png" onerror="this.onerror=null;this.src='https://placehold.co/32x32/000000/FFFFFF?text=Icon';">
-
     <title>Atma</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,7 +40,6 @@
         #classic-mode-container {
             width: 100vw;
             height: 100dvh;
-            display: flex;
             justify-content: center;
             align-items: center;
         }
@@ -114,12 +112,11 @@
         }
 
         #passcode-ui {
-            background: linear-gradient(170deg, #626e8d 0%, #157991 45%, #018793 100%);
+            background-color: #000;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #ffffff;
             height: 100dvh;
             width: 100vw;
-            display: flex;
             flex-direction: column;
             position: absolute;
             inset: 0;
@@ -222,11 +219,10 @@
             transition: none;
         }
         #lockscreen-image-view {
-            background-color: #fff;
+            background-color: #000;
             position: absolute;
             inset: 0;
             z-index: 10;
-            display: none;
         }
         #lockscreen-img {
             width: 100%;
@@ -258,13 +254,13 @@
             <button id="close-toast-btn" class="text-2xl font-bold leading-none pl-4">&times;</button>
         </div>
 
-        <div id="classic-mode-container" class="hidden">
+        <div id="classic-mode-container" style="display: none;">
             <div id="display-area">
                 <div id="slide-container"></div>
             </div>
         </div>
 
-        <div id="passcode-ui" class="hidden">
+        <div id="passcode-ui" style="display: none;">
             <div class="passcode-main">
                 <div class="passcode-title">Enter Passcode</div>
                 <div class="passcode-dots">
@@ -294,8 +290,8 @@
             </div>
         </div>
 
-        <div id="lockscreen-image-view">
-            <img id="lockscreen-img" src="" alt="Secret">
+        <div id="lockscreen-image-view" style="display: none;">
+            <img id="lockscreen-img" src="" alt="">
         </div>
 
         <div id="history-overlay"></div>
@@ -928,14 +924,14 @@
             updateLanguageUI(currentLanguage);
 
             if (currentAppMode === 'classic') {
-                classicModeContainer.classList.remove('hidden');
-                passcodeUi.classList.add('hidden');
-                lockscreenImageView.classList.add('hidden');
+                classicModeContainer.style.display = 'flex';
+                passcodeUi.style.display = 'none';
+                lockscreenImageView.style.display = 'none';
                 setupInitialView();
             } else {
-                classicModeContainer.classList.add('hidden');
-                lockscreenImageView.classList.add('hidden');
-                passcodeUi.classList.remove('hidden');
+                classicModeContainer.style.display = 'none';
+                lockscreenImageView.style.display = 'none';
+                passcodeUi.style.display = 'flex';
                 
                 inputPasscodeLength = 0;
                 isProcessingPasscode = false;
@@ -948,8 +944,8 @@
         }
 
         function runLockscreenTransition() {
-            passcodeUi.classList.add('hidden');
-            lockscreenImageView.classList.remove('hidden');
+            passcodeUi.style.display = 'none';
+            lockscreenImageView.style.display = 'block';
             lockscreenImg.style.opacity = 1;
             lockscreenImg.src = 'https://cnid.my.id/image1.jpg';
 
@@ -1018,7 +1014,7 @@
                     inputPasscodeLength = 0;
                     isProcessingPasscode = false;
                     runLockscreenTransition();
-                }, 300);
+                }, 50);
             }
         }
 
@@ -1095,7 +1091,7 @@
             const isTap = absDiffX < TAP_THRESHOLD && absDiffY < TAP_THRESHOLD;
 
             if (currentAppMode === 'lockscreen') {
-                if (isTap && passcodeUi.classList.contains('hidden')) {
+                if (isTap && passcodeUi.style.display === 'none') {
                     const currentTime = new Date().getTime();
                     tapCount = (currentTime - lastTapTime < DOUBLE_TAP_TIMEOUT) ? tapCount + 1 : 1;
                     lastTapTime = currentTime;
