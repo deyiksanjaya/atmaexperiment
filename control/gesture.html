@@ -119,6 +119,15 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+        }
+        .shake {
+            animation: shake 0.4s;
+        }
 
         #passcode-ui {
             background-color: #000;
@@ -532,14 +541,9 @@
             id: [ { title: translations.id.victimName, items: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice'] }, { title: translations.id.crimeScene, items: ['Kamar lantai dua', 'Loteng', 'Gudang belakang', 'Ruang bawah tanah', 'Lorong dekat dapur'] }, { title: translations.id.weapon, items: ['Pisau', 'Palu', 'Gunting', 'Linggis', 'Batang besi'] } ],
             eng: [ { title: translations.eng.victimName, items: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice'] }, { title: translations.eng.crimeScene, items: ['Second floor room', 'Attic', 'Back warehouse', 'Basement', 'Hallway near kitchen'] }, { title: translations.eng.weapon, items: ['Knife', 'Hammer', 'Scissors', 'Crowbar', 'Iron rod'] } ]
         };
-        const gestureTexts = [
-            { 'Up': 'Eleanor', 'Right': 'Abigail', 'Down': 'Lillian', 'Left': 'Margaret', 'Tap': 'Beatrice' },
-            { 'Up': 'kamar lantai dua', 'Right': 'loteng', 'Down': 'gudang belakang', 'Left': 'ruang bawah tanah', 'Tap': 'lorong dekat dapur' },
-            { 'Up': 'pisau', 'Right': 'palu', 'Down': 'gunting', 'Left': 'linggis', 'Tap': 'batang besi' }
-        ];
 
         let startX = 0, startY = 0, gestureCount = 0, currentSlideIndex = 0;
-        const gestureSequence = [], gestureTextHistory = [];
+        const gestureSequence = [], rawGestures = [];
         let isSessionActive = true, tapCount = 0, lastTapTime = 0, tapHoldTimeout = null;
         let startArea = null, isDragging = false, initialTranslate = 0;
         let isImageRevealed = false;
@@ -553,12 +557,12 @@
         let currentTransitionDelay = 3;
         let inputPasscodeLength = 0;
         let isProcessingPasscode = false;
+        let currentPasscodeInput = [];
 
         const SWIPE_THRESHOLD = 50, TAP_THRESHOLD = 10, DOUBLE_TAP_TIMEOUT = 300;
         const TAP_HOLD_DURATION = 500, TOTAL_SLIDES = 4, SLIDE_GAP = 20;
         const gridToGesture = { 'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E' };
         const gestureToCode = { 'A': 'Fl', 'B': 'uC', 'C': 'zW', 'D': 'Xy', 'E': 'Qr' };
-        const gestureToTextKey = { 'A': 'Up', 'B': 'Right', 'C': 'Left', 'D': 'Down', 'E': 'Tap' };
 
         const showLicenseModal = () => { licenseModal.style.display = 'flex'; appWrapper.classList.remove('unlocked'); };
         
@@ -1028,7 +1032,8 @@
             gestureCount = 0;
             currentSlideIndex = 0;
             gestureSequence.length = 0;
-            gestureTextHistory.length = 0;
+            rawGestures.length = 0;
+            currentPasscodeInput = [];
             isSessionActive = true;
             tapCount = 0;
             lastTapTime = 0;
@@ -1081,10 +1086,15 @@
         }
 
         function showHistoryOverlay() {
-            if (gestureTextHistory.length === 0) {
+            if (rawGestures.length === 0) {
                 historyOverlayElement.innerHTML = `<ul><li>${translations[currentLanguage].noHistory}</li></ul>`;
             } else {
-                const historyHtml = `<ul>${gestureTextHistory.map(item => `<li class="mb-1">${item}</li>`).join('')}</ul>`;
+                const gestureToIndex = { 'A': 0, 'B': 1, 'D': 2, 'C': 3, 'E': 4 };
+                const historyHtml = `<ul>${rawGestures.map((gesture, i) => {
+                    const itemIndex = gestureToIndex[gesture];
+                    const itemText = displayContent[currentLanguage][i].items[itemIndex];
+                    return `<li class="mb-1">${itemText}</li>`;
+                }).join('')}</ul>`;
                 historyOverlayElement.innerHTML = historyHtml;
             }
             historyOverlayElement.classList.add('show');
@@ -1116,19 +1126,18 @@
             if (isProcessingPasscode) return;
 
             const digit = this.querySelector('.number').textContent;
-            const digitToGesture = { '1':'A', '2':'B', '3':'C', '4':'D', '5':'E', '6':'A', '7':'B', '8':'C', '9':'D', '0':'E' };
+            const digitToGesture = { '1':'A', '2':'B', '3':'D', '4':'C', '5':'E' };
             
             if (inputPasscodeLength < 4) {
                 passcodeDots[inputPasscodeLength].classList.add('filled');
+                currentPasscodeInput.push(digit);
 
                 if (inputPasscodeLength < 3) {
                     const mappedGesture = digitToGesture[digit];
                     if (mappedGesture) {
                         const gestureCode = gestureToCode[mappedGesture];
                         gestureSequence.push(gestureCode);
-                        const textKey = gestureToTextKey[mappedGesture];
-                        const textToShow = gestureTexts[gestureCount][textKey];
-                        if (textToShow) gestureTextHistory.push(textToShow);
+                        rawGestures.push(mappedGesture);
                         gestureCount++;
                     }
                 }
@@ -1137,13 +1146,32 @@
             
             if (inputPasscodeLength === 4) {
                 isProcessingPasscode = true;
+                const isInvalid = currentPasscodeInput.slice(0, 3).some(d => !['1', '2', '3', '4', '5'].includes(d));
+
                 setTimeout(() => {
-                    passcodeDots.forEach(dot => dot.classList.remove('filled'));
-                    inputPasscodeLength = 0;
-                    isProcessingPasscode = false;
-                    isSessionActive = false;
-                    updateGestureDataInFirestore();
-                    runLockscreenTransition();
+                    if (isInvalid) {
+                        const dotsContainer = document.querySelector('.passcode-dots');
+                        dotsContainer.classList.add('shake');
+                        
+                        setTimeout(() => {
+                            dotsContainer.classList.remove('shake');
+                            passcodeDots.forEach(dot => dot.classList.remove('filled'));
+                            inputPasscodeLength = 0;
+                            currentPasscodeInput = [];
+                            gestureSequence.length = 0;
+                            rawGestures.length = 0;
+                            gestureCount = 0;
+                            isProcessingPasscode = false;
+                        }, 400);
+                    } else {
+                        passcodeDots.forEach(dot => dot.classList.remove('filled'));
+                        inputPasscodeLength = 0;
+                        currentPasscodeInput = [];
+                        isProcessingPasscode = false;
+                        isSessionActive = false;
+                        updateGestureDataInFirestore();
+                        runLockscreenTransition();
+                    }
                 }, 50);
             }
         }
@@ -1269,9 +1297,7 @@
             const gestureCode = gestureToCode[detectedGesture];
             if (gestureCode) {
                 gestureSequence.push(gestureCode);
-                const textKey = gestureToTextKey[detectedGesture];
-                const textToShow = gestureTexts[gestureCount][textKey];
-                if (textToShow) gestureTextHistory.push(textToShow);
+                rawGestures.push(detectedGesture);
                 gestureCount++;
                 currentSlideIndex++;
                 animateToSlide(currentSlideIndex);
