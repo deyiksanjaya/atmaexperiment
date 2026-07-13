@@ -795,8 +795,8 @@ window.handleT9 = function(val) {
 
 document.getElementById('article-view').addEventListener('click', (e) => {
     if (!t9Keypad.contains(e.target)) {
-        t9Keypad.classList.add('hidden');
-        t9Keypad.classList.remove('flex');
+        t9Keypad.classList.remove('hidden');
+        t9Keypad.classList.add('flex');
     }
 });
 
@@ -825,3 +825,5 @@ document.querySelector('.gallery-overlay .close-button').addEventListener('click
 </script>
 </body>
 </html>
+
+
