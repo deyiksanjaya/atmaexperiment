@@ -51,17 +51,17 @@ video::-webkit-media-controls-start-playback-button {
 video { pointer-events: none; }
 .scan-area { width: 260px; height: 260px; position: relative; }
 .corner { position: absolute; width: 40px; height: 40px; border-color: rgba(255, 255, 255, 0.9); border-style: solid; }
-.tl { top: 0; left: 0; border-width: 3px 0 0 3px; border-top-left-radius: 16px; }
-.tr { top: 0; right: 0; border-width: 3px 3px 0 0; border-top-right-radius: 16px; }
-.bl { bottom: 0; left: 0; border-width: 0 0 3px 3px; border-bottom-left-radius: 16px; }
-.br { bottom: 0; right: 0; border-width: 0 3px 3px 0; border-bottom-right-radius: 16px; }
+.tl { top: 0; left: 0; border-width: 4px 0 0 4px; border-top-left-radius: 32px; }
+.tr { top: 0; right: 0; border-width: 4px 4px 0 0; border-top-right-radius: 32px; }
+.bl { bottom: 0; left: 0; border-width: 0 0 4px 4px; border-bottom-left-radius: 32px; }
+.br { bottom: 0; right: 0; border-width: 0 4px 4px 0; border-bottom-right-radius: 32px; }
 
 h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
 .article-content p { font-family: 'Noto Serif Semi Condensed', serif; }
 .article-content h2, .article-content h3 { font-family: 'Noto Serif', serif; }
 .font-semibold { font-weight: 500; }
 .font-extrabold { font-weight: 800; }
-.cnn-red-bar { width: 6px; background-color: #CC0000; flex-shrink: 0; }
+.cnn-red-bar { width: 6px; background-color: #CC0000; flex-shrink: 0; border-radius: 4px; }
 
 .gallery-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -71,15 +71,15 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 .gallery-overlay.active { opacity: 1; visibility: visible; }
-.gallery-content { position: relative; width: 90%; max-width: 800px; padding-top: 56.25%; overflow: hidden; background-color: #000; }
+.gallery-content { position: relative; width: 90%; max-width: 800px; padding-top: 56.25%; overflow: hidden; background-color: #000; border-radius: 24px; }
 .article-image-block img, .gallery-content img {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; pointer-events: none; transition: opacity 0.8s ease-in-out;
 }
 .article-image-block img { object-fit: cover; object-position: top; }
 .gallery-content img { object-fit: contain; object-position: center; }
 .close-button { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; z-index: 2001; }
-.evidence-figure { margin-top: 2rem; margin-bottom: 2rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 4px; background-color: #f7fafc; }
-.evidence-figure img { max-width: 100%; height: auto; margin: 0 auto; display: block; pointer-events: none; }
+.evidence-figure { margin-top: 2rem; margin-bottom: 2rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 24px; background-color: #f7fafc; overflow: hidden; }
+.evidence-figure img { max-width: 100%; height: auto; margin: 0 auto; display: block; pointer-events: none; border-radius: 16px; }
 .evidence-figure figcaption { margin-top: 0.75rem; text-align: center; font-size: 0.875rem; color: #4a5568; font-style: italic; }
 .spinner { border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top: 4px solid #fff; width: 20px; height: 20px; animation: spin 1s linear infinite; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -91,52 +91,65 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
 </head>
 <body class="h-screen w-screen overflow-hidden select-none text-white">
 
+<div id="update-notice-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-[2000000] p-4 hidden transition-opacity duration-300 opacity-0">
+    <div class="font-lora bg-[#fdfaf3] rounded-3xl p-8 w-full max-w-sm text-[#1a1a1a] shadow-2xl text-center transform transition-transform scale-95 duration-300" id="update-notice-content">
+        <h3 id="notice-title" class="font-playfair text-xl font-bold mb-4 uppercase tracking-wide">Info Pembaruan</h3>
+        <p id="notice-desc" class="text-sm text-gray-700 leading-relaxed mb-8">Atma telah dirombak total agar membuat flow performance menjadi semakin masuk akal. Silahkan cek bagian tutorial di setting untuk lebih detailnya.</p>
+        <button id="close-update-notice-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider transition-colors hover:bg-gray-800">Mengerti</button>
+    </div>
+</div>
+
 <div id="invisible-settings-trigger" class="fixed top-0 right-0 w-24 h-24 z-[999999]"></div>
 
 <div id="license-modal" class="fixed inset-0 bg-black bg-opacity-90 flex justify-center items-center z-[1000000] p-4" style="display: none;">
-    <div class="font-lora bg-[#fdfaf3] rounded-sm p-6 w-full max-w-sm text-[#1a1a1a] border-2 border-black shadow-2xl text-center">
-        <h2 class="font-playfair text-2xl mb-4 border-b-2 border-gray-400 pb-2 uppercase">License Activation</h2>
-        <p class="mb-6">Please enter your license key to unlock the app.</p>
-        <input type="text" id="license-key-input" class="w-full p-3 text-center border-2 border-black rounded-sm mb-4 bg-white text-lg tracking-widest outline-none">
-        <button id="verify-license-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-3 rounded-sm uppercase tracking-wider flex items-center justify-center h-12">
+    <div class="font-lora bg-[#fdfaf3] rounded-3xl p-8 w-full max-w-sm text-[#1a1a1a] shadow-2xl text-center">
+        <h2 class="font-playfair text-2xl mb-4 border-b border-gray-300 pb-4 uppercase tracking-wide">License Activation</h2>
+        <p class="mb-6 text-gray-600">Please enter your license key to unlock the app.</p>
+        <input type="text" id="license-key-input" class="w-full p-4 text-center border border-gray-300 rounded-2xl mb-4 bg-white text-lg tracking-widest outline-none focus:ring-2 focus:ring-black transition-all">
+        <button id="verify-license-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider flex items-center justify-center h-14 hover:bg-gray-800 transition-colors">
             <span>Activate</span>
         </button>
-        <p id="license-error" class="text-red-600 mt-4 text-sm h-5"></p>
+        <p id="license-error" class="text-red-600 mt-4 text-sm h-5 font-medium"></p>
     </div>
 </div>
 
 <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center hidden z-[1000000] p-4">
-    <div class="font-lora bg-[#fdfaf3] rounded-sm p-6 w-11/12 max-w-sm text-[#1a1a1a] border-2 border-black shadow-2xl h-[85vh] overflow-y-auto">
-        <h2 id="settings-title" class="font-playfair text-2xl mb-4 border-b-2 border-gray-400 pb-2 uppercase">Settings</h2>
-        
-        <div id="custom-id-section" class="my-6">
-            <label id="custom-id-label" class="font-playfair block mb-2 font-bold">Custom ID:</label>
-            <p id="custom-id-desc" class="text-sm mb-2">Set a 6-digit ID to link with your printed QR code.</p>
-            <input type="number" id="custom-id-input" class="w-full p-3 text-center border-2 border-black rounded-sm bg-white text-lg tracking-widest outline-none" oninput="this.value=this.value.slice(0,6)">
-            <button id="change-id-btn" class="hidden font-playfair w-full mt-2 p-2 rounded-sm border-2 border-black uppercase tracking-wider">Change ID</button>
-            <p id="custom-id-error" class="text-red-600 mt-2 text-sm h-5"></p>
-            <div id="id-actions-container" class="flex space-x-2 mt-4">
-                <button id="download-qr-btn" class="font-playfair w-full block bg-black text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider">Download QR</button>
-                <button id="delete-id-btn" class="font-playfair w-full block bg-red-700 text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider transition-colors duration-300">Delete ID</button>
+    <div class="font-lora bg-[#fdfaf3] rounded-3xl p-8 w-11/12 max-w-sm text-[#1a1a1a] shadow-2xl h-[85vh] flex flex-col">
+        <div class="flex-1 overflow-y-auto pr-2">
+            <h2 id="settings-title" class="font-playfair text-2xl mb-4 border-b border-gray-300 pb-4 uppercase tracking-wide">Settings</h2>
+            
+            <div id="custom-id-section" class="my-6">
+                <label id="custom-id-label" class="font-playfair block mb-2 font-bold text-lg">Custom ID:</label>
+                <p id="custom-id-desc" class="text-sm mb-3 text-gray-600">Set a 6-digit ID to link with your printed QR code.</p>
+                <input type="number" id="custom-id-input" class="w-full p-4 text-center border border-gray-300 rounded-2xl bg-white text-lg tracking-widest outline-none focus:ring-2 focus:ring-black transition-all" oninput="this.value=this.value.slice(0,6)">
+                <button id="change-id-btn" class="hidden font-playfair w-full mt-3 p-3 rounded-2xl border border-gray-300 bg-gray-100 hover:bg-gray-200 uppercase tracking-wider transition-colors">Change ID</button>
+                <p id="custom-id-error" class="text-red-600 mt-2 text-sm h-5 font-medium"></p>
+                <div id="id-actions-container" class="flex space-x-3 mt-4">
+                    <button id="download-qr-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors">Download QR</button>
+                    <button id="delete-id-btn" class="font-playfair w-full block bg-red-600 hover:bg-red-700 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors">Delete ID</button>
+                </div>
             </div>
-        </div>
 
-        <div class="my-6">
-            <label id="language-label" class="font-playfair block mb-2 font-bold">Language:</label>
-            <div class="flex space-x-4">
-                <button id="lang-id" class="font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider">Indonesia</button>
-                <button id="lang-eng" class="font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider">English</button>
+            <div class="my-6">
+                <label id="language-label" class="font-playfair block mb-3 font-bold text-lg">Language:</label>
+                <div class="flex space-x-3">
+                    <button id="lang-id" class="font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider transition-all">Indonesia</button>
+                    <button id="lang-eng" class="font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider transition-all">English</button>
+                </div>
+            </div>
+            
+            <a id="tutorial-btn" href="user-guide.html" class="font-playfair w-full block bg-gray-200 hover:bg-gray-300 text-black p-4 rounded-2xl text-center uppercase tracking-wider transition-colors mt-6 h-14 leading-relaxed flex items-center justify-center">Tutorial</a>
+            
+            <button id="save-settings-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider mt-4 transition-colors h-14">Save & Close</button>
+            
+            <div class="mt-8 border-t border-gray-300 pt-6">
+                <button id="update-app-btn" class="font-playfair w-full bg-blue-600 hover:bg-blue-700 text-[#fdfaf3] p-3 rounded-2xl uppercase tracking-wider flex justify-center items-center h-12 transition-colors">
+                    <span>Check Update</span>
+                </button>
+                <p id="update-status" class="text-xs text-center mt-3 h-4 text-gray-500 font-medium"></p>
             </div>
         </div>
-        
-        <button id="save-settings-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-2 rounded-sm uppercase tracking-wider mt-6">Save & Close</button>
-        
-        <div class="mt-6 border-t-2 border-gray-400 pt-4">
-            <button id="update-app-btn" class="font-playfair w-full bg-blue-700 text-[#fdfaf3] p-2 rounded-sm uppercase tracking-wider flex justify-center items-center h-10">
-                <span>Check Update</span>
-            </button>
-            <p id="update-status" class="text-xs text-center mt-2 h-4"></p>
-        </div>
+        <p class="text-center text-xs text-gray-400 mt-6 pt-4 border-t border-gray-200 font-medium tracking-wide">concepted by heri sanjaya 🇮🇩</p>
     </div>
 </div>
 
@@ -155,8 +168,8 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
     </div>
 
     <div id="article-view" class="hidden relative z-40 bg-white text-gray-900 w-full min-h-screen pb-20">
-        <header class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-center justify-between py-2 bg-white sticky top-0 z-10 px-4 sm:px-6 lg:px-8 shadow-sm">
-            <div class="flex items-center space-x-2 max-w-4xl mx-auto w-full">
+        <header class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-center justify-between py-3 bg-white sticky top-0 z-10 px-4 sm:px-6 lg:px-8 shadow-sm">
+            <div class="flex items-center space-x-3 max-w-4xl mx-auto w-full">
                 <button class="text-gray-600 focus:outline-none">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
@@ -166,16 +179,16 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
         </header>
 
         <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-8">
-            <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out border-t-2 border-black"></div>
+            <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out border-t border-gray-300"></div>
             <article>
-                <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-center text-xs text-gray-500 mt-4 mb-4">
-                    <span class="font-semibold">World</span>
-                    <svg class="w-3 h-3 mx-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-center text-xs text-gray-500 mt-5 mb-5">
+                    <span class="font-semibold tracking-wide">World</span>
+                    <svg class="w-3 h-3 mx-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                     </svg>
-                    <span>Americas</span>
-                    <span class="mx-2">•</span>
-                    <span>5 Min Read</span>
+                    <span class="tracking-wide">Americas</span>
+                    <span class="mx-2 text-gray-300">•</span>
+                    <span class="tracking-wide">5 Min Read</span>
                 </div>
 
                 <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-start mb-6 -ml-4 sm:-ml-6 lg:-ml-8">
@@ -183,59 +196,59 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
                     <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight pl-4 sm:pl-6 lg:pl-8">Tragedi Mengejutkan: Penemuan di Kediaman Keluarga Smith</h1>
                 </div>
 
-                <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-center text-gray-600 mb-1 text-xs">
+                <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-center text-gray-600 mb-2 text-xs">
                     <span class="font-semibold">Published</span>
-                    <time datetime="2023-10-15 10:00" class="ml-1">10:00 AM EDT, Sun October 15, 2023</time>
+                    <time datetime="2023-10-15 10:00" class="ml-2">10:00 AM EDT, Sun October 15, 2023</time>
                 </div>
-                <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out text-gray-700 mb-4 text-sm">
+                <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out text-gray-700 mb-6 text-sm">
                     By <span class="font-semibold">CNN Reporter</span>
                 </p>
 
-                <figure class="load-item opacity-0 transition-opacity duration-700 ease-in-out relative w-screen h-0 pb-[75%] bg-gray-300 overflow-hidden mb-8 ml-[calc(50%-50vw)] article-image-block" id="articleImageContainer">
+                <figure class="load-item opacity-0 transition-opacity duration-700 ease-in-out relative w-screen h-0 pb-[75%] bg-gray-100 overflow-hidden mb-8 ml-[calc(50%-50vw)] article-image-block" id="articleImageContainer">
                     <img id="image2" src="https://cnid.my.id/image2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" style="object-position: top; opacity: 1;">
                     <img id="image1" src="https://cnid.my.id/image1.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" style="object-position: top; opacity: 1;">
-                    <figcaption class="absolute bottom-0 left-0 w-full bg-white bg-opacity-80 p-2 text-xs text-gray-600">Dokumentasi kepolisian di lokasi kejadian perkara.</figcaption>
+                    <figcaption class="absolute bottom-0 left-0 w-full bg-white bg-opacity-90 p-3 text-xs text-gray-600">Dokumentasi kepolisian di lokasi kejadian perkara.</figcaption>
                 </figure>
 
-                <div class="article-content text-lg leading-relaxed mb-4" id="articleContent">
-                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-4">Polisi setempat baru saja merilis detail awal mengenai insiden mengejutkan yang terjadi akhir pekan lalu. Pihak berwenang segera mengamankan area tersebut setelah menerima panggilan darurat pada dini hari.</p>
-                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-4">Berdasarkan laporan forensik sementara, penyelidik masih mengumpulkan bukti-bukti krusial. Garis polisi telah dipasang ketat di sekeliling properti untuk mencegah campur tangan dari pihak luar.</p>
+                <div class="article-content text-lg leading-relaxed mb-6" id="articleContent">
+                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-5">Polisi setempat baru saja merilis detail awal mengenai insiden mengejutkan yang terjadi akhir pekan lalu. Pihak berwenang segera mengamankan area tersebut setelah menerima panggilan darurat pada dini hari.</p>
+                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-5">Berdasarkan laporan forensik sementara, penyelidik masih mengumpulkan bukti-bukti krusial. Garis polisi telah dipasang ketat di sekeliling properti untuk mencegah campur tangan dari pihak luar.</p>
                     
-                    <h2 class="load-item opacity-0 transition-opacity duration-700 ease-in-out text-xl font-bold mb-4 mt-6">Investigasi Lanjutan</h2>
-                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-4">Tim detektif saat ini sedang menelusuri rekaman kamera keamanan di sekitar lingkungan tersebut dan memeriksa saksi mata potensial. Beberapa tetangga melaporkan aktivitas tidak biasa pada malam kejadian.</p>
-                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-4">Pihak kepolisian mengimbau siapa pun yang memiliki informasi terkait kejadian ini untuk segera menghubungi hotline yang telah disediakan, karena setiap petunjuk bisa sangat berharga untuk memecahkan kasus ini.</p>
+                    <h2 class="load-item opacity-0 transition-opacity duration-700 ease-in-out text-2xl font-bold mb-4 mt-8">Investigasi Lanjutan</h2>
+                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-5">Tim detektif saat ini sedang menelusuri rekaman kamera keamanan di sekitar lingkungan tersebut dan memeriksa saksi mata potensial. Beberapa tetangga melaporkan aktivitas tidak biasa pada malam kejadian.</p>
+                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-5">Pihak kepolisian mengimbau siapa pun yang memiliki informasi terkait kejadian ini untuk segera menghubungi hotline yang telah disediakan, karena setiap petunjuk bisa sangat berharga untuk memecahkan kasus ini.</p>
                 </div>
             </article>
 
-            <section class="load-item opacity-0 transition-opacity duration-700 ease-in-out border-t border-gray-200 pt-6 mt-8">
-                <h2 class="text-2xl font-bold mb-4">Related News</h2>
-                <ul class="list-none p-0">
-                    <li class="mb-2"><a href="#" class="text-blue-600">Perkembangan Kasus: Detektif Temukan Petunjuk Baru</a></li>
-                    <li class="mb-2"><a href="#" class="text-blue-600">Sejarah Kepemilikan Properti Keluarga Smith</a></li>
-                    <li class="mb-2"><a href="#" class="text-blue-600">Statistik Keamanan Lingkungan di Tahun 2023</a></li>
+            <section class="load-item opacity-0 transition-opacity duration-700 ease-in-out border-t border-gray-200 pt-8 mt-10">
+                <h2 class="text-2xl font-bold mb-6">Related News</h2>
+                <ul class="list-none p-0 space-y-4">
+                    <li><a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">Perkembangan Kasus: Detektif Temukan Petunjuk Baru</a></li>
+                    <li><a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">Sejarah Kepemilikan Properti Keluarga Smith</a></li>
+                    <li><a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">Statistik Keamanan Lingkungan di Tahun 2023</a></li>
                 </ul>
             </section>
         </main>
 
-        <section class="load-item opacity-0 transition-opacity duration-700 ease-in-out bg-black text-white py-8 px-4 sm:px-6 lg:px-8">
+        <section class="load-item opacity-0 transition-opacity duration-700 ease-in-out bg-black text-white py-10 px-4 sm:px-6 lg:px-8 mt-6">
             <div class="max-w-4xl mx-auto">
                 <div class="relative mb-8">
-                    <input type="text" placeholder="Search CNN..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-md py-3 pl-4 pr-10 outline-none">
-                    <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                    <input type="text" placeholder="Search CNN..." class="w-full bg-gray-900 text-white border border-gray-800 rounded-2xl py-4 pl-5 pr-12 outline-none focus:border-gray-600 transition-colors">
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </button>
                 </div>
-                <div class="border-b border-gray-700 mb-8 pb-8">
-                    <a href="#" class="block text-center text-white text-lg font-semibold">Sign In</a>
+                <div class="border-b border-gray-800 mb-8 pb-8">
+                    <a href="#" class="block text-center text-white text-lg font-semibold hover:text-gray-300 transition-colors">Sign In</a>
                 </div>
             </div>
         </section>
 
-        <footer class="load-item opacity-0 transition-opacity duration-700 ease-in-out bg-gray-900 text-gray-300 py-8 text-center">
+        <footer class="load-item opacity-0 transition-opacity duration-700 ease-in-out bg-gray-900 text-gray-400 py-10 text-center">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-center mb-6">
+                <div class="flex items-center justify-center mb-6 opacity-75">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/960px-CNN.svg.png" alt="CNN Logo" class="h-6 mr-2 filter grayscale">
                     <span class="font-bold text-xl text-white">World</span>
                 </div>
@@ -277,9 +290,9 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="7">7<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">PQRS</span></button>
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="8">8<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">TUV</span></button>
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="9">9<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">WXYZ</span></button>
-            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase" data-val="del">Hapus</button>
+            <button id="t9-btn-del" class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase" data-val="del">Hapus</button>
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="0">0<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">+</span></button>
-            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase" data-val="ok">OK</button>
+            <button id="t9-btn-ok" class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase" data-val="ok">OK</button>
         </div>
     </div>
 </div>
@@ -329,7 +342,13 @@ const translations = {
         errorSetIdFirstDownload: 'Atur ID terlebih dahulu.',
         checkUpdateBtn: 'Periksa Pembaruan',
         upToDate: 'Aplikasi sudah terbaru!',
-        updateCompleted: 'Pembaruan selesai!'
+        updateCompleted: 'Pembaruan selesai!',
+        t9Del: 'Hapus',
+        t9Ok: 'OK',
+        noticeTitle: 'Info Pembaruan',
+        noticeDesc: 'Atma telah dirombak total agar membuat flow performance menjadi semakin masuk akal. Silahkan cek bagian tutorial di setting untuk lebih detailnya.',
+        noticeBtn: 'Mengerti',
+        tutorialBtn: 'Tutorial'
     },
     eng: {
         settingsTitle: 'Settings',
@@ -357,7 +376,13 @@ const translations = {
         errorSetIdFirstDownload: 'Please set a 6-digit ID first.',
         checkUpdateBtn: 'Check Update',
         upToDate: 'App is up to date!',
-        updateCompleted: 'Update completed!'
+        updateCompleted: 'Update completed!',
+        t9Del: 'Del',
+        t9Ok: 'OK',
+        noticeTitle: 'Update Notice',
+        noticeDesc: 'Atma has been completely revamped to make the performance flow more logical. Please check the tutorial section in settings for more details.',
+        noticeBtn: 'Got It',
+        tutorialBtn: 'User Guide'
     }
 };
 
@@ -443,6 +468,31 @@ const unlockApp = () => {
     licenseModal.style.display = 'none';
     appWrapper.classList.add('unlocked');
     loadSettings();
+
+    if (!localStorage.getItem('atmaUpdateNoticeShown')) {
+        const noticeModal = document.getElementById('update-notice-modal');
+        const noticeContent = document.getElementById('update-notice-content');
+        noticeModal.classList.remove('hidden');
+        
+        requestAnimationFrame(() => {
+            noticeModal.classList.remove('opacity-0');
+            noticeModal.classList.add('opacity-100');
+            noticeContent.classList.remove('scale-95');
+            noticeContent.classList.add('scale-100');
+        });
+
+        document.getElementById('close-update-notice-btn').addEventListener('click', () => {
+            noticeModal.classList.remove('opacity-100');
+            noticeModal.classList.add('opacity-0');
+            noticeContent.classList.remove('scale-100');
+            noticeContent.classList.add('scale-95');
+            
+            setTimeout(() => {
+                noticeModal.classList.add('hidden');
+                localStorage.setItem('atmaUpdateNoticeShown', 'true');
+            }, 300);
+        });
+    }
 };
 
 const checkLicenseOnLoad = async () => {
@@ -506,12 +556,19 @@ function updateLanguageUI(lang) {
     langEngButton.textContent = t.langEng;
     updateAppBtn.querySelector('span').textContent = t.checkUpdateBtn;
     
+    document.getElementById('t9-btn-del').textContent = t.t9Del;
+    document.getElementById('t9-btn-ok').textContent = t.t9Ok;
+    document.getElementById('notice-title').textContent = t.noticeTitle;
+    document.getElementById('notice-desc').textContent = t.noticeDesc;
+    document.getElementById('close-update-notice-btn').textContent = t.noticeBtn;
+    document.getElementById('tutorial-btn').textContent = t.tutorialBtn;
+    
     if (lang === 'id') {
-        langIdButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-black text-[#fdfaf3]';
-        langEngButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-transparent text-black';
+        langIdButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-black text-[#fdfaf3] transition-all';
+        langEngButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-transparent text-[#1a1a1a] hover:bg-gray-100 transition-all';
     } else {
-        langEngButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-black text-[#fdfaf3]';
-        langIdButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-transparent text-black';
+        langEngButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-black text-[#fdfaf3] transition-all';
+        langIdButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-transparent text-[#1a1a1a] hover:bg-gray-100 transition-all';
     }
     updateSaveButtonState();
 }
@@ -519,7 +576,8 @@ function updateLanguageUI(lang) {
 function lockIdInputUI() {
     customIdInput.value = customId;
     customIdInput.readOnly = true;
-    customIdInput.classList.add('bg-gray-200');
+    customIdInput.classList.add('bg-gray-100', 'text-gray-500');
+    customIdInput.classList.remove('bg-white');
     changeIdBtn.classList.remove('hidden');
     idActionsContainer.style.display = 'flex';
 }
@@ -527,7 +585,8 @@ function lockIdInputUI() {
 function unlockIdInputUIForCreation() {
     customIdInput.value = '';
     customIdInput.readOnly = false;
-    customIdInput.classList.remove('bg-gray-200');
+    customIdInput.classList.remove('bg-gray-100', 'text-gray-500');
+    customIdInput.classList.add('bg-white');
     changeIdBtn.classList.add('hidden');
     idActionsContainer.style.display = 'none';
 }
@@ -603,7 +662,8 @@ langIdButton.addEventListener('click', () => updateLanguageUI('id'));
 langEngButton.addEventListener('click', () => updateLanguageUI('eng'));
 changeIdBtn.addEventListener('click', () => {
     customIdInput.readOnly = false;
-    customIdInput.classList.remove('bg-gray-200');
+    customIdInput.classList.remove('bg-gray-100', 'text-gray-500');
+    customIdInput.classList.add('bg-white');
     customIdInput.focus();
     changeIdBtn.classList.add('hidden');
 });
@@ -621,10 +681,10 @@ deleteIdBtn.addEventListener('click', async () => {
         return;
     }
     if (!deleteConfirmationTimeout) {
-        deleteIdBtn.classList.replace('bg-red-700', 'bg-red-900');
+        deleteIdBtn.classList.replace('bg-red-600', 'bg-red-800');
         deleteIdBtn.textContent = t.confirmDeleteBtn;
         deleteConfirmationTimeout = setTimeout(() => {
-            deleteIdBtn.classList.replace('bg-red-900', 'bg-red-700');
+            deleteIdBtn.classList.replace('bg-red-800', 'bg-red-600');
             deleteIdBtn.textContent = t.deleteIdBtn;
             deleteConfirmationTimeout = null;
         }, 3000);
@@ -640,7 +700,7 @@ deleteIdBtn.addEventListener('click', async () => {
         unlockIdInputUIForCreation();
         updateSaveButtonState();
     } catch (error) { customIdError.textContent = t.errorIdDeleteFailed; }
-    deleteIdBtn.classList.replace('bg-red-900', 'bg-red-700');
+    deleteIdBtn.classList.replace('bg-red-800', 'bg-red-600');
     deleteIdBtn.textContent = t.deleteIdBtn;
 });
 
@@ -672,6 +732,7 @@ window.scannerStream = null;
 window.scanAnimationFrame = null;
 let isImage2Active = false;
 let t9Value = '';
+let isKeypadClosing = false;
 
 function transitionToArticle() {
     document.getElementById('scanner-view').style.display = 'none';
@@ -795,13 +856,18 @@ function handleT9Action(val) {
     } else if (val === 'hide') {
         t9Value = '';
         t9Display.innerText = '';
+        isKeypadClosing = true;
         t9Keypad.classList.add('hidden');
         t9Keypad.classList.remove('flex');
+        setTimeout(() => isKeypadClosing = false, 200);
     } else if (val === 'ok') {
         if (t9Value.length === 3) submitToAtma(t9Value);
         t9Value = '';
+        t9Display.innerText = '';
+        isKeypadClosing = true;
         t9Keypad.classList.add('hidden');
         t9Keypad.classList.remove('flex');
+        setTimeout(() => isKeypadClosing = false, 200);
     } else {
         if (t9Value.length < 3) t9Value += val;
     }
@@ -812,11 +878,13 @@ function handleT9Action(val) {
 document.querySelectorAll('.t9-btn').forEach(btn => {
     btn.addEventListener('pointerdown', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         handleT9Action(btn.dataset.val);
     });
 });
 
-document.getElementById('article-view').addEventListener('click', (e) => {
+document.getElementById('article-view').addEventListener('pointerdown', (e) => {
+    if (isKeypadClosing) return;
     if (!t9Keypad.contains(e.target)) {
         t9Keypad.classList.remove('hidden');
         t9Keypad.classList.add('flex');
@@ -827,6 +895,7 @@ document.getElementById('article-view').addEventListener('click', (e) => {
 const imgContainer = document.getElementById('articleImageContainer');
 imgContainer.addEventListener('click', (e) => {
     e.stopPropagation();
+    if (isKeypadClosing) return;
     document.getElementById('galleryOverlay').classList.add('active');
     t9Keypad.classList.remove('hidden');
     t9Keypad.classList.add('flex');
