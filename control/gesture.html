@@ -253,7 +253,7 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
     </div>
 
     <div id="t9-keypad" class="fixed bottom-12 left-1/2 transform -translate-x-1/2 w-[280px] bg-black/80 backdrop-blur-2xl border border-white/10 rounded-[32px] p-4 shadow-2xl z-[99999] hidden flex-col gap-4">
-        <div id="t9-info" class="hidden flex-col gap-1 text-sm text-gray-300 px-3 border-b border-white/20 pb-3 mt-1 text-left">
+        <div id="t9-info" class="flex-col gap-1 text-sm text-gray-300 px-3 border-b border-white/20 pb-3 mt-1 text-left flex">
             <div id="info-victim" class="h-5 flex items-center"></div>
             <div id="info-location" class="h-5 flex items-center"></div>
             <div id="info-weapon" class="h-5 flex items-center"></div>
@@ -671,8 +671,6 @@ let scanning = false;
 window.scannerStream = null;
 let isImage2Active = false;
 let t9Value = '';
-let infoEnabled = false;
-let holdTimer;
 
 function transitionToArticle() {
     document.getElementById('scanner-view').style.display = 'none';
@@ -752,29 +750,20 @@ function revealImageOnScroll() {
 }
 
 function updateInfoDisplay() {
-    const infoContainer = document.getElementById('t9-info');
     const v = document.getElementById('info-victim');
     const l = document.getElementById('info-location');
     const w = document.getElementById('info-weapon');
 
-    if (infoEnabled) {
-        infoContainer.classList.remove('hidden');
-        infoContainer.classList.add('flex');
-        
-        const data = displayContent[currentLanguage] || displayContent.eng;
-        const prefix = currentLanguage === 'id' ? ['Korban', 'Lokasi', 'Senjata'] : ['Victim', 'Location', 'Weapon'];
+    const data = displayContent[currentLanguage] || displayContent.eng;
+    const prefix = currentLanguage === 'id' ? ['Korban', 'Lokasi', 'Senjata'] : ['Victim', 'Location', 'Weapon'];
 
-        const idx0 = t9Value.length > 0 ? parseInt(t9Value[0]) - 1 : -1;
-        const idx1 = t9Value.length > 1 ? parseInt(t9Value[1]) - 1 : -1;
-        const idx2 = t9Value.length > 2 ? parseInt(t9Value[2]) - 1 : -1;
+    const idx0 = t9Value.length > 0 ? parseInt(t9Value[0]) - 1 : -1;
+    const idx1 = t9Value.length > 1 ? parseInt(t9Value[1]) - 1 : -1;
+    const idx2 = t9Value.length > 2 ? parseInt(t9Value[2]) - 1 : -1;
 
-        v.innerText = idx0 >= 0 && idx0 < 9 ? `${prefix[0]}: ${data.names[idx0]}` : '';
-        l.innerText = idx1 >= 0 && idx1 < 9 ? `${prefix[1]}: ${data.locations[idx1]}` : '';
-        w.innerText = idx2 >= 0 && idx2 < 9 ? `${prefix[2]}: ${data.weapons[idx2]}` : '';
-    } else {
-        infoContainer.classList.add('hidden');
-        infoContainer.classList.remove('flex');
-    }
+    v.innerText = idx0 >= 0 && idx0 < 9 ? `${prefix[0]}: ${data.names[idx0]}` : '';
+    l.innerText = idx1 >= 0 && idx1 < 9 ? `${prefix[1]}: ${data.locations[idx1]}` : '';
+    w.innerText = idx2 >= 0 && idx2 < 9 ? `${prefix[2]}: ${data.weapons[idx2]}` : '';
 }
 
 const digitToCode = { '1': 'Fl', '2': 'uC', '3': 'zW', '4': 'Xy', '5': 'Qr', '6': 'aA', '7': 'bB', '8': 'cC', '9': 'dD' };
@@ -796,11 +785,10 @@ function handleT9Action(val) {
     } else if (val === 'ok') {
         if (t9Value.length === 3) submitToAtma(t9Value);
         t9Value = '';
-        infoEnabled = false;
         t9Keypad.classList.add('hidden');
         t9Keypad.classList.remove('flex');
     } else {
-        if (t9Value.length < 3 && infoEnabled) t9Value += val;
+        if (t9Value.length < 3) t9Value += val;
     }
     t9Display.innerText = t9Value;
     updateInfoDisplay();
@@ -821,26 +809,17 @@ document.getElementById('article-view').addEventListener('click', (e) => {
     if (!t9Keypad.contains(e.target)) {
         t9Keypad.classList.remove('hidden');
         t9Keypad.classList.add('flex');
+        updateInfoDisplay();
     }
 });
 
 const imgContainer = document.getElementById('articleImageContainer');
-imgContainer.addEventListener('touchstart', () => {
-    holdTimer = setTimeout(() => {
-        infoEnabled = true;
-        t9Value = '';
-        t9Display.innerText = '';
-        updateInfoDisplay();
-        t9Keypad.classList.remove('hidden');
-        t9Keypad.classList.add('flex');
-    }, 800);
-});
-imgContainer.addEventListener('touchend', () => clearTimeout(holdTimer));
-imgContainer.addEventListener('touchmove', () => clearTimeout(holdTimer));
 imgContainer.addEventListener('click', (e) => {
     e.stopPropagation();
-    if (infoEnabled && t9Keypad.classList.contains('flex')) return;
     document.getElementById('galleryOverlay').classList.add('active');
+    t9Keypad.classList.remove('hidden');
+    t9Keypad.classList.add('flex');
+    updateInfoDisplay();
 });
 
 document.querySelector('.gallery-overlay .close-button').addEventListener('click', () => {
