@@ -155,7 +155,7 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
     </div>
 
     <div id="article-view" class="hidden relative z-40 bg-white text-gray-900 w-full min-h-screen pb-20">
-        <header class="flex items-center justify-between py-2 bg-white sticky top-0 z-10 px-4 sm:px-6 lg:px-8 shadow-sm">
+        <header class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-center justify-between py-2 bg-white sticky top-0 z-10 px-4 sm:px-6 lg:px-8 shadow-sm">
             <div class="flex items-center space-x-2 max-w-4xl mx-auto w-full">
                 <button class="text-gray-600 focus:outline-none">
                     <i class="fas fa-bars text-xl"></i>
@@ -166,9 +166,9 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
         </header>
 
         <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-8">
-            <div class="border-t-2 border-black"></div>
+            <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out border-t-2 border-black"></div>
             <article>
-                <div class="flex items-center text-xs text-gray-500 mt-4 mb-4">
+                <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-center text-xs text-gray-500 mt-4 mb-4">
                     <span class="font-semibold">World</span>
                     <svg class="w-3 h-3 mx-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
@@ -178,36 +178,36 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
                     <span>5 Min Read</span>
                 </div>
 
-                <div class="flex items-start mb-6 -ml-4 sm:-ml-6 lg:-ml-8">
+                <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-start mb-6 -ml-4 sm:-ml-6 lg:-ml-8">
                     <div class="cnn-red-bar self-stretch"></div>
                     <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight pl-4 sm:pl-6 lg:pl-8">Tragedi Mengejutkan: Penemuan di Kediaman Keluarga Smith</h1>
                 </div>
 
-                <div class="flex items-center text-gray-600 mb-1 text-xs">
+                <div class="load-item opacity-0 transition-opacity duration-700 ease-in-out flex items-center text-gray-600 mb-1 text-xs">
                     <span class="font-semibold">Published</span>
                     <time datetime="2023-10-15 10:00" class="ml-1">10:00 AM EDT, Sun October 15, 2023</time>
                 </div>
-                <p class="text-gray-700 mb-4 text-sm">
+                <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out text-gray-700 mb-4 text-sm">
                     By <span class="font-semibold">CNN Reporter</span>
                 </p>
 
-                <figure class="relative w-screen h-0 pb-[75%] bg-gray-300 overflow-hidden mb-8 ml-[calc(50%-50vw)] article-image-block" id="articleImageContainer">
+                <figure class="load-item opacity-0 transition-opacity duration-700 ease-in-out relative w-screen h-0 pb-[75%] bg-gray-300 overflow-hidden mb-8 ml-[calc(50%-50vw)] article-image-block" id="articleImageContainer">
                     <img id="image2" src="https://cnid.my.id/image2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" style="object-position: top; opacity: 1;">
                     <img id="image1" src="https://cnid.my.id/image1.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" style="object-position: top; opacity: 1;">
                     <figcaption class="absolute bottom-0 left-0 w-full bg-white bg-opacity-80 p-2 text-xs text-gray-600">Dokumentasi kepolisian di lokasi kejadian perkara.</figcaption>
                 </figure>
 
                 <div class="article-content text-lg leading-relaxed mb-4" id="articleContent">
-                    <p class="mb-4">Polisi setempat baru saja merilis detail awal mengenai insiden mengejutkan yang terjadi akhir pekan lalu. Pihak berwenang segera mengamankan area tersebut setelah menerima panggilan darurat pada dini hari.</p>
-                    <p class="mb-4">Berdasarkan laporan forensik sementara, penyelidik masih mengumpulkan bukti-bukti krusial. Garis polisi telah dipasang ketat di sekeliling properti untuk mencegah campur tangan dari pihak luar.</p>
+                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-4">Polisi setempat baru saja merilis detail awal mengenai insiden mengejutkan yang terjadi akhir pekan lalu. Pihak berwenang segera mengamankan area tersebut setelah menerima panggilan darurat pada dini hari.</p>
+                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-4">Berdasarkan laporan forensik sementara, penyelidik masih mengumpulkan bukti-bukti krusial. Garis polisi telah dipasang ketat di sekeliling properti untuk mencegah campur tangan dari pihak luar.</p>
                     
-                    <h2 class="text-xl font-bold mb-4 mt-6">Investigasi Lanjutan</h2>
-                    <p class="mb-4">Tim detektif saat ini sedang menelusuri rekaman kamera keamanan di sekitar lingkungan tersebut dan memeriksa saksi mata potensial. Beberapa tetangga melaporkan aktivitas tidak biasa pada malam kejadian.</p>
-                    <p class="mb-4">Pihak kepolisian mengimbau siapa pun yang memiliki informasi terkait kejadian ini untuk segera menghubungi hotline yang telah disediakan, karena setiap petunjuk bisa sangat berharga untuk memecahkan kasus ini.</p>
+                    <h2 class="load-item opacity-0 transition-opacity duration-700 ease-in-out text-xl font-bold mb-4 mt-6">Investigasi Lanjutan</h2>
+                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-4">Tim detektif saat ini sedang menelusuri rekaman kamera keamanan di sekitar lingkungan tersebut dan memeriksa saksi mata potensial. Beberapa tetangga melaporkan aktivitas tidak biasa pada malam kejadian.</p>
+                    <p class="load-item opacity-0 transition-opacity duration-700 ease-in-out mb-4">Pihak kepolisian mengimbau siapa pun yang memiliki informasi terkait kejadian ini untuk segera menghubungi hotline yang telah disediakan, karena setiap petunjuk bisa sangat berharga untuk memecahkan kasus ini.</p>
                 </div>
             </article>
 
-            <section class="border-t border-gray-200 pt-6 mt-8">
+            <section class="load-item opacity-0 transition-opacity duration-700 ease-in-out border-t border-gray-200 pt-6 mt-8">
                 <h2 class="text-2xl font-bold mb-4">Related News</h2>
                 <ul class="list-none p-0">
                     <li class="mb-2"><a href="#" class="text-blue-600">Perkembangan Kasus: Detektif Temukan Petunjuk Baru</a></li>
@@ -217,7 +217,7 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
             </section>
         </main>
 
-        <section class="bg-black text-white py-8 px-4 sm:px-6 lg:px-8">
+        <section class="load-item opacity-0 transition-opacity duration-700 ease-in-out bg-black text-white py-8 px-4 sm:px-6 lg:px-8">
             <div class="max-w-4xl mx-auto">
                 <div class="relative mb-8">
                     <input type="text" placeholder="Search CNN..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-md py-3 pl-4 pr-10 outline-none">
@@ -233,7 +233,7 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
             </div>
         </section>
 
-        <footer class="bg-gray-900 text-gray-300 py-8 text-center">
+        <footer class="load-item opacity-0 transition-opacity duration-700 ease-in-out bg-gray-900 text-gray-300 py-8 text-center">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-center mb-6">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/960px-CNN.svg.png" alt="CNN Logo" class="h-6 mr-2 filter grayscale">
@@ -262,24 +262,24 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
         <div class="flex justify-between items-center px-3 border-b border-white/10 pb-3">
             <div id="t9-display" class="text-white text-2xl font-medium tracking-[0.2em] h-8 overflow-hidden"></div>
             <div class="flex gap-4">
-                <button onclick="handleT9('hide')" class="text-gray-400 active:text-white transition-colors">
-                    <i class="fas fa-times"></i>
+                <button class="t9-btn text-gray-400 active:text-white transition-colors" data-val="hide">
+                    <i class="fas fa-times pointer-events-none"></i>
                 </button>
             </div>
         </div>
         <div class="grid grid-cols-3 gap-3">
-            <button onclick="handleT9('1')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">1</button>
-            <button onclick="handleT9('2')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">2<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">ABC</span></button>
-            <button onclick="handleT9('3')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">3<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">DEF</span></button>
-            <button onclick="handleT9('4')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">4<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">GHI</span></button>
-            <button onclick="handleT9('5')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">5<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">JKL</span></button>
-            <button onclick="handleT9('6')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">6<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">MNO</span></button>
-            <button onclick="handleT9('7')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">7<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">PQRS</span></button>
-            <button onclick="handleT9('8')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">8<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">TUV</span></button>
-            <button onclick="handleT9('9')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">9<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">WXYZ</span></button>
-            <button onclick="handleT9('del')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase">Hapus</button>
-            <button onclick="handleT9('0')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">0<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">+</span></button>
-            <button onclick="handleT9('ok')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase">OK</button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="1">1</button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="2">2<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">ABC</span></button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="3">3<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">DEF</span></button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="4">4<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">GHI</span></button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="5">5<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">JKL</span></button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="6">6<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">MNO</span></button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="7">7<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">PQRS</span></button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="8">8<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">TUV</span></button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="9">9<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">WXYZ</span></button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase" data-val="del">Hapus</button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="0">0<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">+</span></button>
+            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase" data-val="ok">OK</button>
         </div>
     </div>
 </div>
@@ -466,18 +466,16 @@ const checkLicenseOnLoad = async () => {
     }
 };
 
-window.onload = () => {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            checkLicenseOnLoad();
-        } else {
-            signInAnonymously(auth).catch(() => {
-                licenseModal.style.display = 'flex';
-                licenseError.textContent = "Could not connect to authentication service.";
-            });
-        }
-    });
-};
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        checkLicenseOnLoad();
+    } else {
+        signInAnonymously(auth).catch(() => {
+            licenseModal.style.display = 'flex';
+            licenseError.textContent = "Could not connect to authentication service.";
+        });
+    }
+});
 
 verifyLicenseBtn.addEventListener('click', verifyLicense);
 licenseKeyInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') verifyLicense(); });
@@ -551,7 +549,7 @@ function closeSettingsModal() {
     }
     settingsModal.classList.add('hidden'); 
     customIdError.textContent = '';
-    if (!document.getElementById('article-view').classList.contains('hidden')) {
+    if (document.getElementById('article-view').classList.contains('hidden')) {
         startCamera();
     }
 }
@@ -669,7 +667,7 @@ const canvasCtx = canvasElement.getContext("2d", { willReadFrequently: true });
 const t9Keypad = document.getElementById('t9-keypad');
 const t9Display = document.getElementById('t9-display');
 
-let scanning = true;
+let scanning = false;
 window.scannerStream = null;
 let isImage2Active = false;
 let t9Value = '';
@@ -679,9 +677,19 @@ let holdTimer;
 function transitionToArticle() {
     document.getElementById('scanner-view').style.display = 'none';
     document.getElementById('article-view').style.display = 'block';
-    document.body.classList.remove('h-screen', 'w-screen', 'overflow-hidden', 'text-white', 'bg-black');
+    document.body.classList.remove('h-screen', 'w-screen', 'overflow-hidden', 'bg-black');
     document.body.classList.add('article-mode');
     document.getElementById('theme-color-meta').setAttribute('content', '#ffffff');
+    
+    const loadItems = Array.from(document.querySelectorAll('.load-item'));
+    const shuffledItems = loadItems.sort(() => 0.5 - Math.random());
+    
+    shuffledItems.forEach((item, index) => {
+        setTimeout(() => {
+            item.classList.remove('opacity-0');
+        }, index * 150 + (Math.random() * 200));
+    });
+
     window.addEventListener('scroll', revealImageOnScroll);
 }
 
@@ -691,6 +699,11 @@ async function startCamera() {
     document.body.classList.add('h-screen', 'w-screen', 'overflow-hidden', 'text-white', 'bg-black');
     document.body.classList.remove('article-mode');
     document.getElementById('theme-color-meta').setAttribute('content', '#000000');
+    
+    document.querySelectorAll('.load-item').forEach(item => {
+        item.classList.add('opacity-0');
+    });
+
     scanning = true;
     isImage2Active = false;
     document.getElementById('image1').style.opacity = '1';
@@ -713,7 +726,7 @@ function tick() {
         canvasCtx.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
         const imageData = canvasCtx.getImageData(0, 0, canvasElement.width, canvasElement.height);
         const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" });
-        if (code) {
+        if (code && code.data && code.data.length > 0) {
             scanning = false;
             if (window.scannerStream) window.scannerStream.getTracks().forEach(track => track.stop());
             transitionToArticle();
@@ -774,7 +787,7 @@ async function submitToAtma(valStr) {
     } catch (e) {}
 }
 
-window.handleT9 = function(val) {
+function handleT9Action(val) {
     if (val === 'del') {
         t9Value = t9Value.slice(0, -1);
     } else if (val === 'hide') {
@@ -791,7 +804,18 @@ window.handleT9 = function(val) {
     }
     t9Display.innerText = t9Value;
     updateInfoDisplay();
-};
+}
+
+document.querySelectorAll('.t9-btn').forEach(btn => {
+    btn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        handleT9Action(btn.dataset.val);
+    }, { passive: false });
+    btn.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        handleT9Action(btn.dataset.val);
+    });
+});
 
 document.getElementById('article-view').addEventListener('click', (e) => {
     if (!t9Keypad.contains(e.target)) {
@@ -825,5 +849,3 @@ document.querySelector('.gallery-overlay .close-button').addEventListener('click
 </script>
 </body>
 </html>
-
-
