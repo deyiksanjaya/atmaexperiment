@@ -1,1331 +1,827 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <link rel="manifest" href="manifest.json">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#000000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Photos">
-    <link rel="apple-touch-icon" href="/control/icons/image512.png" onerror="this.onerror=null;this.src='https://placehold.co/180x180/000000/FFFFFF?text=Icon';">
-    <link rel="icon" href="/control/icons/image512.png" onerror="this.onerror=null;this.src='https://placehold.co/32x32/000000/FFFFFF?text=Icon';">
-    <title>Atma</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    <style>
-        body {
-            font-family: "Inter", sans-serif;
-            color: #000;
-            overflow: hidden;
-            position: fixed;
-            width: 100vw;
-            height: 100dvh;
-            margin: 0;
-            user-select: none;
-            -webkit-user-select: none;
-            background-color: #000;
-        }
-        img {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            pointer-events: none;
-        }
-        #app-wrapper {
-            display: none;
-            width: 100%;
-            height: 100%;
-        }
-        #app-wrapper.unlocked {
-            display: block;
-        }
-        #classic-mode-container {
-            width: 100vw;
-            height: 100dvh;
-            justify-content: center;
-            align-items: center;
-        }
-        #display-area {
-            position: relative;
-            width: 100vw;
-            height: 100vw;
-            max-height: 100dvh;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-        #slide-container {
-            height: 100%;
-            display: flex;
-            gap: 20px;
-        }
-        .slide {
-            height: 100%;
-            width: 100vw;
-            flex-shrink: 0;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .slide-content {
-            width: 100%;
-            height: 100%;
-            background-color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 25px;
-            box-sizing: border-box;
-        }
-        .slide-content img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        #history-overlay {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            color: #fff;
-            background-color: rgba(0,0,0,0.7);
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 1rem;
-            text-align: left;
-            display: none;
-            z-index: 20;
-        }
-        #history-overlay.show {
-            display: block;
-        }
-        .font-playfair { font-family: 'Playfair Display', serif; }
-        .font-lora { font-family: 'Lora', serif; }
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid #fff;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
-        }
-        .shake {
-            animation: shake 0.4s;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#000000" id="theme-color-meta">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Atma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+@font-face { font-family: 'CNN Sans Display'; src: url('fonts/cnn_sans_display-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'CNN Sans Display'; src: url('fonts/cnn_sans_display-medium-v1.woff2') format('woff2'); font-weight: 500; font-style: normal; }
+@font-face { font-family: 'CNN Sans Display'; src: url('fonts/cnn_sans_display-bold-v1.woff2') format('woff2'); font-weight: 700; font-style: normal; }
+@font-face { font-family: 'Noto Serif'; src: url('fonts/noto_serif-bold-v1.woff2') format('woff2'); font-weight: 700; font-style: normal; }
+@font-face { font-family: 'Noto Serif'; src: url('fonts/noto_serif-bold_italic-v1.woff2') format('woff2'); font-weight: 700; font-style: italic; }
+@font-face { font-family: 'Noto Serif Extra Condensed Black'; src: url('fonts/noto_serif_extra_condensed_black-v1.woff2') format('woff2'); font-weight: 900; font-style: normal; }
+@font-face { font-family: 'Noto Sans Arabic'; src: url('fonts/noto_sans_arabic-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'Noto Serif Semi Condensed'; src: url('fonts/noto_serif_semi_condensed-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'Helvetica Neue'; src: url('fonts/helveticaneue-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
 
-        #passcode-ui {
-            background-color: #000;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #ffffff;
-            height: 100dvh;
-            width: 100vw;
-            flex-direction: column;
-            position: absolute;
-            inset: 0;
-            z-index: 10;
-        }
-        .passcode-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .passcode-title {
-            font-size: 20px;
-            margin-bottom: 24px;
-            font-weight: 400;
-            letter-spacing: -0.2px;
-        }
-        .passcode-dots {
-            display: flex;
-            gap: 22px;
-            margin-bottom: 60px;
-        }
-        .passcode-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 1px solid #ffffff;
-            transition: background-color 0.2s ease;
-        }
-        .passcode-dot.filled {
-            background-color: #ffffff;
-            transition: none;
-        }
-        .passcode-numpad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px 26px;
-        }
-        .passcode-btn {
-            width: 78px;
-            height: 78px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: none;
-        }
-        .passcode-btn.pressed {
-            background: rgba(255, 255, 255, 0.3);
-            transition: none;
-        }
-        .passcode-btn .number {
-            font-size: 36px;
-            font-weight: 400;
-            line-height: 1;
-        }
-        .passcode-btn.has-letters .number {
-            margin-top: -4px;
-        }
-        .passcode-btn .letters {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            margin-top: 4px;
-        }
-        .passcode-empty {
-            visibility: hidden;
-        }
-        .passcode-footer {
-            display: flex;
-            justify-content: space-between;
-            padding: 0 32px 36px 32px;
-            font-size: 16px;
-            font-weight: 400;
-        }
-        .passcode-footer-btn {
-            color: white;
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            opacity: 0.9;
-            transition: opacity 0.3s ease;
-            touch-action: none;
-        }
-        .passcode-footer-btn.pressed {
-            opacity: 0.5;
-            transition: none;
-        }
-        #lockscreen-image-view {
-            width: 100vw;
-            height: 100dvh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            inset: 0;
-            z-index: 5;
-            background-color: #000;
-        }
-        #lockscreen-image-wrapper {
-            width: 100vw;
-            height: 100vw;
-            max-height: 100dvh;
-            background-color: #fff;
-            position: relative;
-        }
-        #lockscreen-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.5s ease-in-out;
-        }
-    </style>
+body {
+    background-color: black;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow-x: hidden;
+}
+body.article-mode {
+    background-color: white;
+    font-family: 'CNN Sans Display', sans-serif;
+    overscroll-behavior-y: auto;
+}
+video::-webkit-media-controls,
+video::-webkit-media-controls-enclosure,
+video::-webkit-media-controls-overlay-play-button,
+video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+    -webkit-appearance: none !important;
+}
+video { pointer-events: none; }
+.scan-area { width: 260px; height: 260px; position: relative; }
+.corner { position: absolute; width: 40px; height: 40px; border-color: rgba(255, 255, 255, 0.9); border-style: solid; }
+.tl { top: 0; left: 0; border-width: 3px 0 0 3px; border-top-left-radius: 16px; }
+.tr { top: 0; right: 0; border-width: 3px 3px 0 0; border-top-right-radius: 16px; }
+.bl { bottom: 0; left: 0; border-width: 0 0 3px 3px; border-bottom-left-radius: 16px; }
+.br { bottom: 0; right: 0; border-width: 0 3px 3px 0; border-bottom-right-radius: 16px; }
+
+h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
+.article-content p { font-family: 'Noto Serif Semi Condensed', serif; }
+.article-content h2, .article-content h3 { font-family: 'Noto Serif', serif; }
+.font-semibold { font-weight: 500; }
+.font-extrabold { font-weight: 800; }
+.cnn-red-bar { width: 6px; background-color: #CC0000; flex-shrink: 0; }
+
+.gallery-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 2000; opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+.gallery-overlay.active { opacity: 1; visibility: visible; }
+.gallery-content { position: relative; width: 90%; max-width: 800px; padding-top: 56.25%; overflow: hidden; background-color: #000; }
+.article-image-block img, .gallery-content img {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; pointer-events: none; transition: opacity 0.8s ease-in-out;
+}
+.article-image-block img { object-fit: cover; object-position: top; }
+.gallery-content img { object-fit: contain; object-position: center; }
+.close-button { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; z-index: 2001; }
+.evidence-figure { margin-top: 2rem; margin-bottom: 2rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 4px; background-color: #f7fafc; }
+.evidence-figure img { max-width: 100%; height: auto; margin: 0 auto; display: block; pointer-events: none; }
+.evidence-figure figcaption { margin-top: 0.75rem; text-align: center; font-size: 0.875rem; color: #4a5568; font-style: italic; }
+.spinner { border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top: 4px solid #fff; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.font-playfair { font-family: 'Playfair Display', serif; }
+.font-lora { font-family: 'Lora', serif; }
+#app-wrapper { display: none; }
+#app-wrapper.unlocked { display: block; }
+</style>
 </head>
-<body id="touchArea">
+<body class="h-screen w-screen overflow-hidden select-none text-white">
 
-    <div id="invisible-settings-trigger" class="fixed top-0 right-0 w-20 h-20 z-50"></div>
+<div id="invisible-settings-trigger" class="fixed top-0 right-0 w-24 h-24 z-[999999]"></div>
 
-    <div id="license-modal" class="fixed inset-0 bg-black bg-opacity-90 flex justify-center items-center z-50 p-4" style="display: none;">
-        <div class="font-lora bg-[#fdfaf3] rounded-sm p-6 w-full max-w-sm text-[#1a1a1a] border-2 border-black shadow-2xl text-center">
-            <h2 class="font-playfair text-2xl mb-4 border-b-2 border-gray-400 pb-2 uppercase">License Activation</h2>
-            <p class="mb-6">Please enter your license key to unlock the app.</p>
-            <input type="text" id="license-key-input" class="w-full p-3 text-center border-2 border-black rounded-sm mb-4 bg-white text-lg tracking-widest">
-            <button id="verify-license-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-3 rounded-sm uppercase tracking-wider transition-colors duration-300 flex items-center justify-center h-12">
-                <span>Activate</span>
+<div id="license-modal" class="fixed inset-0 bg-black bg-opacity-90 flex justify-center items-center z-[1000000] p-4" style="display: none;">
+    <div class="font-lora bg-[#fdfaf3] rounded-sm p-6 w-full max-w-sm text-[#1a1a1a] border-2 border-black shadow-2xl text-center">
+        <h2 class="font-playfair text-2xl mb-4 border-b-2 border-gray-400 pb-2 uppercase">License Activation</h2>
+        <p class="mb-6">Please enter your license key to unlock the app.</p>
+        <input type="text" id="license-key-input" class="w-full p-3 text-center border-2 border-black rounded-sm mb-4 bg-white text-lg tracking-widest outline-none">
+        <button id="verify-license-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-3 rounded-sm uppercase tracking-wider flex items-center justify-center h-12">
+            <span>Activate</span>
+        </button>
+        <p id="license-error" class="text-red-600 mt-4 text-sm h-5"></p>
+    </div>
+</div>
+
+<div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center hidden z-[1000000] p-4">
+    <div class="font-lora bg-[#fdfaf3] rounded-sm p-6 w-11/12 max-w-sm text-[#1a1a1a] border-2 border-black shadow-2xl h-[85vh] overflow-y-auto">
+        <h2 id="settings-title" class="font-playfair text-2xl mb-4 border-b-2 border-gray-400 pb-2 uppercase">Settings</h2>
+        
+        <div id="custom-id-section" class="my-6">
+            <label id="custom-id-label" class="font-playfair block mb-2 font-bold">Custom ID:</label>
+            <p id="custom-id-desc" class="text-sm mb-2">Set a 6-digit ID to link with your printed QR code.</p>
+            <input type="number" id="custom-id-input" class="w-full p-3 text-center border-2 border-black rounded-sm bg-white text-lg tracking-widest outline-none" oninput="this.value=this.value.slice(0,6)">
+            <button id="change-id-btn" class="hidden font-playfair w-full mt-2 p-2 rounded-sm border-2 border-black uppercase tracking-wider">Change ID</button>
+            <p id="custom-id-error" class="text-red-600 mt-2 text-sm h-5"></p>
+            <div id="id-actions-container" class="flex space-x-2 mt-4">
+                <button id="download-qr-btn" class="font-playfair w-full block bg-black text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider">Download QR</button>
+                <button id="delete-id-btn" class="font-playfair w-full block bg-red-700 text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider transition-colors duration-300">Delete ID</button>
+            </div>
+        </div>
+
+        <div class="my-6">
+            <label id="language-label" class="font-playfair block mb-2 font-bold">Language:</label>
+            <div class="flex space-x-4">
+                <button id="lang-id" class="font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider">Indonesia</button>
+                <button id="lang-eng" class="font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider">English</button>
+            </div>
+        </div>
+        
+        <button id="save-settings-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-2 rounded-sm uppercase tracking-wider mt-6">Save & Close</button>
+        
+        <div class="mt-6 border-t-2 border-gray-400 pt-4">
+            <button id="update-app-btn" class="font-playfair w-full bg-blue-700 text-[#fdfaf3] p-2 rounded-sm uppercase tracking-wider flex justify-center items-center h-10">
+                <span>Check Update</span>
             </button>
-            <p id="license-error" class="text-red-600 mt-4 text-sm h-5"></p>
+            <p id="update-status" class="text-xs text-center mt-2 h-4"></p>
         </div>
     </div>
+</div>
 
-    <div id="app-wrapper">
-        <div id="settings-toast" class="hidden fixed top-4 left-1/2 -translate-x-1/2 w-11/12 max-w-sm bg-[#fdfaf3] text-[#1a1a1a] p-3 rounded-sm shadow-lg z-30 flex items-center font-lora border-2 border-black">
-            <button id="close-toast-btn" class="text-3xl font-bold leading-none pr-4 pb-1">&times;</button>
-            <p id="settings-toast-text" class="text-sm">Tip: Tap the top-right corner for settings.</p>
-        </div>
-
-        <div id="feature-toast" class="hidden fixed top-20 left-1/2 -translate-x-1/2 w-11/12 max-w-sm bg-black text-[#fdfaf3] p-4 rounded-sm shadow-2xl z-40 flex items-start font-lora border border-gray-700">
-            <button id="close-feature-btn" class="text-3xl font-bold leading-none pr-4">&times;</button>
-            <div>
-                <h3 class="font-playfair font-bold text-lg mb-1">New Feature!</h3>
-                <p class="text-sm">Lockscreen Input mode is now available in settings.</p>
+<div id="app-wrapper">
+    <div id="scanner-view" class="fixed inset-0 z-50 bg-black">
+        <video id="video" autoplay playsinline muted class="fixed inset-0 w-full h-full object-cover z-0"></video>
+        <div id="overlay" class="fixed inset-0 z-20 flex flex-col justify-center items-center pointer-events-none">
+            <div class="scan-area">
+                <div class="corner tl"></div>
+                <div class="corner tr"></div>
+                <div class="corner bl"></div>
+                <div class="corner br"></div>
             </div>
         </div>
-
-        <div id="classic-mode-container" style="display: none;">
-            <div id="display-area">
-                <div id="slide-container"></div>
-            </div>
-        </div>
-
-        <div id="passcode-ui" style="display: none;">
-            <div class="passcode-main">
-                <div class="passcode-title">Enter Passcode</div>
-                <div class="passcode-dots">
-                    <div class="passcode-dot"></div>
-                    <div class="passcode-dot"></div>
-                    <div class="passcode-dot"></div>
-                    <div class="passcode-dot"></div>
-                </div>
-                <div class="passcode-numpad">
-                    <button class="passcode-btn key-btn"><span class="number">1</span><span class="letters"></span></button>
-                    <button class="passcode-btn key-btn has-letters"><span class="number">2</span><span class="letters">A B C</span></button>
-                    <button class="passcode-btn key-btn has-letters"><span class="number">3</span><span class="letters">D E F</span></button>
-                    <button class="passcode-btn key-btn has-letters"><span class="number">4</span><span class="letters">G H I</span></button>
-                    <button class="passcode-btn key-btn has-letters"><span class="number">5</span><span class="letters">J K L</span></button>
-                    <button class="passcode-btn key-btn has-letters"><span class="number">6</span><span class="letters">M N O</span></button>
-                    <button class="passcode-btn key-btn has-letters"><span class="number">7</span><span class="letters">P Q R S</span></button>
-                    <button class="passcode-btn key-btn has-letters"><span class="number">8</span><span class="letters">T U V</span></button>
-                    <button class="passcode-btn key-btn has-letters"><span class="number">9</span><span class="letters">W X Y Z</span></button>
-                    <div class="passcode-empty"></div>
-                    <button class="passcode-btn key-btn"><span class="number">0</span></button>
-                    <div class="passcode-empty"></div>
-                </div>
-            </div>
-            <div class="passcode-footer">
-                <button class="passcode-footer-btn">Emergency</button>
-                <button class="passcode-footer-btn">Cancel</button>
-            </div>
-        </div>
-
-        <div id="lockscreen-image-view" style="display: none;">
-            <div id="lockscreen-image-wrapper">
-                <img id="lockscreen-img" src="" alt="">
-            </div>
-        </div>
-
-        <div id="history-overlay"></div>
-
-        <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center hidden z-50 p-4">
-            <div class="font-lora bg-[#fdfaf3] rounded-sm p-6 w-11/12 max-w-sm text-[#1a1a1a] border-2 border-black shadow-2xl h-[85vh] overflow-y-auto">
-                <h2 id="settings-title" class="font-playfair text-2xl mb-4 border-b-2 border-gray-400 pb-2 uppercase">Settings</h2>
-                
-                <div class="my-6">
-                    <label id="app-mode-label" class="font-playfair block mb-2 font-bold">App Mode:</label>
-                    <select id="app-mode-select" class="w-full p-3 border-2 border-black rounded-sm bg-white text-lg transition-colors duration-200">
-                        <option value="classic">Classic (Swipe)</option>
-                        <option value="lockscreen">Lockscreen</option>
-                    </select>
-                </div>
-
-                <div id="delay-setting-container" class="my-6 hidden">
-                    <label id="transition-delay-label" class="font-playfair block mb-2 font-bold">Transition Delay (Sec):</label>
-                    <input type="number" id="transition-delay-input" class="w-full p-3 text-center border-2 border-black rounded-sm bg-white text-lg transition-colors duration-200" value="3" min="1" max="15">
-                </div>
-
-                <div id="custom-id-section" class="my-6">
-                    <label id="custom-id-label" for="custom-id-input" class="font-playfair block mb-2 font-bold">Custom ID:</label>
-                    <p id="custom-id-desc" class="text-sm mb-2">Set a 6-digit ID to link with your printed QR code.</p>
-                    <input type="number" id="custom-id-input" class="w-full p-3 text-center border-2 border-black rounded-sm bg-white text-lg tracking-widest transition-colors duration-200" oninput="this.value=this.value.slice(0,6)">
-                    <button id="change-id-btn" class="hidden font-playfair w-full mt-2 p-2 rounded-sm border-2 border-black uppercase tracking-wider hover:bg-gray-200">Change ID</button>
-                    <p id="custom-id-error" class="text-red-600 mt-2 text-sm h-5"></p>
-                    <div id="id-actions-container" class="flex space-x-2 mt-4">
-                        <button id="download-qr-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider transition-colors duration-300">Download QR</button>
-                        <button id="delete-id-btn" class="font-playfair w-full block bg-red-700 hover:bg-red-800 text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider transition-colors duration-300">Delete ID</button>
-                    </div>
-                </div>
-
-                <div class="my-6">
-                    <label id="language-label" class="font-playfair block mb-2 font-bold">Language:</label>
-                    <div class="flex space-x-4">
-                        <button id="lang-id" class="font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider">Indonesia</button>
-                        <button id="lang-eng" class="font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider">English</button>
-                    </div>
-                </div>
-                
-                <a href="user-guide.html" id="read-instructions-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-2 rounded-sm text-center uppercase tracking-wider transition-colors duration-300 mt-6">Read Instructions</a>
-                <button id="save-settings-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-2 rounded-sm uppercase tracking-wider transition-colors duration-300 mt-2">Save & Close</button>
-                
-                <div class="mt-6 border-t-2 border-gray-400 pt-4">
-                    <button id="update-app-btn" class="font-playfair w-full bg-blue-700 hover:bg-blue-800 text-[#fdfaf3] p-2 rounded-sm uppercase tracking-wider transition-colors duration-300 flex justify-center items-center h-10">
-                        <span>Check Update</span>
-                    </button>
-                    <p id="update-status" class="text-xs text-center mt-2 h-4"></p>
-                </div>
-            </div>
-        </div>
+        <canvas id="canvas" class="hidden"></canvas>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+    <div id="article-view" class="hidden relative z-40 bg-white text-gray-900 w-full min-h-screen pb-20">
+        <header class="flex items-center justify-between py-2 bg-white sticky top-0 z-10 px-4 sm:px-6 lg:px-8 shadow-sm">
+            <div class="flex items-center space-x-2 max-w-4xl mx-auto w-full">
+                <button class="text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/960px-CNN.svg.png" alt="Logo" class="h-5">
+                <span class="font-semibold text-lg">World</span>
+            </div>
+        </header>
 
-        const img1 = new Image(); img1.src = 'https://cnid.my.id/image1.jpg';
-        const img2 = new Image(); img2.src = 'https://cnid.my.id/image2.jpg';
+        <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-8">
+            <div class="border-t-2 border-black"></div>
+            <article>
+                <div class="flex items-center text-xs text-gray-500 mt-4 mb-4">
+                    <span class="font-semibold">World</span>
+                    <svg class="w-3 h-3 mx-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Americas</span>
+                    <span class="mx-2">•</span>
+                    <span>5 Min Read</span>
+                </div>
 
-        let originalSourceCode = '';
-        fetch(window.location.href).then(r => r.text()).then(t => originalSourceCode = t).catch(() => {});
+                <div class="flex items-start mb-6 -ml-4 sm:-ml-6 lg:-ml-8">
+                    <div class="cnn-red-bar self-stretch"></div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight pl-4 sm:pl-6 lg:pl-8">Tragedi Mengejutkan: Penemuan di Kediaman Keluarga Smith</h1>
+                </div>
 
-        const licenseModal = document.getElementById('license-modal');
-        const licenseKeyInput = document.getElementById('license-key-input');
-        const verifyLicenseBtn = document.getElementById('verify-license-btn');
-        const licenseError = document.getElementById('license-error');
-        const appWrapper = document.getElementById('app-wrapper');
-        const settingsToast = document.getElementById('settings-toast');
-        const closeToastBtn = document.getElementById('close-toast-btn');
-        const settingsToastText = document.getElementById('settings-toast-text');
-        const featureToast = document.getElementById('feature-toast');
-        const closeFeatureBtn = document.getElementById('close-feature-btn');
-        const displayArea = document.getElementById('display-area');
-        const slideContainer = document.getElementById('slide-container');
-        const touchArea = document.getElementById('touchArea');
-        const historyOverlayElement = document.getElementById('history-overlay');
-        const settingsModal = document.getElementById('settings-modal');
-        const settingsTitle = document.getElementById('settings-title');
-        const languageLabel = document.getElementById('language-label');
-        const langIdButton = document.getElementById('lang-id');
-        const langEngButton = document.getElementById('lang-eng');
-        const readInstructionsButton = document.getElementById('read-instructions-btn');
-        const customIdSection = document.getElementById('custom-id-section');
-        const customIdInput = document.getElementById('custom-id-input');
-        const customIdError = document.getElementById('custom-id-error');
-        const changeIdBtn = document.getElementById('change-id-btn');
-        const idActionsContainer = document.getElementById('id-actions-container');
-        const downloadQrBtn = document.getElementById('download-qr-btn');
-        const deleteIdBtn = document.getElementById('delete-id-btn');
-        const saveSettingsBtn = document.getElementById('save-settings-btn');
-        const updateAppBtn = document.getElementById('update-app-btn');
-        const updateStatus = document.getElementById('update-status');
-        const invisibleSettingsTrigger = document.getElementById('invisible-settings-trigger');
+                <div class="flex items-center text-gray-600 mb-1 text-xs">
+                    <span class="font-semibold">Published</span>
+                    <time datetime="2023-10-15 10:00" class="ml-1">10:00 AM EDT, Sun October 15, 2023</time>
+                </div>
+                <p class="text-gray-700 mb-4 text-sm">
+                    By <span class="font-semibold">CNN Reporter</span>
+                </p>
 
-        const appModeSelect = document.getElementById('app-mode-select');
-        const delaySettingContainer = document.getElementById('delay-setting-container');
-        const transitionDelayInput = document.getElementById('transition-delay-input');
-        const appModeLabel = document.getElementById('app-mode-label');
-        const transitionDelayLabel = document.getElementById('transition-delay-label');
-        const customIdLabel = document.getElementById('custom-id-label');
-        const customIdDesc = document.getElementById('custom-id-desc');
+                <figure class="relative w-screen h-0 pb-[75%] bg-gray-300 overflow-hidden mb-8 ml-[calc(50%-50vw)] article-image-block" id="articleImageContainer">
+                    <img id="image2" src="https://cnid.my.id/image2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" style="object-position: top; opacity: 1;">
+                    <img id="image1" src="https://cnid.my.id/image1.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" style="object-position: top; opacity: 1;">
+                    <figcaption class="absolute bottom-0 left-0 w-full bg-white bg-opacity-80 p-2 text-xs text-gray-600">Dokumentasi kepolisian di lokasi kejadian perkara.</figcaption>
+                </figure>
 
-        const classicModeContainer = document.getElementById('classic-mode-container');
-        const passcodeUi = document.getElementById('passcode-ui');
-        const lockscreenImageView = document.getElementById('lockscreen-image-view');
-        const lockscreenImg = document.getElementById('lockscreen-img');
-        const passcodeDots = document.querySelectorAll('.passcode-dot');
-        const passcodeButtons = document.querySelectorAll('.key-btn');
-        const passcodeFooterBtns = document.querySelectorAll('.passcode-footer-btn');
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCFDxFe2PnyxaLRb7VctQSHhQh7ZKoSDaU",
-            authDomain: "atmamagicbyheri.firebaseapp.com",
-            projectId: "atmamagicbyheri",
-            storageBucket: "atmamagicbyheri.appspot.com",
-            messagingSenderId: "672288947327",
-            appId: "1:672288947327:web:4ee5d222045bfaf6ed934a"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        const translations = {
-            id: {
-                victimName: 'Nama Korban:',
-                crimeScene: 'Lokasi Kejadian:',
-                weapon: 'Alat yang Dipakai:',
-                noHistory: 'Tidak ada riwayat pilihan.',
-                settingsTitle: 'Pengaturan',
-                languageLabel: 'Bahasa:',
-                readInstructions: 'Baca Instruksi',
-                langId: 'Indonesia',
-                langEng: 'English',
-                mustSetId: 'ID kustom harus diisi sebelum keluar.',
-                licenseActivation: 'Aktivasi Lisensi',
-                licensePrompt: 'Silakan masukkan kunci lisensi Anda.',
-                activateBtn: 'Aktifkan',
-                settingsTip: 'Kiat: Ketuk sudut kanan atas untuk pengaturan.',
-                customIdLabel: 'ID Kustom:',
-                customIdPrompt: 'Atur 6-digit ID untuk kode QR.',
-                changeIdBtn: 'Ganti ID',
-                downloadQrBtn: 'Unduh QR',
-                deleteIdBtn: 'Hapus ID',
-                confirmDeleteBtn: 'Konfirmasi Hapus?',
-                saveAndCloseBtn: 'Simpan & Tutup',
-                closeBtn: 'Tutup',
-                errorIdDigits: 'ID harus terdiri dari 6 digit.',
-                errorIdTaken: 'ID ini sudah digunakan.',
-                errorIdUpdateFailed: 'Gagal memperbarui ID. Periksa koneksi.',
-                errorIdMismatch: 'Kesalahan: ID tidak cocok.',
-                idDeletedSuccess: 'ID {id} telah dihapus.',
-                errorIdDeleteFailed: 'Gagal menghapus ID.',
-                errorSetIdFirstDownload: 'Harap atur ID terlebih dahulu.',
-                appModeLabel: 'Mode Aplikasi:',
-                transitionDelayLabel: 'Jeda Transisi Gambar (Detik):',
-                modeClassic: 'Klasik (Usap)',
-                modeLockscreen: 'Kunci Layar',
-                checkUpdateBtn: 'Periksa Pembaruan',
-                upToDate: 'Aplikasi Anda sudah versi terbaru!',
-                updateCompleted: 'Pembaruan selesai!'
-            },
-            eng: {
-                victimName: "Victim's Name:",
-                crimeScene: 'Crime Scene:',
-                weapon: 'Weapon Used:',
-                noHistory: 'No selection history.',
-                settingsTitle: 'Settings',
-                languageLabel: 'Language:',
-                readInstructions: 'Read Instructions',
-                langId: 'Indonesia',
-                langEng: 'English',
-                mustSetId: 'Custom ID must be set before exiting.',
-                licenseActivation: 'License Activation',
-                licensePrompt: 'Please enter your license key to unlock the app.',
-                activateBtn: 'Activate',
-                settingsTip: 'Tip: Tap the top-right corner for settings.',
-                customIdLabel: 'Custom ID:',
-                customIdPrompt: 'Set a 6-digit ID for your printed QR code.',
-                changeIdBtn: 'Change ID',
-                downloadQrBtn: 'Download QR',
-                deleteIdBtn: 'Delete ID',
-                confirmDeleteBtn: 'Confirm Delete?',
-                saveAndCloseBtn: 'Save & Close',
-                closeBtn: 'Close',
-                errorIdDigits: 'ID must be exactly 6 digits.',
-                errorIdTaken: 'This ID is already taken.',
-                errorIdUpdateFailed: 'Failed to update ID. Check connection.',
-                errorIdMismatch: 'Error: ID mismatch.',
-                idDeletedSuccess: 'ID {id} has been deleted.',
-                errorIdDeleteFailed: 'Failed to delete ID.',
-                errorSetIdFirstDownload: 'Please set a 6-digit ID first.',
-                appModeLabel: 'App Mode:',
-                transitionDelayLabel: 'Image Transition Delay (Sec):',
-                modeClassic: 'Classic (Swipe)',
-                modeLockscreen: 'Lockscreen',
-                checkUpdateBtn: 'Check Update',
-                upToDate: 'Your app is up to date!',
-                updateCompleted: 'Update completed!'
-            }
-        };
-
-        const displayContent = {
-            id: [
-                { title: translations.id.victimName, items: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice', 'Dorothy', 'Florence', 'Mildred', 'Virginia'] },
-                { title: translations.id.crimeScene, items: ['Kamar lantai dua', 'Loteng', 'Gudang belakang', 'Ruang bawah tanah', 'Lorong dekat dapur', 'Perpustakaan', 'Teras samping', 'Garasi tua', 'Ruang makan'] },
-                { title: translations.id.weapon, items: ['Pisau', 'Palu', 'Gunting', 'Linggis', 'Batang besi', 'Tali', 'Racun', 'Revolver', 'Kapak'] }
-            ],
-            eng: [
-                { title: translations.eng.victimName, items: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice', 'Dorothy', 'Florence', 'Mildred', 'Virginia'] },
-                { title: translations.eng.crimeScene, items: ['Second floor room', 'Attic', 'Back warehouse', 'Basement', 'Hallway near kitchen', 'Library', 'Side porch', 'Old garage', 'Dining room'] },
-                { title: translations.eng.weapon, items: ['Knife', 'Hammer', 'Scissors', 'Crowbar', 'Iron rod', 'Rope', 'Poison', 'Revolver', 'Axe'] }
-            ]
-        };
-
-        let startX = 0, startY = 0, gestureCount = 0, currentSlideIndex = 0;
-        const gestureSequence = [], rawGestures = [];
-        let isSessionActive = true, tapCount = 0, lastTapTime = 0, tapHoldTimeout = null;
-        let startArea = null, isDragging = false, initialTranslate = 0;
-        let isImageRevealed = false;
-        let deleteConfirmationTimeout = null;
-        let oldIdToReplace = null;
-        let initialSettings = {};
-        
-        let customId = '';
-        let currentLanguage = 'eng';
-        let currentAppMode = 'classic';
-        let currentTransitionDelay = 3;
-        let inputPasscodeLength = 0;
-        let isProcessingPasscode = false;
-        let currentPasscodeInput = [];
-
-        const SWIPE_THRESHOLD = 50, TAP_THRESHOLD = 10, DOUBLE_TAP_TIMEOUT = 300;
-        const TAP_HOLD_DURATION = 500, TOTAL_SLIDES = 4, SLIDE_GAP = 20;
-        const gestureToCode = { 'A': 'Fl', 'B': 'uC', 'C': 'zW', 'D': 'Xy', 'E': 'Qr', 'F': 'aA', 'G': 'bB', 'H': 'cC', 'I': 'dD' };
-
-        const showLicenseModal = () => { licenseModal.style.display = 'flex'; appWrapper.classList.remove('unlocked'); };
-        
-        const showToastsIfNeeded = () => { 
-            if (!localStorage.getItem('atmaSettingsToastShown')) { 
-                settingsToast.classList.remove('hidden'); 
-                localStorage.setItem('atmaSettingsToastShown', 'true'); 
-            }
-            if (!localStorage.getItem('atmaFeatureLockscreenShown')) {
-                featureToast.classList.remove('hidden');
-            }
-        };
-        
-        const unlockApp = () => {
-            licenseModal.style.display = 'none';
-            appWrapper.classList.add('unlocked');
-            loadSettings();
-            showToastsIfNeeded();
-        };
-
-        const setButtonLoading = (isLoading) => {
-            const buttonContent = verifyLicenseBtn.querySelector('span');
-            const spinner = verifyLicenseBtn.querySelector('.spinner');
-            if (isLoading) {
-                buttonContent.style.display = 'none';
-                if (!spinner) {
-                    const newSpinner = document.createElement('div');
-                    newSpinner.className = 'spinner';
-                    verifyLicenseBtn.appendChild(newSpinner);
-                }
-            } else {
-                buttonContent.style.display = 'inline';
-                if (spinner) spinner.remove();
-            }
-        };
-
-        const verifyLicense = async () => {
-            const key = licenseKeyInput.value.trim().toUpperCase();
-            if (!key) { licenseError.textContent = 'Please enter a license key.'; return; }
-            setButtonLoading(true);
-            licenseError.textContent = '';
-            try {
-                const availableLicenseRef = doc(db, 'availableLicenses', key);
-                const licenseSnap = await getDoc(availableLicenseRef);
-                if (licenseSnap.exists() && licenseSnap.data().status === 'available') {
-                    const originalData = licenseSnap.data();
-                    const activatedLicenseRef = doc(db, 'activatedLicenses', key);
-                    await setDoc(activatedLicenseRef, { ...originalData, status: 'used', uid: auth.currentUser.uid, claimedAt: serverTimestamp() });
-                    await deleteDoc(availableLicenseRef);
-                    localStorage.setItem('atmaLicense', JSON.stringify({ key: key, lastValidated: new Date().getTime() }));
-                    unlockApp();
-                } else {
-                    licenseError.textContent = 'Invalid or already used license key.';
-                }
-            } catch (error) {
-                licenseError.textContent = 'Verification failed. Please try again.';
-            } finally {
-                setButtonLoading(false);
-            }
-        };
-        
-        const checkLicenseOnLoad = async () => {
-            const licenseDataString = localStorage.getItem('atmaLicense');
-            if (!licenseDataString) { showLicenseModal(); return; }
-            const licenseData = JSON.parse(licenseDataString);
-            const sevenDaysInMillis = 7 * 24 * 60 * 60 * 1000;
-            if ((new Date().getTime() - licenseData.lastValidated) < sevenDaysInMillis) { unlockApp(); return; }
-            try {
-                const licenseRef = doc(db, 'activatedLicenses', licenseData.key);
-                const licenseSnap = await getDoc(licenseRef);
-                if (licenseSnap.exists() && licenseSnap.data().uid === auth.currentUser.uid) {
-                    licenseData.lastValidated = new Date().getTime();
-                    localStorage.setItem('atmaLicense', JSON.stringify(licenseData));
-                    unlockApp();
-                } else {
-                    localStorage.removeItem('atmaLicense');
-                    showLicenseModal();
-                    licenseError.textContent = 'License re-validation failed.';
-                }
-            } catch (error) {
-                unlockApp();
-            }
-        };
-
-        window.onload = () => {
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    checkLicenseOnLoad();
-                } else {
-                    signInAnonymously(auth).catch(() => {
-                        showLicenseModal();
-                        licenseError.textContent = "Could not connect to authentication service.";
-                    });
-                }
-            });
-        };
-
-        verifyLicenseBtn.addEventListener('click', verifyLicense);
-        licenseKeyInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') verifyLicense(); });
-        
-        closeToastBtn.addEventListener('click', () => settingsToast.classList.add('hidden'));
-        closeFeatureBtn.addEventListener('click', () => {
-            featureToast.classList.add('hidden');
-            localStorage.setItem('atmaFeatureLockscreenShown', 'true');
-        });
-
-        window.onresize = () => { if (appWrapper.classList.contains('unlocked') && currentAppMode === 'classic') animateToSlide(currentSlideIndex); };
-        
-        function lockIdInputUI() {
-            customIdInput.value = customId;
-            customIdInput.readOnly = true;
-            customIdInput.classList.add('bg-gray-200', 'cursor-not-allowed');
-            changeIdBtn.classList.remove('hidden');
-            idActionsContainer.style.display = 'flex';
-            oldIdToReplace = null; 
-        }
-
-        function unlockIdInputUIForCreation() {
-            customIdInput.value = '';
-            customIdInput.readOnly = false;
-            customIdInput.classList.remove('bg-gray-200', 'cursor-not-allowed');
-            changeIdBtn.classList.add('hidden');
-            idActionsContainer.style.display = 'none';
-            oldIdToReplace = null;
-        }
-
-        function unlockIdInputUIForChange() {
-            oldIdToReplace = customId; 
-            customIdInput.readOnly = false;
-            customIdInput.classList.remove('bg-gray-200', 'cursor-not-allowed');
-            customIdInput.focus();
-            changeIdBtn.classList.add('hidden');
-            idActionsContainer.style.display = 'flex';
-        }
-        
-        function updateSaveButtonState() {
-            const t = translations[currentLanguage];
-            const selectedLang = langIdButton.classList.contains('bg-black') ? 'id' : 'eng';
-            const selectedMode = appModeSelect.value;
-            const selectedDelay = parseInt(transitionDelayInput.value, 10);
-            
-            let idChanged = false;
-            if (!customIdInput.readOnly) {
-                idChanged = customIdInput.value !== customId;
-            }
-
-            if (selectedLang !== initialSettings.lang || idChanged || selectedMode !== initialSettings.mode || selectedDelay !== initialSettings.delay) {
-                saveSettingsBtn.textContent = t.saveAndCloseBtn;
-            } else {
-                saveSettingsBtn.textContent = t.closeBtn;
-            }
-        }
-
-        function resetDeleteButtonState() {
-            if (deleteConfirmationTimeout) {
-                clearTimeout(deleteConfirmationTimeout);
-                deleteConfirmationTimeout = null;
-            }
-            deleteIdBtn.classList.remove('bg-red-900');
-            deleteIdBtn.classList.add('bg-red-700');
-            deleteIdBtn.textContent = translations[currentLanguage].deleteIdBtn;
-        }
-
-        async function openSettingsModal() {
-            initialSettings = {
-                lang: currentLanguage,
-                id: customId,
-                mode: currentAppMode,
-                delay: currentTransitionDelay
-            };
-            
-            appModeSelect.value = currentAppMode;
-            transitionDelayInput.value = currentTransitionDelay;
-            delaySettingContainer.style.display = currentAppMode === 'lockscreen' ? 'block' : 'none';
-
-            updateLanguageUI(currentLanguage);
-            updateStatus.textContent = '';
-            
-            if (customId) lockIdInputUI();
-            else unlockIdInputUIForCreation();
-
-            customIdError.textContent = '';
-            resetDeleteButtonState();
-            settingsModal.classList.remove('hidden');
-        }
-
-        function closeSettingsModal() { 
-            if (!customId) {
-                customIdError.textContent = translations[currentLanguage].mustSetId;
-                return;
-            }
-            resetDeleteButtonState();
-            oldIdToReplace = null;
-            settingsModal.classList.add('hidden'); 
-            customIdError.textContent = '';
-        }
-
-        function updateLanguageUI(lang) {
-            currentLanguage = lang;
-            const t = translations[lang];
-
-            licenseModal.querySelector('h2').textContent = t.licenseActivation;
-            licenseModal.querySelector('p').textContent = t.licensePrompt;
-            verifyLicenseBtn.querySelector('span').textContent = t.activateBtn;
-            settingsToastText.textContent = t.settingsTip;
-            settingsTitle.textContent = t.settingsTitle;
-            customIdLabel.textContent = t.customIdLabel;
-            customIdDesc.textContent = t.customIdPrompt;
-            changeIdBtn.textContent = t.changeIdBtn;
-            downloadQrBtn.textContent = t.downloadQrBtn;
-            languageLabel.textContent = t.languageLabel;
-            readInstructionsButton.textContent = t.readInstructions;
-            langIdButton.textContent = t.langId;
-            langEngButton.textContent = t.langEng;
-            appModeLabel.textContent = t.appModeLabel;
-            transitionDelayLabel.textContent = t.transitionDelayLabel;
-            appModeSelect.options[0].text = t.modeClassic;
-            appModeSelect.options[1].text = t.modeLockscreen;
-            updateAppBtn.querySelector('span').textContent = t.checkUpdateBtn;
-            
-            if (lang === 'id') {
-                 langIdButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-black text-[#fdfaf3]';
-                 langEngButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-transparent text-black';
-            } else {
-                 langEngButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-black text-[#fdfaf3]';
-                 langIdButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-transparent text-black';
-            }
-            updateSaveButtonState();
-            resetDeleteButtonState();
-        }
-
-        async function saveSettings() {
-            const t = translations[currentLanguage];
-            if (saveSettingsBtn.textContent === t.closeBtn) {
-                closeSettingsModal();
-                return;
-            }
-
-            resetDeleteButtonState();
-            
-            const finalLang = langIdButton.classList.contains('bg-black') ? 'id' : 'eng';
-            const finalIdInput = customIdInput.value;
-            const finalMode = appModeSelect.value;
-            let finalDelay = parseInt(transitionDelayInput.value, 10);
-            if (isNaN(finalDelay) || finalDelay < 1) finalDelay = 3;
-
-            const needsReset = finalLang !== initialSettings.lang || (finalIdInput !== customId && finalIdInput) || finalMode !== initialSettings.mode || finalDelay !== initialSettings.delay;
-            const idChanged = finalIdInput !== customId;
-            const isCreating = !customId && finalIdInput;
-            const isReplacing = customId && idChanged;
-
-            if (isCreating || isReplacing) {
-                if (!/^[0-9]{6}$/.test(finalIdInput)) {
-                    customIdError.textContent = t.errorIdDigits;
-                    return;
-                }
-                try {
-                    const newDocRef = doc(db, 'printedQR', finalIdInput);
-                    const docSnap = await getDoc(newDocRef);
-                    if (docSnap.exists()) {
-                        customIdError.textContent = t.errorIdTaken;
-                        return;
-                    }
-                    if (isReplacing) {
-                        const oldDocRef = doc(db, 'printedQR', customId);
-                        await deleteDoc(oldDocRef);
-                    }
-                    await setDoc(newDocRef, { id: '', lang: finalLang, updatedAt: serverTimestamp() });
-                    customId = finalIdInput;
-                } catch (error) {
-                    customIdError.textContent = t.errorIdUpdateFailed;
-                    return;
-                }
-            } else if (finalLang !== initialSettings.lang && customId) {
-                 try {
-                      const docRef = doc(db, 'printedQR', customId);
-                      await setDoc(docRef, { lang: finalLang }, { merge: true });
-                 } catch (error) {}
-            }
-
-            currentLanguage = finalLang;
-            currentAppMode = finalMode;
-            currentTransitionDelay = finalDelay;
-            
-            localStorage.setItem('atmaSettings', JSON.stringify({ id: customId, lang: currentLanguage, mode: currentAppMode, delay: currentTransitionDelay }));
-            closeSettingsModal();
-            if (needsReset) resetApp();
-        }
-        
-        function loadSettings() {
-            const savedSettings = JSON.parse(localStorage.getItem('atmaSettings')) || {};
-            customId = savedSettings.id || '';
-            currentLanguage = savedSettings.lang || 'eng';
-            currentAppMode = savedSettings.mode || 'classic';
-            currentTransitionDelay = savedSettings.delay || 3;
-            resetApp();
-            if (!customId) openSettingsModal();
-        }
-
-        function downloadQrCode() {
-            if (!customId) {
-                customIdError.textContent = translations[currentLanguage].errorSetIdFirstDownload;
-                return;
-            }
-            window.open(`generateqr.html?id=${customId}`, '_blank');
-        }
-        
-        async function deleteId() {
-            const t = translations[currentLanguage];
-            const idToDelete = customIdInput.value;
-            if (!/^[0-9]{6}$/.test(idToDelete) || idToDelete !== customId) {
-                customIdError.textContent = t.errorIdMismatch;
-                resetDeleteButtonState();
-                return;
-            }
-             
-            if (!deleteConfirmationTimeout) {
-                deleteIdBtn.classList.remove('bg-red-700');
-                deleteIdBtn.classList.add('bg-red-900');
-                deleteIdBtn.textContent = t.confirmDeleteBtn;
-                deleteConfirmationTimeout = setTimeout(resetDeleteButtonState, 3000);
-                return;
-            }
-
-            clearTimeout(deleteConfirmationTimeout);
-            
-            try {
-                const docRef = doc(db, 'printedQR', idToDelete);
-                await deleteDoc(docRef);
-                customIdError.textContent = t.idDeletedSuccess.replace('{id}', idToDelete);
-                customId = '';
-                localStorage.setItem('atmaSettings', JSON.stringify({ id: '', lang: currentLanguage, mode: currentAppMode, delay: currentTransitionDelay }));
-                unlockIdInputUIForCreation();
-                updateSaveButtonState();
-            } catch (error) {
-                customIdError.textContent = t.errorIdDeleteFailed;
-            } finally {
-                resetDeleteButtonState();
-            }
-        }
-
-        appModeSelect.addEventListener('change', (e) => {
-            delaySettingContainer.style.display = e.target.value === 'lockscreen' ? 'block' : 'none';
-            updateSaveButtonState();
-        });
-        transitionDelayInput.addEventListener('input', updateSaveButtonState);
-        langIdButton.addEventListener('click', () => updateLanguageUI('id'));
-        langEngButton.addEventListener('click', () => updateLanguageUI('eng'));
-        changeIdBtn.addEventListener('click', unlockIdInputUIForChange);
-        saveSettingsBtn.addEventListener('click', saveSettings);
-        downloadQrBtn.addEventListener('click', downloadQrCode);
-        deleteIdBtn.addEventListener('click', deleteId);
-        customIdInput.addEventListener('input', updateSaveButtonState);
-        
-        updateAppBtn.addEventListener('click', async () => {
-            const btnSpan = updateAppBtn.querySelector('span');
-            const spinner = document.createElement('div');
-            spinner.className = 'spinner';
-            btnSpan.style.display = 'none';
-            updateAppBtn.appendChild(spinner);
-            updateStatus.textContent = '';
-            
-            try {
-                const res = await fetch(window.location.href, { cache: 'no-store' });
-                const newSourceCode = await res.text();
-                
-                if (originalSourceCode && newSourceCode !== originalSourceCode) {
-                    updateStatus.textContent = translations[currentLanguage].updateCompleted;
-                    if ('serviceWorker' in navigator) {
-                        const registrations = await navigator.serviceWorker.getRegistrations();
-                        for (let registration of registrations) {
-                            await registration.unregister();
-                        }
-                    }
-                    setTimeout(() => {
-                        window.location.reload(true);
-                    }, 1000);
-                } else {
-                    updateStatus.textContent = translations[currentLanguage].upToDate;
-                    spinner.remove();
-                    btnSpan.style.display = 'inline';
-                }
-            } catch (err) {
-                spinner.remove();
-                btnSpan.style.display = 'inline';
-                updateStatus.textContent = 'Failed to check update.';
-            }
-        });
-
-        settingsModal.addEventListener('click', (e) => { 
-            if (e.target === settingsModal) { 
-                if (currentLanguage !== initialSettings.lang) updateLanguageUI(initialSettings.lang);
-                closeSettingsModal(); 
-            }
-        });
-        
-        invisibleSettingsTrigger.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            resetApp();
-            openSettingsModal();
-        });
-        invisibleSettingsTrigger.addEventListener('mousedown', (e) => {
-            resetApp();
-            openSettingsModal();
-        });
-
-        async function updatePerformingStatus(isPerforming) {
-            if (!customId || !auth.currentUser) return;
-            try {
-                const docRef = doc(db, 'printedQR', customId);
-                await setDoc(docRef, { isPerforming: isPerforming, updatedAt: serverTimestamp() }, { merge: true });
-            } catch (error) {}
-        }
-
-        function createSlide(slideIndex) {
-            const slide = document.createElement('div');
-            slide.className = 'slide';
-            const slideContent = document.createElement('div');
-            slideContent.className = 'slide-content';
-
-            if (slideIndex < 3) {
-                const contentData = displayContent[currentLanguage][slideIndex];
-                const listItems = contentData.items.map((item, idx) => `<li class="ml-2 text-base font-medium leading-tight">${idx + 1}. ${item}</li>`).join('');
-                slideContent.innerHTML = `
-                    <div class="text-left w-full h-full flex flex-col justify-center">
-                        <h2 class="text-2xl md:text-3xl font-bold mb-3">${contentData.title}</h2>
-                        <ul class="list-none space-y-2 md:space-y-3">${listItems}</ul>
-                    </div>`;
-            } else {
-                slideContent.style.padding = '0';
-                slideContent.innerHTML = `<img src="https://cnid.my.id/image1.jpg">`;
-            }
-            slide.appendChild(slideContent);
-            return slide;
-        }
-        
-        function animateToSlide(slideIndex, isInstant = false) {
-            const previousSlideIndex = currentSlideIndex;
-            const transitionDuration = isInstant ? 0 : 400;
-            slideContainer.style.transition = isInstant ? 'none' : `transform ${transitionDuration / 1000}s ease-in-out`;
-            const slideWidth = displayArea.getBoundingClientRect().width;
-            const totalTranslation = (slideWidth * slideIndex) + (SLIDE_GAP * slideIndex);
-            slideContainer.style.transform = `translateX(-${totalTranslation}px)`;
-            currentSlideIndex = slideIndex;
-            
-            if (!isSessionActive && !isImageRevealed && previousSlideIndex === 3 && currentSlideIndex !== 3) {
-                const lastSlideContent = slideContainer.children[3].querySelector('.slide-content');
-                if(lastSlideContent) {
-                    setTimeout(function() {
-                        lastSlideContent.innerHTML = `<img src="https://cnid.my.id/image2.jpg">`;
-                        isImageRevealed = true;
-                    }, transitionDuration);
-                }
-            }
-        }
-
-        function setupInitialView() {
-            slideContainer.innerHTML = '';
-            for(let i = 0; i < TOTAL_SLIDES; i++) {
-                slideContainer.appendChild(createSlide(i));
-            }
-            animateToSlide(0, true);
-        }
-        
-        function resetApp() {
-            gestureCount = 0;
-            currentSlideIndex = 0;
-            gestureSequence.length = 0;
-            rawGestures.length = 0;
-            currentPasscodeInput = [];
-            isSessionActive = true;
-            tapCount = 0;
-            lastTapTime = 0;
-            isImageRevealed = false;
-            
-            updateLanguageUI(currentLanguage);
-
-            if (currentAppMode === 'classic') {
-                classicModeContainer.style.display = 'flex';
-                passcodeUi.style.display = 'none';
-                lockscreenImageView.style.display = 'none';
-                setupInitialView();
-            } else {
-                classicModeContainer.style.display = 'none';
-                lockscreenImageView.style.display = 'none';
-                passcodeUi.style.display = 'flex';
-                
-                inputPasscodeLength = 0;
-                isProcessingPasscode = false;
-                passcodeDots.forEach(dot => dot.classList.remove('filled'));
-            }
-
-            if (customId) {
-                updatePerformingStatus(true);
-            }
-        }
-
-        function runLockscreenTransition() {
-            passcodeUi.style.display = 'none';
-            lockscreenImageView.style.display = 'flex';
-            lockscreenImg.style.opacity = 1;
-            lockscreenImg.src = 'https://cnid.my.id/image1.jpg';
-
-            setTimeout(() => {
-                lockscreenImg.style.opacity = 0;
-                setTimeout(() => {
-                    lockscreenImg.src = 'https://cnid.my.id/image2.jpg';
-                    lockscreenImg.style.opacity = 1;
-                }, 500);
-            }, currentTransitionDelay * 1000);
-        }
-        
-        async function updateGestureDataInFirestore() {
-            if (!customId || !auth.currentUser) return;
-            try {
-                const docRef = doc(db, 'printedQR', customId);
-                const dataToSave = { id: gestureSequence.join(''), lang: currentLanguage, updatedAt: serverTimestamp() };
-                await setDoc(docRef, dataToSave, { merge: true }); 
-            } catch (error) {}
-        }
-
-        function showHistoryOverlay() {
-            if (rawGestures.length === 0) {
-                historyOverlayElement.innerHTML = `<ul><li>${translations[currentLanguage].noHistory}</li></ul>`;
-            } else {
-                const gestureToIndex = { 'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8 };
-                const historyHtml = `<ul>${rawGestures.map((gesture, i) => {
-                    const itemIndex = gestureToIndex[gesture];
-                    const itemText = displayContent[currentLanguage][i].items[itemIndex];
-                    return `<li class="mb-1">${itemText}</li>`;
-                }).join('')}</ul>`;
-                historyOverlayElement.innerHTML = historyHtml;
-            }
-            historyOverlayElement.classList.add('show');
-        }
-
-        function hideHistoryOverlay() { historyOverlayElement.classList.remove('show'); }
-
-        function getGridArea(clientX, clientY) {
-            const rect = displayArea.getBoundingClientRect();
-            if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) return null;
-            const localX = clientX - rect.left;
-            const localY = clientY - rect.top;
-            
-            const col = Math.floor((localX / rect.width) * 3);
-            const row = Math.floor((localY / rect.height) * 3);
-            
-            const safeCol = Math.max(0, Math.min(2, col));
-            const safeRow = Math.max(0, Math.min(2, row));
-            
-            const digit = (safeRow * 3) + safeCol + 1;
-            const digitToGesture = { '1':'A', '2':'B', '3':'C', '4':'D', '5':'E', '6':'F', '7':'G', '8':'H', '9':'I' };
-            return digitToGesture[digit.toString()];
-        }
-
-        function handlePasscodePress(e) {
-            if (e.type === 'touchstart') e.preventDefault();
-            e.stopPropagation();
-            this.classList.add('pressed');
-            
-            if (isProcessingPasscode) return;
-
-            const digit = this.querySelector('.number').textContent;
-            const digitToGesture = { '1':'A', '2':'B', '3':'C', '4':'D', '5':'E', '6':'F', '7':'G', '8':'H', '9':'I' };
-            
-            if (inputPasscodeLength < 4) {
-                passcodeDots[inputPasscodeLength].classList.add('filled');
-                currentPasscodeInput.push(digit);
-
-                if (inputPasscodeLength < 3) {
-                    const mappedGesture = digitToGesture[digit];
-                    if (mappedGesture) {
-                        const gestureCode = gestureToCode[mappedGesture];
-                        gestureSequence.push(gestureCode);
-                        rawGestures.push(mappedGesture);
-                        gestureCount++;
-                    }
-                }
-                inputPasscodeLength++;
-            }
-            
-            if (inputPasscodeLength === 4) {
-                isProcessingPasscode = true;
-                const isInvalid = currentPasscodeInput.slice(0, 3).some(d => d === '0');
-
-                setTimeout(() => {
-                    if (isInvalid) {
-                        const dotsContainer = document.querySelector('.passcode-dots');
-                        dotsContainer.classList.add('shake');
-                        
-                        setTimeout(() => {
-                            dotsContainer.classList.remove('shake');
-                            passcodeDots.forEach(dot => dot.classList.remove('filled'));
-                            inputPasscodeLength = 0;
-                            currentPasscodeInput = [];
-                            gestureSequence.length = 0;
-                            rawGestures.length = 0;
-                            gestureCount = 0;
-                            isProcessingPasscode = false;
-                        }, 400);
-                    } else {
-                        passcodeDots.forEach(dot => dot.classList.remove('filled'));
-                        inputPasscodeLength = 0;
-                        currentPasscodeInput = [];
-                        isProcessingPasscode = false;
-                        isSessionActive = false;
-                        updateGestureDataInFirestore();
-                        runLockscreenTransition();
-                    }
-                }, 50);
-            }
-        }
-
-        function handlePasscodeRelease(e) {
-            e.stopPropagation();
-            this.classList.remove('pressed');
-        }
-
-        passcodeButtons.forEach(btn => {
-            btn.addEventListener('touchstart', handlePasscodePress, { passive: false });
-            btn.addEventListener('mousedown', handlePasscodePress);
-            btn.addEventListener('touchend', handlePasscodeRelease);
-            btn.addEventListener('touchcancel', handlePasscodeRelease);
-            btn.addEventListener('mouseup', handlePasscodeRelease);
-            btn.addEventListener('mouseleave', handlePasscodeRelease);
-        });
-
-        passcodeFooterBtns.forEach(btn => {
-            btn.addEventListener('touchstart', function(e) { if(e.type==='touchstart') e.preventDefault(); e.stopPropagation(); this.classList.add('pressed'); }, { passive: false });
-            btn.addEventListener('mousedown', function(e) { e.stopPropagation(); this.classList.add('pressed'); });
-            btn.addEventListener('touchend', function(e) { e.stopPropagation(); this.classList.remove('pressed'); });
-            btn.addEventListener('touchcancel', function(e) { e.stopPropagation(); this.classList.remove('pressed'); });
-            btn.addEventListener('mouseup', function(e) { e.stopPropagation(); this.classList.remove('pressed'); });
-            btn.addEventListener('mouseleave', function(e) { e.stopPropagation(); this.classList.remove('pressed'); });
-        });
-
-        touchArea.addEventListener('touchstart', (e) => {
-            if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal')) return;
-            
-            const touch = e.touches[0];
-            startX = touch.clientX;
-            startY = touch.clientY;
-
-            if (currentAppMode === 'lockscreen' && isSessionActive) return;
-
-            if (isSessionActive) {
-                startArea = getGridArea(startX, startY);
-            } else {
-                isDragging = false;
-                slideContainer.style.transition = 'none';
-                const slideWidth = displayArea.getBoundingClientRect().width;
-                initialTranslate = -((slideWidth * currentSlideIndex) + (SLIDE_GAP * currentSlideIndex));
-                tapHoldTimeout = setTimeout(showHistoryOverlay, TAP_HOLD_DURATION);
-            }
-        }, { passive: false });
-
-        touchArea.addEventListener('touchmove', (e) => {
-            if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal')) return;
-            if (currentAppMode === 'lockscreen' && isSessionActive) return;
-            
-            if (!isSessionActive) {
-                const currentX = e.touches[0].clientX;
-                const diffX = currentX - startX;
-                if (Math.abs(diffX) > TAP_THRESHOLD) {
-                    isDragging = true;
-                    if (tapHoldTimeout) clearTimeout(tapHoldTimeout);
-                }
-                if (isDragging) {
-                    slideContainer.style.transform = `translateX(${initialTranslate + diffX}px)`;
-                }
-            }
-        }, { passive: false });
-
-        touchArea.addEventListener('touchend', (e) => {
-            if (!appWrapper.classList.contains('unlocked') || e.target.closest('#settings-modal')) return;
-            if (currentAppMode === 'lockscreen' && isSessionActive) return;
-
-            if (tapHoldTimeout) clearTimeout(tapHoldTimeout);
-            hideHistoryOverlay();
-
-            const endX = e.changedTouches[0].clientX;
-            const endY = e.changedTouches[0].clientY;
-            const diffX = endX - startX;
-            const absDiffX = Math.abs(diffX);
-            const absDiffY = Math.abs(endY - startY);
-            const isTap = absDiffX < TAP_THRESHOLD && absDiffY < TAP_THRESHOLD;
-
-            if (!isSessionActive) {
-                if (isTap) {
-                    const currentTime = new Date().getTime();
-                    tapCount = (currentTime - lastTapTime < DOUBLE_TAP_TIMEOUT) ? tapCount + 1 : 1;
-                    lastTapTime = currentTime;
+                <div class="article-content text-lg leading-relaxed mb-4" id="articleContent">
+                    <p class="mb-4">Polisi setempat baru saja merilis detail awal mengenai insiden mengejutkan yang terjadi akhir pekan lalu. Pihak berwenang segera mengamankan area tersebut setelah menerima panggilan darurat pada dini hari.</p>
+                    <p class="mb-4">Berdasarkan laporan forensik sementara, penyelidik masih mengumpulkan bukti-bukti krusial. Garis polisi telah dipasang ketat di sekeliling properti untuk mencegah campur tangan dari pihak luar.</p>
                     
-                    if (tapCount === 2) {
-                        if (customId) updatePerformingStatus(false);
-                    } else if (tapCount === 3) {
-                        resetApp();
-                    }
-                } else if (currentAppMode === 'classic') {
-                    if (absDiffX > SWIPE_THRESHOLD) {
-                        let newSlideIndex = currentSlideIndex;
-                        if (diffX < 0 && currentSlideIndex < TOTAL_SLIDES - 1) newSlideIndex++;
-                        else if (diffX > 0 && currentSlideIndex > 0) newSlideIndex--;
-                        animateToSlide(newSlideIndex);
-                    } else {
-                        animateToSlide(currentSlideIndex);
-                    }
-                }
-                isDragging = false;
-                return;
-            }
+                    <h2 class="text-xl font-bold mb-4 mt-6">Investigasi Lanjutan</h2>
+                    <p class="mb-4">Tim detektif saat ini sedang menelusuri rekaman kamera keamanan di sekitar lingkungan tersebut dan memeriksa saksi mata potensial. Beberapa tetangga melaporkan aktivitas tidak biasa pada malam kejadian.</p>
+                    <p class="mb-4">Pihak kepolisian mengimbau siapa pun yang memiliki informasi terkait kejadian ini untuk segera menghubungi hotline yang telah disediakan, karena setiap petunjuk bisa sangat berharga untuk memecahkan kasus ini.</p>
+                </div>
+            </article>
 
-            if (!customId) {
-                const originalText = settingsToastText.textContent;
-                settingsToastText.textContent = 'Please set a Custom ID in settings first.';
-                settingsToast.classList.remove('hidden');
-                setTimeout(() => {
-                    settingsToast.classList.add('hidden');
-                    settingsToastText.textContent = originalText;
-                }, 3000);
-                return;
-            }
+            <section class="border-t border-gray-200 pt-6 mt-8">
+                <h2 class="text-2xl font-bold mb-4">Related News</h2>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a href="#" class="text-blue-600">Perkembangan Kasus: Detektif Temukan Petunjuk Baru</a></li>
+                    <li class="mb-2"><a href="#" class="text-blue-600">Sejarah Kepemilikan Properti Keluarga Smith</a></li>
+                    <li class="mb-2"><a href="#" class="text-blue-600">Statistik Keamanan Lingkungan di Tahun 2023</a></li>
+                </ul>
+            </section>
+        </main>
 
-            let detectedGesture = '';
-            if (!isTap && startArea && diffX < -SWIPE_THRESHOLD && absDiffX > absDiffY) {
-                detectedGesture = startArea;
-            }
-            
-            startArea = null;
-            if (!detectedGesture) return;
+        <section class="bg-black text-white py-8 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="relative mb-8">
+                    <input type="text" placeholder="Search CNN..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-md py-3 pl-4 pr-10 outline-none">
+                    <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="border-b border-gray-700 mb-8 pb-8">
+                    <a href="#" class="block text-center text-white text-lg font-semibold">Sign In</a>
+                </div>
+            </div>
+        </section>
 
-            const gestureCode = gestureToCode[detectedGesture];
-            if (gestureCode) {
-                gestureSequence.push(gestureCode);
-                rawGestures.push(detectedGesture);
-                gestureCount++;
-                currentSlideIndex++;
-                animateToSlide(currentSlideIndex);
+        <footer class="bg-gray-900 text-gray-300 py-8 text-center">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-center mb-6">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/960px-CNN.svg.png" alt="CNN Logo" class="h-6 mr-2 filter grayscale">
+                    <span class="font-bold text-xl text-white">World</span>
+                </div>
+                <p class="text-xs text-gray-500 leading-relaxed">© 2024 Cable News Network. A Warner Bros. Discovery Company. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
 
-                if (gestureCount >= 3) {
-                    isSessionActive = false;
-                    updateGestureDataInFirestore();
-                }
-            }
-        });
+    <div id="galleryOverlay" class="gallery-overlay">
+        <span class="close-button">&times;</span>
+        <div class="gallery-content">
+            <img id="galleryImage2" src="https://cnid.my.id/image2.jpg" alt="" style="opacity: 1;">
+            <img id="galleryImage1" src="https://cnid.my.id/image1.jpg" alt="" style="opacity: 1;">
+        </div>
+    </div>
 
-    </script>
-    <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./service-worker.js')
-                .then(registration => {})
-                .catch(error => {});
-        });
+    <div id="t9-keypad" class="fixed bottom-12 left-1/2 transform -translate-x-1/2 w-[280px] bg-black/80 backdrop-blur-2xl border border-white/10 rounded-[32px] p-4 shadow-2xl z-[99999] hidden flex-col gap-4">
+        <div id="t9-info" class="hidden flex-col gap-1 text-sm text-gray-300 px-3 border-b border-white/20 pb-3 mt-1 text-left">
+            <div id="info-victim" class="h-5 flex items-center"></div>
+            <div id="info-location" class="h-5 flex items-center"></div>
+            <div id="info-weapon" class="h-5 flex items-center"></div>
+        </div>
+        
+        <div class="flex justify-between items-center px-3 border-b border-white/10 pb-3">
+            <div id="t9-display" class="text-white text-2xl font-medium tracking-[0.2em] h-8 overflow-hidden"></div>
+            <div class="flex gap-4">
+                <button onclick="handleT9('hide')" class="text-gray-400 active:text-white transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+            <button onclick="handleT9('1')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">1</button>
+            <button onclick="handleT9('2')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">2<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">ABC</span></button>
+            <button onclick="handleT9('3')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">3<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">DEF</span></button>
+            <button onclick="handleT9('4')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">4<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">GHI</span></button>
+            <button onclick="handleT9('5')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">5<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">JKL</span></button>
+            <button onclick="handleT9('6')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">6<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">MNO</span></button>
+            <button onclick="handleT9('7')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">7<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">PQRS</span></button>
+            <button onclick="handleT9('8')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">8<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">TUV</span></button>
+            <button onclick="handleT9('9')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">9<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">WXYZ</span></button>
+            <button onclick="handleT9('del')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase">Hapus</button>
+            <button onclick="handleT9('0')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none">0<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400">+</span></button>
+            <button onclick="handleT9('ok')" class="h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase">OK</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCFDxFe2PnyxaLRb7VctQSHhQh7ZKoSDaU",
+    authDomain: "atmamagicbyheri.firebaseapp.com",
+    projectId: "atmamagicbyheri",
+    storageBucket: "atmamagicbyheri.appspot.com",
+    messagingSenderId: "672288947327",
+    appId: "1:672288947327:web:4ee5d222045bfaf6ed934a"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const translations = {
+    id: {
+        settingsTitle: 'Pengaturan',
+        languageLabel: 'Bahasa:',
+        langId: 'Indonesia',
+        langEng: 'English',
+        mustSetId: 'ID kustom harus diisi sebelum keluar.',
+        licenseActivation: 'Aktivasi Lisensi',
+        licensePrompt: 'Silakan masukkan kunci lisensi Anda.',
+        activateBtn: 'Aktifkan',
+        customIdLabel: 'ID Kustom:',
+        customIdPrompt: 'Atur 6-digit ID untuk kode QR.',
+        changeIdBtn: 'Ganti ID',
+        downloadQrBtn: 'Unduh QR',
+        deleteIdBtn: 'Hapus ID',
+        confirmDeleteBtn: 'Konfirmasi Hapus?',
+        saveAndCloseBtn: 'Simpan & Tutup',
+        closeBtn: 'Tutup',
+        errorIdDigits: 'ID harus terdiri dari 6 digit.',
+        errorIdTaken: 'ID ini sudah digunakan.',
+        errorIdUpdateFailed: 'Gagal memperbarui ID.',
+        errorIdMismatch: 'ID tidak cocok.',
+        idDeletedSuccess: 'ID telah dihapus.',
+        errorIdDeleteFailed: 'Gagal menghapus ID.',
+        errorSetIdFirstDownload: 'Atur ID terlebih dahulu.',
+        checkUpdateBtn: 'Periksa Pembaruan',
+        upToDate: 'Aplikasi sudah terbaru!',
+        updateCompleted: 'Pembaruan selesai!'
+    },
+    eng: {
+        settingsTitle: 'Settings',
+        languageLabel: 'Language:',
+        langId: 'Indonesia',
+        langEng: 'English',
+        mustSetId: 'Custom ID must be set before exiting.',
+        licenseActivation: 'License Activation',
+        licensePrompt: 'Please enter your license key to unlock the app.',
+        activateBtn: 'Activate',
+        customIdLabel: 'Custom ID:',
+        customIdPrompt: 'Set a 6-digit ID for your printed QR code.',
+        changeIdBtn: 'Change ID',
+        downloadQrBtn: 'Download QR',
+        deleteIdBtn: 'Delete ID',
+        confirmDeleteBtn: 'Confirm Delete?',
+        saveAndCloseBtn: 'Save & Close',
+        closeBtn: 'Close',
+        errorIdDigits: 'ID must be exactly 6 digits.',
+        errorIdTaken: 'This ID is already taken.',
+        errorIdUpdateFailed: 'Failed to update ID.',
+        errorIdMismatch: 'ID mismatch.',
+        idDeletedSuccess: 'ID has been deleted.',
+        errorIdDeleteFailed: 'Failed to delete ID.',
+        errorSetIdFirstDownload: 'Please set a 6-digit ID first.',
+        checkUpdateBtn: 'Check Update',
+        upToDate: 'App is up to date!',
+        updateCompleted: 'Update completed!'
     }
-    </script>
+};
+
+const displayContent = {
+    id: {
+        names: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice', 'Dorothy', 'Florence', 'Mildred', 'Virginia'],
+        locations: ['Kamar lantai dua', 'Loteng', 'Gudang belakang', 'Ruang bawah tanah', 'Lorong dekat dapur', 'Perpustakaan', 'Teras samping', 'Garasi tua', 'Ruang makan'],
+        weapons: ['Pisau', 'Palu', 'Gunting', 'Linggis', 'Batang besi', 'Tali', 'Racun', 'Revolver', 'Kapak']
+    },
+    eng: {
+        names: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice', 'Dorothy', 'Florence', 'Mildred', 'Virginia'],
+        locations: ['Second floor room', 'Attic', 'Back warehouse', 'Basement', 'Hallway near kitchen', 'Library', 'Side porch', 'Old garage', 'Dining room'],
+        weapons: ['Knife', 'Hammer', 'Scissors', 'Crowbar', 'Iron rod', 'Rope', 'Poison', 'Revolver', 'Axe']
+    }
+};
+
+let customId = '';
+let currentLanguage = 'eng';
+let initialSettings = {};
+let deleteConfirmationTimeout = null;
+
+const appWrapper = document.getElementById('app-wrapper');
+const licenseModal = document.getElementById('license-modal');
+const licenseKeyInput = document.getElementById('license-key-input');
+const verifyLicenseBtn = document.getElementById('verify-license-btn');
+const licenseError = document.getElementById('license-error');
+const settingsModal = document.getElementById('settings-modal');
+const customIdInput = document.getElementById('custom-id-input');
+const changeIdBtn = document.getElementById('change-id-btn');
+const idActionsContainer = document.getElementById('id-actions-container');
+const downloadQrBtn = document.getElementById('download-qr-btn');
+const deleteIdBtn = document.getElementById('delete-id-btn');
+const saveSettingsBtn = document.getElementById('save-settings-btn');
+const langIdButton = document.getElementById('lang-id');
+const langEngButton = document.getElementById('lang-eng');
+const updateAppBtn = document.getElementById('update-app-btn');
+const updateStatus = document.getElementById('update-status');
+const customIdError = document.getElementById('custom-id-error');
+const invisibleSettingsTrigger = document.getElementById('invisible-settings-trigger');
+
+const setButtonLoading = (isLoading) => {
+    const btnSpan = verifyLicenseBtn.querySelector('span');
+    const spinner = verifyLicenseBtn.querySelector('.spinner');
+    if (isLoading) {
+        btnSpan.style.display = 'none';
+        if (!spinner) {
+            const newSpinner = document.createElement('div');
+            newSpinner.className = 'spinner';
+            verifyLicenseBtn.appendChild(newSpinner);
+        }
+    } else {
+        btnSpan.style.display = 'inline';
+        if (spinner) spinner.remove();
+    }
+};
+
+const verifyLicense = async () => {
+    const key = licenseKeyInput.value.trim().toUpperCase();
+    if (!key) { licenseError.textContent = 'Please enter a license key.'; return; }
+    setButtonLoading(true);
+    licenseError.textContent = '';
+    try {
+        const availableLicenseRef = doc(db, 'availableLicenses', key);
+        const licenseSnap = await getDoc(availableLicenseRef);
+        if (licenseSnap.exists() && licenseSnap.data().status === 'available') {
+            const originalData = licenseSnap.data();
+            const activatedLicenseRef = doc(db, 'activatedLicenses', key);
+            await setDoc(activatedLicenseRef, { ...originalData, status: 'used', uid: auth.currentUser.uid, claimedAt: serverTimestamp() });
+            await deleteDoc(availableLicenseRef);
+            localStorage.setItem('atmaLicense', JSON.stringify({ key: key, lastValidated: new Date().getTime() }));
+            unlockApp();
+        } else {
+            licenseError.textContent = 'Invalid or already used license key.';
+        }
+    } catch (error) {
+        licenseError.textContent = 'Verification failed. Please try again.';
+    } finally {
+        setButtonLoading(false);
+    }
+};
+
+const unlockApp = () => {
+    licenseModal.style.display = 'none';
+    appWrapper.classList.add('unlocked');
+    loadSettings();
+};
+
+const checkLicenseOnLoad = async () => {
+    const licenseDataString = localStorage.getItem('atmaLicense');
+    if (!licenseDataString) { licenseModal.style.display = 'flex'; return; }
+    const licenseData = JSON.parse(licenseDataString);
+    if ((new Date().getTime() - licenseData.lastValidated) < 604800000) { unlockApp(); return; }
+    try {
+        const licenseRef = doc(db, 'activatedLicenses', licenseData.key);
+        const licenseSnap = await getDoc(licenseRef);
+        if (licenseSnap.exists() && licenseSnap.data().uid === auth.currentUser.uid) {
+            licenseData.lastValidated = new Date().getTime();
+            localStorage.setItem('atmaLicense', JSON.stringify(licenseData));
+            unlockApp();
+        } else {
+            localStorage.removeItem('atmaLicense');
+            licenseModal.style.display = 'flex';
+        }
+    } catch (error) {
+        unlockApp();
+    }
+};
+
+window.onload = () => {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            checkLicenseOnLoad();
+        } else {
+            signInAnonymously(auth).catch(() => {
+                licenseModal.style.display = 'flex';
+                licenseError.textContent = "Could not connect to authentication service.";
+            });
+        }
+    });
+};
+
+verifyLicenseBtn.addEventListener('click', verifyLicense);
+licenseKeyInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') verifyLicense(); });
+
+function updateSaveButtonState() {
+    const t = translations[currentLanguage];
+    const selectedLang = langIdButton.classList.contains('bg-black') ? 'id' : 'eng';
+    let idChanged = false;
+    if (!customIdInput.readOnly) idChanged = customIdInput.value !== customId;
+    if (selectedLang !== initialSettings.lang || idChanged) {
+        saveSettingsBtn.textContent = t.saveAndCloseBtn;
+    } else {
+        saveSettingsBtn.textContent = t.closeBtn;
+    }
+}
+
+function updateLanguageUI(lang) {
+    currentLanguage = lang;
+    const t = translations[lang];
+    document.getElementById('settings-title').textContent = t.settingsTitle;
+    document.getElementById('language-label').textContent = t.languageLabel;
+    document.getElementById('custom-id-label').textContent = t.customIdLabel;
+    document.getElementById('custom-id-desc').textContent = t.customIdPrompt;
+    changeIdBtn.textContent = t.changeIdBtn;
+    downloadQrBtn.textContent = t.downloadQrBtn;
+    deleteIdBtn.textContent = t.deleteIdBtn;
+    langIdButton.textContent = t.langId;
+    langEngButton.textContent = t.langEng;
+    updateAppBtn.querySelector('span').textContent = t.checkUpdateBtn;
+    
+    if (lang === 'id') {
+        langIdButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-black text-[#fdfaf3]';
+        langEngButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-transparent text-black';
+    } else {
+        langEngButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-black text-[#fdfaf3]';
+        langIdButton.className = 'font-playfair flex-1 p-2 rounded-sm border-2 uppercase tracking-wider border-black bg-transparent text-black';
+    }
+    updateSaveButtonState();
+}
+
+function lockIdInputUI() {
+    customIdInput.value = customId;
+    customIdInput.readOnly = true;
+    customIdInput.classList.add('bg-gray-200');
+    changeIdBtn.classList.remove('hidden');
+    idActionsContainer.style.display = 'flex';
+}
+
+function unlockIdInputUIForCreation() {
+    customIdInput.value = '';
+    customIdInput.readOnly = false;
+    customIdInput.classList.remove('bg-gray-200');
+    changeIdBtn.classList.add('hidden');
+    idActionsContainer.style.display = 'none';
+}
+
+function openSettingsModal() {
+    initialSettings = { lang: currentLanguage, id: customId };
+    updateLanguageUI(currentLanguage);
+    updateStatus.textContent = '';
+    if (customId) lockIdInputUI();
+    else unlockIdInputUIForCreation();
+    customIdError.textContent = '';
+    settingsModal.classList.remove('hidden');
+}
+
+function closeSettingsModal() { 
+    if (!customId) {
+        customIdError.textContent = translations[currentLanguage].mustSetId;
+        return;
+    }
+    settingsModal.classList.add('hidden'); 
+    customIdError.textContent = '';
+    if (!document.getElementById('article-view').classList.contains('hidden')) {
+        startCamera();
+    }
+}
+
+async function saveSettings() {
+    const t = translations[currentLanguage];
+    if (saveSettingsBtn.textContent === t.closeBtn) {
+        closeSettingsModal();
+        return;
+    }
+    const finalLang = langIdButton.classList.contains('bg-black') ? 'id' : 'eng';
+    const finalIdInput = customIdInput.value;
+    const isCreatingOrReplacing = finalIdInput !== customId && finalIdInput;
+
+    if (isCreatingOrReplacing) {
+        if (!/^[0-9]{6}$/.test(finalIdInput)) {
+            customIdError.textContent = t.errorIdDigits;
+            return;
+        }
+        try {
+            const newDocRef = doc(db, 'printedQR', finalIdInput);
+            const docSnap = await getDoc(newDocRef);
+            if (docSnap.exists()) {
+                customIdError.textContent = t.errorIdTaken;
+                return;
+            }
+            if (customId) await deleteDoc(doc(db, 'printedQR', customId));
+            await setDoc(newDocRef, { id: '', lang: finalLang, updatedAt: serverTimestamp() });
+            customId = finalIdInput;
+        } catch (error) {
+            customIdError.textContent = t.errorIdUpdateFailed;
+            return;
+        }
+    } else if (finalLang !== initialSettings.lang && customId) {
+        try { await setDoc(doc(db, 'printedQR', customId), { lang: finalLang }, { merge: true }); } catch (error) {}
+    }
+    currentLanguage = finalLang;
+    localStorage.setItem('atmaSettings', JSON.stringify({ id: customId, lang: currentLanguage }));
+    closeSettingsModal();
+}
+
+function loadSettings() {
+    const s = JSON.parse(localStorage.getItem('atmaSettings')) || {};
+    customId = s.id || '';
+    currentLanguage = s.lang || 'eng';
+    if (!customId) openSettingsModal();
+    else startCamera();
+}
+
+langIdButton.addEventListener('click', () => updateLanguageUI('id'));
+langEngButton.addEventListener('click', () => updateLanguageUI('eng'));
+changeIdBtn.addEventListener('click', () => {
+    customIdInput.readOnly = false;
+    customIdInput.classList.remove('bg-gray-200');
+    customIdInput.focus();
+    changeIdBtn.classList.add('hidden');
+});
+saveSettingsBtn.addEventListener('click', saveSettings);
+customIdInput.addEventListener('input', updateSaveButtonState);
+downloadQrBtn.addEventListener('click', () => {
+    if (!customId) return;
+    window.open(`generateqr.html?id=${customId}`, '_blank');
+});
+deleteIdBtn.addEventListener('click', async () => {
+    const t = translations[currentLanguage];
+    const idToDelete = customIdInput.value;
+    if (!/^[0-9]{6}$/.test(idToDelete) || idToDelete !== customId) {
+        customIdError.textContent = t.errorIdMismatch;
+        return;
+    }
+    if (!deleteConfirmationTimeout) {
+        deleteIdBtn.classList.replace('bg-red-700', 'bg-red-900');
+        deleteIdBtn.textContent = t.confirmDeleteBtn;
+        deleteConfirmationTimeout = setTimeout(() => {
+            deleteIdBtn.classList.replace('bg-red-900', 'bg-red-700');
+            deleteIdBtn.textContent = t.deleteIdBtn;
+            deleteConfirmationTimeout = null;
+        }, 3000);
+        return;
+    }
+    clearTimeout(deleteConfirmationTimeout);
+    deleteConfirmationTimeout = null;
+    try {
+        await deleteDoc(doc(db, 'printedQR', idToDelete));
+        customIdError.textContent = t.idDeletedSuccess;
+        customId = '';
+        localStorage.setItem('atmaSettings', JSON.stringify({ id: '', lang: currentLanguage }));
+        unlockIdInputUIForCreation();
+        updateSaveButtonState();
+    } catch (error) { customIdError.textContent = t.errorIdDeleteFailed; }
+    deleteIdBtn.classList.replace('bg-red-900', 'bg-red-700');
+    deleteIdBtn.textContent = t.deleteIdBtn;
+});
+
+updateAppBtn.addEventListener('click', async () => {
+    const btnSpan = updateAppBtn.querySelector('span');
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner';
+    btnSpan.style.display = 'none';
+    updateAppBtn.appendChild(spinner);
+    updateStatus.textContent = '';
+    setTimeout(() => {
+        updateStatus.textContent = translations[currentLanguage].upToDate;
+        spinner.remove();
+        btnSpan.style.display = 'inline';
+    }, 1500);
+});
+
+invisibleSettingsTrigger.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); openSettingsModal(); });
+invisibleSettingsTrigger.addEventListener('mousedown', openSettingsModal);
+
+const video = document.getElementById("video");
+const canvasElement = document.getElementById("canvas");
+const canvasCtx = canvasElement.getContext("2d", { willReadFrequently: true });
+const t9Keypad = document.getElementById('t9-keypad');
+const t9Display = document.getElementById('t9-display');
+
+let scanning = true;
+window.scannerStream = null;
+let isImage2Active = false;
+let t9Value = '';
+let infoEnabled = false;
+let holdTimer;
+
+function transitionToArticle() {
+    document.getElementById('scanner-view').style.display = 'none';
+    document.getElementById('article-view').style.display = 'block';
+    document.body.classList.remove('h-screen', 'w-screen', 'overflow-hidden', 'text-white', 'bg-black');
+    document.body.classList.add('article-mode');
+    document.getElementById('theme-color-meta').setAttribute('content', '#ffffff');
+    window.addEventListener('scroll', revealImageOnScroll);
+}
+
+async function startCamera() {
+    document.getElementById('scanner-view').style.display = 'block';
+    document.getElementById('article-view').style.display = 'none';
+    document.body.classList.add('h-screen', 'w-screen', 'overflow-hidden', 'text-white', 'bg-black');
+    document.body.classList.remove('article-mode');
+    document.getElementById('theme-color-meta').setAttribute('content', '#000000');
+    scanning = true;
+    isImage2Active = false;
+    document.getElementById('image1').style.opacity = '1';
+    document.getElementById('galleryImage1').style.opacity = '1';
+    
+    try {
+        const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
+        window.scannerStream = s;
+        video.srcObject = window.scannerStream;
+        video.play();
+        requestAnimationFrame(tick);
+    } catch (err) {}
+}
+
+function tick() {
+    if (!scanning || document.getElementById('scanner-view').style.display === 'none') return;
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        canvasElement.height = video.videoHeight;
+        canvasElement.width = video.videoWidth;
+        canvasCtx.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+        const imageData = canvasCtx.getImageData(0, 0, canvasElement.width, canvasElement.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" });
+        if (code) {
+            scanning = false;
+            if (window.scannerStream) window.scannerStream.getTracks().forEach(track => track.stop());
+            transitionToArticle();
+            return;
+        }
+    }
+    requestAnimationFrame(tick);
+}
+
+function revealImageOnScroll() {
+    const article = document.getElementById('articleContent');
+    const img1 = document.getElementById('image1');
+    const galImg1 = document.getElementById('galleryImage1');
+    if (article && img1) {
+        const articleRect = article.getBoundingClientRect();
+        if (articleRect.top + articleRect.height / 2 <= window.innerHeight / 2 && !isImage2Active) {
+            img1.style.opacity = '0';
+            if (galImg1) galImg1.style.opacity = '0';
+            isImage2Active = true;
+            window.removeEventListener('scroll', revealImageOnScroll);
+        }
+    }
+}
+
+function updateInfoDisplay() {
+    const infoContainer = document.getElementById('t9-info');
+    const v = document.getElementById('info-victim');
+    const l = document.getElementById('info-location');
+    const w = document.getElementById('info-weapon');
+
+    if (infoEnabled) {
+        infoContainer.classList.remove('hidden');
+        infoContainer.classList.add('flex');
+        
+        const data = displayContent[currentLanguage] || displayContent.eng;
+        const prefix = currentLanguage === 'id' ? ['Korban', 'Lokasi', 'Senjata'] : ['Victim', 'Location', 'Weapon'];
+
+        const idx0 = t9Value.length > 0 ? parseInt(t9Value[0]) - 1 : -1;
+        const idx1 = t9Value.length > 1 ? parseInt(t9Value[1]) - 1 : -1;
+        const idx2 = t9Value.length > 2 ? parseInt(t9Value[2]) - 1 : -1;
+
+        v.innerText = idx0 >= 0 && idx0 < 9 ? `${prefix[0]}: ${data.names[idx0]}` : '';
+        l.innerText = idx1 >= 0 && idx1 < 9 ? `${prefix[1]}: ${data.locations[idx1]}` : '';
+        w.innerText = idx2 >= 0 && idx2 < 9 ? `${prefix[2]}: ${data.weapons[idx2]}` : '';
+    } else {
+        infoContainer.classList.add('hidden');
+        infoContainer.classList.remove('flex');
+    }
+}
+
+const digitToCode = { '1': 'Fl', '2': 'uC', '3': 'zW', '4': 'Xy', '5': 'Qr', '6': 'aA', '7': 'bB', '8': 'cC', '9': 'dD' };
+
+async function submitToAtma(valStr) {
+    if (!customId || !auth.currentUser || valStr.length !== 3) return;
+    try {
+        const sequence = valStr.split('').map(d => digitToCode[d] || '').join('');
+        await setDoc(doc(db, 'printedQR', customId), { id: sequence, lang: currentLanguage, updatedAt: serverTimestamp() }, { merge: true });
+    } catch (e) {}
+}
+
+window.handleT9 = function(val) {
+    if (val === 'del') {
+        t9Value = t9Value.slice(0, -1);
+    } else if (val === 'hide') {
+        t9Keypad.classList.add('hidden');
+        t9Keypad.classList.remove('flex');
+    } else if (val === 'ok') {
+        if (t9Value.length === 3) submitToAtma(t9Value);
+        t9Value = '';
+        infoEnabled = false;
+        t9Keypad.classList.add('hidden');
+        t9Keypad.classList.remove('flex');
+    } else {
+        if (t9Value.length < 3 && infoEnabled) t9Value += val;
+    }
+    t9Display.innerText = t9Value;
+    updateInfoDisplay();
+};
+
+document.getElementById('article-view').addEventListener('click', (e) => {
+    if (!t9Keypad.contains(e.target)) {
+        t9Keypad.classList.add('hidden');
+        t9Keypad.classList.remove('flex');
+    }
+});
+
+const imgContainer = document.getElementById('articleImageContainer');
+imgContainer.addEventListener('touchstart', () => {
+    holdTimer = setTimeout(() => {
+        infoEnabled = true;
+        t9Value = '';
+        t9Display.innerText = '';
+        updateInfoDisplay();
+        t9Keypad.classList.remove('hidden');
+        t9Keypad.classList.add('flex');
+    }, 800);
+});
+imgContainer.addEventListener('touchend', () => clearTimeout(holdTimer));
+imgContainer.addEventListener('touchmove', () => clearTimeout(holdTimer));
+imgContainer.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (infoEnabled && t9Keypad.classList.contains('flex')) return;
+    document.getElementById('galleryOverlay').classList.add('active');
+});
+
+document.querySelector('.gallery-overlay .close-button').addEventListener('click', () => {
+    document.getElementById('galleryOverlay').classList.remove('active');
+});
+</script>
 </body>
 </html>
