@@ -87,9 +87,9 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
 
 <div id="update-notice-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-[2000000] p-4 hidden transition-opacity duration-300 opacity-0">
     <div class="font-lora bg-[#fdfaf3] rounded-3xl p-8 w-full max-w-sm text-[#1a1a1a] shadow-2xl text-center transform transition-transform scale-95 duration-300" id="update-notice-content">
-        <h3 id="notice-title" class="font-playfair text-xl font-bold mb-4 uppercase tracking-wide"></h3>
-        <p id="notice-desc" class="text-sm text-gray-700 leading-relaxed mb-8"></p>
-        <button id="close-update-notice-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider transition-colors hover:bg-gray-800"></button>
+        <h3 id="notice-title" class="font-playfair text-xl font-bold mb-4 uppercase tracking-wide">Info Pembaruan</h3>
+        <p id="notice-desc" class="text-sm text-gray-700 leading-relaxed mb-8">Atma telah dirombak total agar membuat flow performance menjadi semakin masuk akal. Silahkan cek bagian tutorial di setting untuk lebih detailnya.</p>
+        <button id="close-update-notice-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider transition-colors hover:bg-gray-800">Mengerti</button>
     </div>
 </div>
 
@@ -114,18 +114,18 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
             
             <div id="custom-id-section" class="my-6">
                 <label id="custom-id-label" class="font-playfair block mb-2 font-bold text-lg">Custom ID:</label>
-                <p id="custom-id-desc" class="text-sm mb-3 text-gray-600"></p>
+                <p id="custom-id-desc" class="text-sm mb-3 text-gray-600">Set a 6-digit ID to link with your printed QR code.</p>
                 <input type="number" id="custom-id-input" class="w-full p-4 text-center border border-gray-300 rounded-2xl bg-white text-lg tracking-widest outline-none focus:ring-2 focus:ring-black transition-all" oninput="this.value=this.value.slice(0,6)">
-                <button id="change-id-btn" class="hidden font-playfair w-full mt-3 p-3 rounded-2xl border border-gray-300 bg-gray-100 hover:bg-gray-200 uppercase tracking-wider transition-colors"></button>
+                <button id="change-id-btn" class="hidden font-playfair w-full mt-3 p-3 rounded-2xl border border-gray-300 bg-gray-100 hover:bg-gray-200 uppercase tracking-wider transition-colors">Change ID</button>
                 <p id="custom-id-error" class="text-red-600 mt-2 text-sm h-5 font-medium"></p>
                 <div id="id-actions-container" class="flex space-x-3 mt-4">
-                    <button id="download-qr-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors"></button>
-                    <button id="delete-id-btn" class="font-playfair w-full block bg-red-600 hover:bg-red-700 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors"></button>
+                    <button id="download-qr-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors">Download QR</button>
+                    <button id="delete-id-btn" class="font-playfair w-full block bg-red-600 hover:bg-red-700 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors">Delete ID</button>
                 </div>
             </div>
 
             <div class="my-6">
-                <label id="language-label" class="font-playfair block mb-3 font-bold text-lg"></label>
+                <label id="language-label" class="font-playfair block mb-3 font-bold text-lg">Language:</label>
                 <div class="flex space-x-3">
                     <button id="lang-id" class="font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider transition-all">Indonesia</button>
                     <button id="lang-eng" class="font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider transition-all">English</button>
@@ -134,11 +134,11 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
             
             <a id="tutorial-btn" href="user-guide.html" class="font-playfair w-full block bg-gray-200 hover:bg-gray-300 text-black p-4 rounded-2xl text-center uppercase tracking-wider transition-colors mt-6 h-14 leading-relaxed flex items-center justify-center">Tutorial</a>
             
-            <button id="save-settings-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider mt-4 transition-colors h-14"></button>
+            <button id="save-settings-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider mt-4 transition-colors h-14">Save & Close</button>
             
             <div class="mt-8 border-t border-gray-300 pt-6">
                 <button id="update-app-btn" class="font-playfair w-full bg-blue-600 hover:bg-blue-700 text-[#fdfaf3] p-3 rounded-2xl uppercase tracking-wider flex justify-center items-center h-12 transition-colors">
-                    <span></span>
+                    <span>Check Update</span>
                 </button>
                 <p id="update-status" class="text-xs text-center mt-3 h-4 text-gray-500 font-medium"></p>
             </div>
@@ -384,6 +384,16 @@ const updateAppBtn = document.getElementById('update-app-btn');
 const updateStatus = document.getElementById('update-status');
 const customIdError = document.getElementById('custom-id-error');
 const invisibleSettingsTrigger = document.getElementById('invisible-settings-trigger');
+const updateNoticeModal = document.getElementById('update-notice-modal');
+
+[settingsModal, licenseModal, updateNoticeModal].forEach(modal => {
+    if(modal) {
+        modal.addEventListener('pointerdown', e => e.stopPropagation());
+        modal.addEventListener('pointerup', e => e.stopPropagation());
+        modal.addEventListener('pointermove', e => e.stopPropagation());
+        modal.addEventListener('click', e => e.stopPropagation());
+    }
+});
 
 const setButtonLoading = (isLoading) => {
     const btnSpan = verifyLicenseBtn.querySelector('span');
@@ -786,17 +796,17 @@ function transitionToArticle() {
     document.body.classList.add('article-mode');
     document.getElementById('theme-color-meta').setAttribute('content', '#ffffff');
     window.addEventListener('scroll', revealImageOnScroll);
-}
 
-function hideLoadingScreen() {
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    const mainContent = document.querySelector('main');
-    if (loadingOverlay.style.opacity !== '0') {
-        loadingOverlay.style.opacity = '0';
-        loadingOverlay.style.visibility = 'hidden';
-        mainContent.style.visibility = 'visible';
-        mainContent.style.opacity = '1';
-    }
+    setTimeout(() => {
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const mainContent = document.querySelector('main');
+        if(loadingOverlay) {
+            loadingOverlay.style.opacity = '0';
+            loadingOverlay.style.visibility = 'hidden';
+            mainContent.style.visibility = 'visible';
+            mainContent.style.opacity = '1';
+        }
+    }, 1500);
 }
 
 async function startCamera() {
@@ -910,7 +920,6 @@ function handleT9Action(val) {
         t9Keypad.classList.remove('flex');
         setTimeout(() => isKeypadClosing = false, 200);
         updateInfoDisplay();
-        hideLoadingScreen();
     } else if (val === 'ok') {
         if (t9Value.length === 3) {
             finalT9Value = t9Value;
@@ -924,7 +933,6 @@ function handleT9Action(val) {
         setTimeout(() => isKeypadClosing = false, 200);
         updateInfoDisplay();
         renderArticle();
-        hideLoadingScreen();
     } else {
         if (t9Value.length < 3) t9Value += val;
         t9Display.innerText = t9Value;
