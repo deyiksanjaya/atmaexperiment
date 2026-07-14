@@ -87,9 +87,9 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
 
 <div id="update-notice-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-[2000000] p-4 hidden transition-opacity duration-300 opacity-0">
     <div class="font-lora bg-[#fdfaf3] rounded-3xl p-8 w-full max-w-sm text-[#1a1a1a] shadow-2xl text-center transform transition-transform scale-95 duration-300" id="update-notice-content">
-        <h3 id="notice-title" class="font-playfair text-xl font-bold mb-4 uppercase tracking-wide">Info Pembaruan</h3>
-        <p id="notice-desc" class="text-sm text-gray-700 leading-relaxed mb-8">Atma telah dirombak total agar membuat flow performance menjadi semakin masuk akal. Silahkan cek bagian tutorial di setting untuk lebih detailnya.</p>
-        <button id="close-update-notice-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider transition-colors hover:bg-gray-800">Mengerti</button>
+        <h3 id="notice-title" class="font-playfair text-xl font-bold mb-4 uppercase tracking-wide"></h3>
+        <p id="notice-desc" class="text-sm text-gray-700 leading-relaxed mb-8"></p>
+        <button id="close-update-notice-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider transition-colors hover:bg-gray-800"></button>
     </div>
 </div>
 
@@ -114,18 +114,18 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
             
             <div id="custom-id-section" class="my-6">
                 <label id="custom-id-label" class="font-playfair block mb-2 font-bold text-lg">Custom ID:</label>
-                <p id="custom-id-desc" class="text-sm mb-3 text-gray-600">Set a 6-digit ID to link with your printed QR code.</p>
+                <p id="custom-id-desc" class="text-sm mb-3 text-gray-600"></p>
                 <input type="number" id="custom-id-input" class="w-full p-4 text-center border border-gray-300 rounded-2xl bg-white text-lg tracking-widest outline-none focus:ring-2 focus:ring-black transition-all" oninput="this.value=this.value.slice(0,6)">
-                <button id="change-id-btn" class="hidden font-playfair w-full mt-3 p-3 rounded-2xl border border-gray-300 bg-gray-100 hover:bg-gray-200 uppercase tracking-wider transition-colors">Change ID</button>
+                <button id="change-id-btn" class="hidden font-playfair w-full mt-3 p-3 rounded-2xl border border-gray-300 bg-gray-100 hover:bg-gray-200 uppercase tracking-wider transition-colors"></button>
                 <p id="custom-id-error" class="text-red-600 mt-2 text-sm h-5 font-medium"></p>
                 <div id="id-actions-container" class="flex space-x-3 mt-4">
-                    <button id="download-qr-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors">Download QR</button>
-                    <button id="delete-id-btn" class="font-playfair w-full block bg-red-600 hover:bg-red-700 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors">Delete ID</button>
+                    <button id="download-qr-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors"></button>
+                    <button id="delete-id-btn" class="font-playfair w-full block bg-red-600 hover:bg-red-700 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors"></button>
                 </div>
             </div>
 
             <div class="my-6">
-                <label id="language-label" class="font-playfair block mb-3 font-bold text-lg">Language:</label>
+                <label id="language-label" class="font-playfair block mb-3 font-bold text-lg"></label>
                 <div class="flex space-x-3">
                     <button id="lang-id" class="font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider transition-all">Indonesia</button>
                     <button id="lang-eng" class="font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider transition-all">English</button>
@@ -134,11 +134,11 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
             
             <a id="tutorial-btn" href="user-guide.html" class="font-playfair w-full block bg-gray-200 hover:bg-gray-300 text-black p-4 rounded-2xl text-center uppercase tracking-wider transition-colors mt-6 h-14 leading-relaxed flex items-center justify-center">Tutorial</a>
             
-            <button id="save-settings-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider mt-4 transition-colors h-14">Save & Close</button>
+            <button id="save-settings-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider mt-4 transition-colors h-14"></button>
             
             <div class="mt-8 border-t border-gray-300 pt-6">
                 <button id="update-app-btn" class="font-playfair w-full bg-blue-600 hover:bg-blue-700 text-[#fdfaf3] p-3 rounded-2xl uppercase tracking-wider flex justify-center items-center h-12 transition-colors">
-                    <span>Check Update</span>
+                    <span></span>
                 </button>
                 <p id="update-status" class="text-xs text-center mt-3 h-4 text-gray-500 font-medium"></p>
             </div>
@@ -313,9 +313,9 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="7">7<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">PQRS</span></button>
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="8">8<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">TUV</span></button>
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="9">9<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">WXYZ</span></button>
-            <button id="t9-btn-del" class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase" data-val="del">Hapus</button>
+            <button id="t9-btn-del" class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase" data-val="del"></button>
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex flex-col items-center justify-center leading-none" data-val="0">0<span class="text-[10px] font-normal tracking-widest mt-1 text-gray-400 pointer-events-none">+</span></button>
-            <button id="t9-btn-ok" class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase" data-val="ok">OK</button>
+            <button id="t9-btn-ok" class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex flex-col items-center justify-center leading-none mt-1 uppercase" data-val="ok"></button>
         </div>
     </div>
 </div>
@@ -339,10 +339,32 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+const uiText = {
+    id: {
+        settingsTitle: 'Pengaturan', languageLabel: 'Bahasa:', customIdLabel: 'ID Kustom:', customIdPrompt: 'Atur 6-digit ID untuk kode QR.',
+        changeIdBtn: 'Ganti ID', downloadQrBtn: 'Unduh QR', deleteIdBtn: 'Hapus ID', confirmDeleteBtn: 'Konfirmasi Hapus?',
+        saveAndCloseBtn: 'Simpan & Tutup', closeBtn: 'Tutup', errorIdDigits: 'ID harus terdiri dari 6 digit.', errorIdTaken: 'ID ini sudah digunakan.',
+        errorIdUpdateFailed: 'Gagal memperbarui ID.', errorIdMismatch: 'ID tidak cocok.', idDeletedSuccess: 'ID telah dihapus.', errorIdDeleteFailed: 'Gagal menghapus ID.',
+        errorSetIdFirstDownload: 'Atur ID terlebih dahulu.', checkUpdateBtn: 'Periksa Pembaruan', upToDate: 'Aplikasi sudah terbaru!',
+        t9Del: 'Hapus', t9Ok: 'OK', noticeTitle: 'Info Pembaruan', noticeDesc: 'Atma telah dirombak total agar membuat flow performance menjadi semakin masuk akal. Silahkan cek bagian tutorial di setting untuk lebih detailnya.', noticeBtn: 'Mengerti', tutorialBtn: 'Tutorial', mustSetId: 'ID kustom harus diisi sebelum keluar.'
+    },
+    eng: {
+        settingsTitle: 'Settings', languageLabel: 'Language:', customIdLabel: 'Custom ID:', customIdPrompt: 'Set a 6-digit ID for your printed QR code.',
+        changeIdBtn: 'Change ID', downloadQrBtn: 'Download QR', deleteIdBtn: 'Delete ID', confirmDeleteBtn: 'Confirm Delete?',
+        saveAndCloseBtn: 'Save & Close', closeBtn: 'Close', errorIdDigits: 'ID must be exactly 6 digits.', errorIdTaken: 'This ID is already taken.',
+        errorIdUpdateFailed: 'Failed to update ID.', errorIdMismatch: 'ID mismatch.', idDeletedSuccess: 'ID has been deleted.', errorIdDeleteFailed: 'Failed to delete ID.',
+        errorSetIdFirstDownload: 'Please set a 6-digit ID first.', checkUpdateBtn: 'Check Update', upToDate: 'App is up to date!',
+        t9Del: 'Del', t9Ok: 'OK', noticeTitle: 'Update Notice', noticeDesc: 'Atma has been completely revamped to make the performance flow more logical. Please check the tutorial section in settings for more details.', noticeBtn: 'Got It', tutorialBtn: 'User Guide', mustSetId: 'Custom ID must be set before exiting.'
+    }
+};
+
 let customId = '';
 let currentLanguage = 'eng';
 let initialSettings = {};
 let deleteConfirmationTimeout = null;
+
+let t9Value = '';
+let finalT9Value = '111';
 
 const appWrapper = document.getElementById('app-wrapper');
 const licenseModal = document.getElementById('license-modal');
@@ -471,29 +493,30 @@ verifyLicenseBtn.addEventListener('click', verifyLicense);
 licenseKeyInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') verifyLicense(); });
 
 function updateSaveButtonState() {
-    if (!translations[currentLanguage]) return;
-    const t = translations[currentLanguage];
+    const ui = uiText[currentLanguage];
     const selectedLang = langIdButton.classList.contains('bg-black') ? 'id' : 'eng';
     let idChanged = false;
     if (!customIdInput.readOnly) idChanged = customIdInput.value !== customId;
     if (selectedLang !== initialSettings.lang || idChanged) {
-        saveSettingsBtn.textContent = t.saveAndCloseBtn;
+        saveSettingsBtn.textContent = ui.saveAndCloseBtn;
     } else {
-        saveSettingsBtn.textContent = t.closeBtn;
+        saveSettingsBtn.textContent = ui.closeBtn;
     }
 }
 
 function renderArticle() {
-    if (!translations[currentLanguage]) return;
+    if (!translations || !translations[currentLanguage]) return;
     const t = translations[currentLanguage];
     const p = t.articleParams;
     
     document.documentElement.lang = t.htmlLang;
     document.title = t.title;
 
-    const idx0 = t9Value.length > 0 ? parseInt(t9Value[0]) - 1 : 0;
-    const idx1 = t9Value.length > 1 ? parseInt(t9Value[1]) - 1 : 0;
-    const idx2 = t9Value.length > 2 ? parseInt(t9Value[2]) - 1 : 0;
+    const valToUse = finalT9Value.length === 3 ? finalT9Value : '111';
+
+    const idx0 = parseInt(valToUse[0]) - 1;
+    const idx1 = parseInt(valToUse[1]) - 1;
+    const idx2 = parseInt(valToUse[2]) - 1;
 
     const keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
     const k0 = keys[idx0] || 'a';
@@ -557,26 +580,25 @@ function renderArticle() {
 }
 
 function updateLanguageUI(lang) {
-    if (!translations[lang]) return;
+    if (!uiText[lang]) return;
     currentLanguage = lang;
-    const t = translations[lang];
-    document.getElementById('settings-title').textContent = t.settingsTitle;
-    document.getElementById('language-label').textContent = t.languageLabel;
-    document.getElementById('custom-id-label').textContent = t.customIdLabel;
-    document.getElementById('custom-id-desc').textContent = t.customIdPrompt;
-    changeIdBtn.textContent = t.changeIdBtn;
-    downloadQrBtn.textContent = t.downloadQrBtn;
-    deleteIdBtn.textContent = t.deleteIdBtn;
-    langIdButton.textContent = t.langId;
-    langEngButton.textContent = t.langEng;
-    updateAppBtn.querySelector('span').textContent = t.checkUpdateBtn;
+    const ui = uiText[lang];
     
-    document.getElementById('t9-btn-del').textContent = t.t9Del;
-    document.getElementById('t9-btn-ok').textContent = t.t9Ok;
-    document.getElementById('notice-title').textContent = t.noticeTitle;
-    document.getElementById('notice-desc').textContent = t.noticeDesc;
-    document.getElementById('close-update-notice-btn').textContent = t.noticeBtn;
-    document.getElementById('tutorial-btn').textContent = t.tutorialBtn;
+    document.getElementById('settings-title').textContent = ui.settingsTitle;
+    document.getElementById('language-label').textContent = ui.languageLabel;
+    document.getElementById('custom-id-label').textContent = ui.customIdLabel;
+    document.getElementById('custom-id-desc').textContent = ui.customIdPrompt;
+    changeIdBtn.textContent = ui.changeIdBtn;
+    downloadQrBtn.textContent = ui.downloadQrBtn;
+    deleteIdBtn.textContent = ui.deleteIdBtn;
+    updateAppBtn.querySelector('span').textContent = ui.checkUpdateBtn;
+    
+    document.getElementById('t9-btn-del').textContent = ui.t9Del;
+    document.getElementById('t9-btn-ok').textContent = ui.t9Ok;
+    document.getElementById('notice-title').textContent = ui.noticeTitle;
+    document.getElementById('notice-desc').textContent = ui.noticeDesc;
+    document.getElementById('close-update-notice-btn').textContent = ui.noticeBtn;
+    document.getElementById('tutorial-btn').textContent = ui.tutorialBtn;
 
     if (lang === 'id') {
         langIdButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-black text-[#fdfaf3] transition-all';
@@ -621,7 +643,7 @@ function openSettingsModal() {
 
 function closeSettingsModal() { 
     if (!customId) {
-        if(translations[currentLanguage]) customIdError.textContent = translations[currentLanguage].mustSetId;
+        if(uiText[currentLanguage]) customIdError.textContent = uiText[currentLanguage].mustSetId;
         return;
     }
     settingsModal.classList.add('hidden'); 
@@ -632,9 +654,9 @@ function closeSettingsModal() {
 }
 
 async function saveSettings() {
-    if (!translations[currentLanguage]) return;
-    const t = translations[currentLanguage];
-    if (saveSettingsBtn.textContent === t.closeBtn) {
+    if (!uiText[currentLanguage]) return;
+    const ui = uiText[currentLanguage];
+    if (saveSettingsBtn.textContent === ui.closeBtn) {
         closeSettingsModal();
         return;
     }
@@ -644,21 +666,21 @@ async function saveSettings() {
 
     if (isCreatingOrReplacing) {
         if (!/^[0-9]{6}$/.test(finalIdInput)) {
-            customIdError.textContent = t.errorIdDigits;
+            customIdError.textContent = ui.errorIdDigits;
             return;
         }
         try {
             const newDocRef = doc(db, 'printedQR', finalIdInput);
             const docSnap = await getDoc(newDocRef);
             if (docSnap.exists()) {
-                customIdError.textContent = t.errorIdTaken;
+                customIdError.textContent = ui.errorIdTaken;
                 return;
             }
             if (customId) await deleteDoc(doc(db, 'printedQR', customId));
             await setDoc(newDocRef, { id: '', lang: finalLang, updatedAt: serverTimestamp() });
             customId = finalIdInput;
         } catch (error) {
-            customIdError.textContent = t.errorIdUpdateFailed;
+            customIdError.textContent = ui.errorIdUpdateFailed;
             return;
         }
     } else if (finalLang !== initialSettings.lang && customId) {
@@ -694,19 +716,19 @@ downloadQrBtn.addEventListener('click', () => {
     window.open(`generateqr.html?id=${customId}`, '_blank');
 });
 deleteIdBtn.addEventListener('click', async () => {
-    if (!translations[currentLanguage]) return;
-    const t = translations[currentLanguage];
+    if (!uiText[currentLanguage]) return;
+    const ui = uiText[currentLanguage];
     const idToDelete = customIdInput.value;
     if (!/^[0-9]{6}$/.test(idToDelete) || idToDelete !== customId) {
-        customIdError.textContent = t.errorIdMismatch;
+        customIdError.textContent = ui.errorIdMismatch;
         return;
     }
     if (!deleteConfirmationTimeout) {
         deleteIdBtn.classList.replace('bg-red-600', 'bg-red-800');
-        deleteIdBtn.textContent = t.confirmDeleteBtn;
+        deleteIdBtn.textContent = ui.confirmDeleteBtn;
         deleteConfirmationTimeout = setTimeout(() => {
             deleteIdBtn.classList.replace('bg-red-800', 'bg-red-600');
-            deleteIdBtn.textContent = t.deleteIdBtn;
+            deleteIdBtn.textContent = ui.deleteIdBtn;
             deleteConfirmationTimeout = null;
         }, 3000);
         return;
@@ -715,18 +737,18 @@ deleteIdBtn.addEventListener('click', async () => {
     deleteConfirmationTimeout = null;
     try {
         await deleteDoc(doc(db, 'printedQR', idToDelete));
-        customIdError.textContent = t.idDeletedSuccess;
+        customIdError.textContent = ui.idDeletedSuccess;
         customId = '';
         localStorage.setItem('atmaSettings', JSON.stringify({ id: '', lang: currentLanguage }));
         unlockIdInputUIForCreation();
         updateSaveButtonState();
-    } catch (error) { customIdError.textContent = t.errorIdDeleteFailed; }
+    } catch (error) { customIdError.textContent = ui.errorIdDeleteFailed; }
     deleteIdBtn.classList.replace('bg-red-800', 'bg-red-600');
-    deleteIdBtn.textContent = t.deleteIdBtn;
+    deleteIdBtn.textContent = ui.deleteIdBtn;
 });
 
 updateAppBtn.addEventListener('click', async () => {
-    if (!translations[currentLanguage]) return;
+    if (!uiText[currentLanguage]) return;
     const btnSpan = updateAppBtn.querySelector('span');
     const spinner = document.createElement('div');
     spinner.className = 'btn-spinner';
@@ -734,7 +756,7 @@ updateAppBtn.addEventListener('click', async () => {
     updateAppBtn.appendChild(spinner);
     updateStatus.textContent = '';
     setTimeout(() => {
-        updateStatus.textContent = translations[currentLanguage].upToDate;
+        updateStatus.textContent = uiText[currentLanguage].upToDate;
         spinner.remove();
         btnSpan.style.display = 'inline';
     }, 1500);
@@ -752,7 +774,6 @@ let scanning = false;
 window.scannerStream = null;
 window.scanAnimationFrame = null;
 let isImage2Active = false;
-let t9Value = '';
 let isKeypadClosing = false;
 let tapStartX = 0;
 let tapStartY = 0;
@@ -764,18 +785,18 @@ function transitionToArticle() {
     document.body.classList.remove('h-screen', 'w-screen', 'overflow-hidden', 'bg-black');
     document.body.classList.add('article-mode');
     document.getElementById('theme-color-meta').setAttribute('content', '#ffffff');
-    
+    window.addEventListener('scroll', revealImageOnScroll);
+}
+
+function hideLoadingScreen() {
     const loadingOverlay = document.getElementById('loadingOverlay');
     const mainContent = document.querySelector('main');
-    
-    setTimeout(() => {
+    if (loadingOverlay.style.opacity !== '0') {
         loadingOverlay.style.opacity = '0';
         loadingOverlay.style.visibility = 'hidden';
         mainContent.style.visibility = 'visible';
         mainContent.style.opacity = '1';
-    }, 1500);
-
-    window.addEventListener('scroll', revealImageOnScroll);
+    }
 }
 
 async function startCamera() {
@@ -847,7 +868,7 @@ function revealImageOnScroll() {
 }
 
 function updateInfoDisplay() {
-    if (!translations[currentLanguage]) return;
+    if (!translations || !translations[currentLanguage]) return;
     const v = document.getElementById('info-victim');
     const l = document.getElementById('info-location');
     const w = document.getElementById('info-weapon');
@@ -879,6 +900,8 @@ async function submitToAtma(valStr) {
 function handleT9Action(val) {
     if (val === 'del') {
         t9Value = t9Value.slice(0, -1);
+        t9Display.innerText = t9Value;
+        updateInfoDisplay();
     } else if (val === 'hide') {
         t9Value = '';
         t9Display.innerText = '';
@@ -886,22 +909,27 @@ function handleT9Action(val) {
         t9Keypad.classList.add('hidden');
         t9Keypad.classList.remove('flex');
         setTimeout(() => isKeypadClosing = false, 200);
-        renderArticle();
+        updateInfoDisplay();
+        hideLoadingScreen();
     } else if (val === 'ok') {
-        if (t9Value.length === 3) submitToAtma(t9Value);
+        if (t9Value.length === 3) {
+            finalT9Value = t9Value;
+            submitToAtma(t9Value);
+        }
         t9Value = '';
         t9Display.innerText = '';
         isKeypadClosing = true;
         t9Keypad.classList.add('hidden');
         t9Keypad.classList.remove('flex');
         setTimeout(() => isKeypadClosing = false, 200);
+        updateInfoDisplay();
         renderArticle();
+        hideLoadingScreen();
     } else {
         if (t9Value.length < 3) t9Value += val;
+        t9Display.innerText = t9Value;
+        updateInfoDisplay();
     }
-    t9Display.innerText = t9Value;
-    updateInfoDisplay();
-    renderArticle();
 }
 
 document.querySelectorAll('.t9-btn').forEach(btn => {
