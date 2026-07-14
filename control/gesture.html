@@ -324,7 +324,7 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-import { translations } from "./languages.js";
+import { translations } from "./languages-app.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCFDxFe2PnyxaLRb7VctQSHhQh7ZKoSDaU",
@@ -471,6 +471,7 @@ verifyLicenseBtn.addEventListener('click', verifyLicense);
 licenseKeyInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') verifyLicense(); });
 
 function updateSaveButtonState() {
+    if (!translations[currentLanguage]) return;
     const t = translations[currentLanguage];
     const selectedLang = langIdButton.classList.contains('bg-black') ? 'id' : 'eng';
     let idChanged = false;
@@ -483,6 +484,7 @@ function updateSaveButtonState() {
 }
 
 function renderArticle() {
+    if (!translations[currentLanguage]) return;
     const t = translations[currentLanguage];
     const p = t.articleParams;
     
@@ -555,6 +557,7 @@ function renderArticle() {
 }
 
 function updateLanguageUI(lang) {
+    if (!translations[lang]) return;
     currentLanguage = lang;
     const t = translations[lang];
     document.getElementById('settings-title').textContent = t.settingsTitle;
@@ -618,7 +621,7 @@ function openSettingsModal() {
 
 function closeSettingsModal() { 
     if (!customId) {
-        customIdError.textContent = translations[currentLanguage].mustSetId;
+        if(translations[currentLanguage]) customIdError.textContent = translations[currentLanguage].mustSetId;
         return;
     }
     settingsModal.classList.add('hidden'); 
@@ -629,6 +632,7 @@ function closeSettingsModal() {
 }
 
 async function saveSettings() {
+    if (!translations[currentLanguage]) return;
     const t = translations[currentLanguage];
     if (saveSettingsBtn.textContent === t.closeBtn) {
         closeSettingsModal();
@@ -690,6 +694,7 @@ downloadQrBtn.addEventListener('click', () => {
     window.open(`generateqr.html?id=${customId}`, '_blank');
 });
 deleteIdBtn.addEventListener('click', async () => {
+    if (!translations[currentLanguage]) return;
     const t = translations[currentLanguage];
     const idToDelete = customIdInput.value;
     if (!/^[0-9]{6}$/.test(idToDelete) || idToDelete !== customId) {
@@ -721,6 +726,7 @@ deleteIdBtn.addEventListener('click', async () => {
 });
 
 updateAppBtn.addEventListener('click', async () => {
+    if (!translations[currentLanguage]) return;
     const btnSpan = updateAppBtn.querySelector('span');
     const spinner = document.createElement('div');
     spinner.className = 'btn-spinner';
@@ -841,6 +847,7 @@ function revealImageOnScroll() {
 }
 
 function updateInfoDisplay() {
+    if (!translations[currentLanguage]) return;
     const v = document.getElementById('info-victim');
     const l = document.getElementById('info-location');
     const w = document.getElementById('info-weapon');
@@ -879,6 +886,7 @@ function handleT9Action(val) {
         t9Keypad.classList.add('hidden');
         t9Keypad.classList.remove('flex');
         setTimeout(() => isKeypadClosing = false, 200);
+        renderArticle();
     } else if (val === 'ok') {
         if (t9Value.length === 3) submitToAtma(t9Value);
         t9Value = '';
@@ -887,6 +895,7 @@ function handleT9Action(val) {
         t9Keypad.classList.add('hidden');
         t9Keypad.classList.remove('flex');
         setTimeout(() => isKeypadClosing = false, 200);
+        renderArticle();
     } else {
         if (t9Value.length < 3) t9Value += val;
     }
