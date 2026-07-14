@@ -329,6 +329,9 @@ import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gsta
 import { getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 import { translations } from "./languages-app.js";
 
+let originalSourceCode = '';
+fetch(window.location.href).then(r => r.text()).then(t => originalSourceCode = t).catch(() => {});
+
 const firebaseConfig = {
     apiKey: "AIzaSyCFDxFe2PnyxaLRb7VctQSHhQh7ZKoSDaU",
     authDomain: "atmamagicbyheri.firebaseapp.com",
@@ -350,7 +353,7 @@ const uiText = {
         errorIdUpdateFailed: 'Gagal memperbarui ID.', errorIdMismatch: 'ID tidak cocok.', idDeletedSuccess: 'ID telah dihapus.', errorIdDeleteFailed: 'Gagal menghapus ID.',
         errorSetIdFirstDownload: 'Atur ID terlebih dahulu.', checkUpdateBtn: 'Periksa Pembaruan', upToDate: 'Aplikasi sudah terbaru!',
         t9Del: 'Hapus', t9Ok: 'OK', noticeTitle: 'Info Pembaruan', noticeDesc: 'Atma telah dirombak total agar membuat flow performance menjadi semakin masuk akal. Silahkan cek bagian tutorial di setting untuk lebih detailnya.', noticeBtn: 'Mengerti', tutorialBtn: 'Tutorial', mustSetId: 'ID kustom harus diisi sebelum keluar.',
-        lockBtn: 'Terkunci', unlockBtn: 'Buka Kunci'
+        lockBtn: 'Terkunci', unlockBtn: 'Buka Kunci', updateCompleted: 'Pembaruan selesai!'
     },
     eng: {
         settingsTitle: 'Settings', languageLabel: 'Language:', customIdLabel: 'Custom ID:', customIdPrompt: 'Set a 6-digit ID for your printed QR code.',
@@ -359,7 +362,7 @@ const uiText = {
         errorIdUpdateFailed: 'Failed to update ID.', errorIdMismatch: 'ID mismatch.', idDeletedSuccess: 'ID has been deleted.', errorIdDeleteFailed: 'Failed to delete ID.',
         errorSetIdFirstDownload: 'Please set a 6-digit ID first.', checkUpdateBtn: 'Check Update', upToDate: 'App is up to date!',
         t9Del: 'Del', t9Ok: 'OK', noticeTitle: 'Update Notice', noticeDesc: 'Atma has been completely revamped to make the performance flow more logical. Please check the tutorial section in settings for more details.', noticeBtn: 'Got It', tutorialBtn: 'User Guide', mustSetId: 'Custom ID must be set before exiting.',
-        lockBtn: 'Locked', unlockBtn: 'Unlocked'
+        lockBtn: 'Locked', unlockBtn: 'Unlocked', updateCompleted: 'Update completed!'
     }
 };
 
@@ -802,17 +805,39 @@ deleteIdBtn.addEventListener('click', async () => {
 
 updateAppBtn.addEventListener('click', async () => {
     if (!uiText[currentLanguage]) return;
+    const ui = uiText[currentLanguage];
     const btnSpan = updateAppBtn.querySelector('span');
     const spinner = document.createElement('div');
     spinner.className = 'btn-spinner';
     btnSpan.style.display = 'none';
     updateAppBtn.appendChild(spinner);
     updateStatus.textContent = '';
-    setTimeout(() => {
-        updateStatus.textContent = uiText[currentLanguage].upToDate;
+    
+    try {
+        const res = await fetch(window.location.href, { cache: 'no-store' });
+        const newSourceCode = await res.text();
+        
+        if (originalSourceCode && newSourceCode !== originalSourceCode) {
+            updateStatus.textContent = ui.updateCompleted;
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                for (let registration of registrations) {
+                    await registration.unregister();
+                }
+            }
+            setTimeout(() => {
+                window.location.reload(true);
+            }, 1000);
+        } else {
+            updateStatus.textContent = ui.upToDate;
+            spinner.remove();
+            btnSpan.style.display = 'inline';
+        }
+    } catch (err) {
         spinner.remove();
         btnSpan.style.display = 'inline';
-    }, 1500);
+        updateStatus.textContent = 'Gagal memeriksa pembaruan.';
+    }
 });
 
 invisibleSettingsTrigger.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); openSettingsModal(); });
@@ -1016,6 +1041,15 @@ articleView.addEventListener('pointerup', (e) => {
         updateInfoDisplay();
     }
 });
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then(registration => {})
+            .catch(error => {});
+    });
+}
 </script>
 </body>
 </html>
