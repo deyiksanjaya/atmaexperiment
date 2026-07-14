@@ -191,38 +191,32 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
 
                 <div class="flex items-start mb-6 -ml-4 sm:-ml-6 lg:-ml-8">
                     <div class="cnn-red-bar self-stretch"></div>
-                    <h1 id="articleTitle" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight pl-4 sm:pl-6 lg:pl-8">Tragedi Mengejutkan: Penemuan di Kediaman Keluarga Smith</h1>
+                    <h1 id="articleTitle" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight pl-4 sm:pl-6 lg:pl-8"></h1>
                 </div>
 
                 <div class="flex items-center text-gray-600 mb-2 text-xs">
                     <span id="publishedLabel" class="font-semibold">Published</span>
-                    <time id="publishedTime" class="ml-2">10:00 AM EDT, Sun October 15, 2023</time>
+                    <time id="publishedTime" class="ml-2"></time>
                 </div>
                 <p class="text-gray-700 mb-6 text-sm">
-                    <span id="authorPrefix">By</span> <span id="authorName" class="font-semibold">CNN Reporter</span>
+                    <span id="authorPrefix">By</span> <span id="authorName" class="font-semibold"></span>
                 </p>
 
                 <figure class="relative w-screen h-0 pb-[75%] bg-gray-100 overflow-hidden mb-8 ml-[calc(50%-50vw)] article-image-block" id="articleImageContainer">
                     <img id="image2" src="https://cnid.my.id/image2.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" style="object-position: top; opacity: 1;">
                     <img id="image1" src="https://cnid.my.id/image1.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" style="object-position: top; opacity: 1;">
-                    <figcaption id="imageFigcaption" class="absolute bottom-0 left-0 w-full bg-white bg-opacity-90 p-3 text-xs text-gray-600">Dokumentasi kepolisian di lokasi kejadian perkara.</figcaption>
+                    <figcaption id="imageFigcaption" class="absolute bottom-0 left-0 w-full bg-white bg-opacity-90 p-3 text-xs text-gray-600"></figcaption>
                 </figure>
 
-                <div class="article-content text-lg leading-relaxed mb-6" id="articleContent">
-                    <p class="mb-5">Polisi setempat baru saja merilis detail awal mengenai insiden mengejutkan yang terjadi akhir pekan lalu. Pihak berwenang segera mengamankan area tersebut setelah menerima panggilan darurat pada dini hari.</p>
-                    <p class="mb-5">Berdasarkan laporan forensik sementara, penyelidik masih mengumpulkan bukti-bukti krusial. Garis polisi telah dipasang ketat di sekeliling properti untuk mencegah campur tangan dari pihak luar.</p>
-                    <h2 class="text-2xl font-bold mb-4 mt-8">Investigasi Lanjutan</h2>
-                    <p class="mb-5">Tim detektif saat ini sedang menelusuri rekaman kamera keamanan di sekitar lingkungan tersebut dan memeriksa saksi mata potensial. Beberapa tetangga melaporkan aktivitas tidak biasa pada malam kejadian.</p>
-                    <p class="mb-5">Pihak kepolisian mengimbau siapa pun yang memiliki informasi terkait kejadian ini untuk segera menghubungi hotline yang telah disediakan, karena setiap petunjuk bisa sangat berharga untuk memecahkan kasus ini.</p>
-                </div>
+                <div class="article-content text-lg leading-relaxed mb-6" id="articleContent"></div>
             </article>
 
             <section class="border-t border-gray-200 pt-8 mt-10">
                 <h2 id="relatedTitle" class="text-2xl font-bold mb-6">Related News</h2>
                 <ul class="list-none p-0 space-y-4">
-                    <li><a id="relatedLink1" href="#" class="text-blue-600 hover:text-blue-800 transition-colors">Perkembangan Kasus: Detektif Temukan Petunjuk Baru</a></li>
-                    <li><a id="relatedLink2" href="#" class="text-blue-600 hover:text-blue-800 transition-colors">Sejarah Kepemilikan Properti Keluarga Smith</a></li>
-                    <li><a id="relatedLink3" href="#" class="text-blue-600 hover:text-blue-800 transition-colors">Statistik Keamanan Lingkungan di Tahun 2023</a></li>
+                    <li><a id="relatedLink1" href="#" class="text-blue-600 hover:text-blue-800 transition-colors"></a></li>
+                    <li><a id="relatedLink2" href="#" class="text-blue-600 hover:text-blue-800 transition-colors"></a></li>
+                    <li><a id="relatedLink3" href="#" class="text-blue-600 hover:text-blue-800 transition-colors"></a></li>
                 </ul>
             </section>
         </main>
@@ -289,7 +283,7 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
                         <a id="transcripts" href="#" class="text-gray-400 hover:text-white mx-2">Transcripts</a>
                     </div>
                 </div>
-                <p id="copyright" class="text-xs text-gray-500 leading-relaxed">© 2024 Cable News Network. A Warner Bros. Discovery Company. All Rights Reserved.</p>
+                <p id="copyright" class="text-xs text-gray-500 leading-relaxed"></p>
             </div>
         </footer>
     </div>
@@ -330,6 +324,7 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import { translations } from "./languages.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCFDxFe2PnyxaLRb7VctQSHhQh7ZKoSDaU",
@@ -343,136 +338,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
-const translations = {
-    id: {
-        settingsTitle: 'Pengaturan',
-        languageLabel: 'Bahasa:',
-        langId: 'Indonesia',
-        langEng: 'English',
-        mustSetId: 'ID kustom harus diisi sebelum keluar.',
-        licenseActivation: 'Aktivasi Lisensi',
-        licensePrompt: 'Silakan masukkan kunci lisensi Anda.',
-        activateBtn: 'Aktifkan',
-        customIdLabel: 'ID Kustom:',
-        customIdPrompt: 'Atur 6-digit ID untuk kode QR.',
-        changeIdBtn: 'Ganti ID',
-        downloadQrBtn: 'Unduh QR',
-        deleteIdBtn: 'Hapus ID',
-        confirmDeleteBtn: 'Konfirmasi Hapus?',
-        saveAndCloseBtn: 'Simpan & Tutup',
-        closeBtn: 'Tutup',
-        errorIdDigits: 'ID harus terdiri dari 6 digit.',
-        errorIdTaken: 'ID ini sudah digunakan.',
-        errorIdUpdateFailed: 'Gagal memperbarui ID.',
-        errorIdMismatch: 'ID tidak cocok.',
-        idDeletedSuccess: 'ID telah dihapus.',
-        errorIdDeleteFailed: 'Gagal menghapus ID.',
-        errorSetIdFirstDownload: 'Atur ID terlebih dahulu.',
-        checkUpdateBtn: 'Periksa Pembaruan',
-        upToDate: 'Aplikasi sudah terbaru!',
-        updateCompleted: 'Pembaruan selesai!',
-        t9Del: 'Hapus',
-        t9Ok: 'OK',
-        noticeTitle: 'Info Pembaruan',
-        noticeDesc: 'Atma telah dirombak total agar membuat flow performance menjadi semakin masuk akal. Silahkan cek bagian tutorial di setting untuk lebih detailnya.',
-        noticeBtn: 'Mengerti',
-        tutorialBtn: 'Tutorial',
-        
-        headerWorld: 'Dunia',
-        breadcrumbWorld: 'Dunia',
-        breadcrumbAmerica: 'Amerika',
-        readTime: 'Waktu Baca 5 Menit',
-        articleTitle: 'Tragedi Mengejutkan: Penemuan di Kediaman Keluarga Smith',
-        publishedLabel: 'Diterbitkan',
-        publishedTime: '10:00 AM EDT, Ming 15 Oktober 2023',
-        authorPrefix: 'Oleh',
-        authorName: 'Reporter CNN',
-        imageFigcaption: 'Dokumentasi kepolisian di lokasi kejadian perkara.',
-        relatedTitle: 'Berita Terkait',
-        relatedLink1: 'Perkembangan Kasus: Detektif Temukan Petunjuk Baru',
-        relatedLink2: 'Sejarah Kepemilikan Properti Keluarga Smith',
-        relatedLink3: 'Statistik Keamanan Lingkungan di Tahun 2023',
-        searchPlaceholder: 'Cari CNN...',
-        signIn: 'Masuk',
-        liveTv: 'TV Langsung', listen: 'Dengarkan', watch: 'Tonton',
-        world: 'Dunia', usPolitics: 'Politik AS', business: 'Bisnis', markets: 'Pasar',
-        health: 'Kesehatan', entertainment: 'Hiburan', tech: 'Teknologi', style: 'Gaya', travel: 'Perjalanan',
-        followCnn: 'IKUTI CNN',
-        termsOfUse: 'Syarat Penggunaan', privacyPolicy: 'Kebijakan Privasi', cookieSettings: 'Pengaturan Cookie',
-        adChoices: 'Pilihan Iklan', accessibility: 'Aksesibilitas & CC', about: 'Tentang', newsletters: 'Nawala', transcripts: 'Transkrip'
-    },
-    eng: {
-        settingsTitle: 'Settings',
-        languageLabel: 'Language:',
-        langId: 'Indonesia',
-        langEng: 'English',
-        mustSetId: 'Custom ID must be set before exiting.',
-        licenseActivation: 'License Activation',
-        licensePrompt: 'Please enter your license key to unlock the app.',
-        activateBtn: 'Activate',
-        customIdLabel: 'Custom ID:',
-        customIdPrompt: 'Set a 6-digit ID for your printed QR code.',
-        changeIdBtn: 'Change ID',
-        downloadQrBtn: 'Download QR',
-        deleteIdBtn: 'Delete ID',
-        confirmDeleteBtn: 'Confirm Delete?',
-        saveAndCloseBtn: 'Save & Close',
-        closeBtn: 'Close',
-        errorIdDigits: 'ID must be exactly 6 digits.',
-        errorIdTaken: 'This ID is already taken.',
-        errorIdUpdateFailed: 'Failed to update ID.',
-        errorIdMismatch: 'ID mismatch.',
-        idDeletedSuccess: 'ID has been deleted.',
-        errorIdDeleteFailed: 'Failed to delete ID.',
-        errorSetIdFirstDownload: 'Please set a 6-digit ID first.',
-        checkUpdateBtn: 'Check Update',
-        upToDate: 'App is up to date!',
-        updateCompleted: 'Update completed!',
-        t9Del: 'Del',
-        t9Ok: 'OK',
-        noticeTitle: 'Update Notice',
-        noticeDesc: 'Atma has been completely revamped to make the performance flow more logical. Please check the tutorial section in settings for more details.',
-        noticeBtn: 'Got It',
-        tutorialBtn: 'User Guide',
-
-        headerWorld: 'World',
-        breadcrumbWorld: 'World',
-        breadcrumbAmerica: 'Americas',
-        readTime: '5 Min Read',
-        articleTitle: 'Shocking Tragedy: Discovery at the Smith Family Residence',
-        publishedLabel: 'Published',
-        publishedTime: '10:00 AM EDT, Sun October 15, 2023',
-        authorPrefix: 'By',
-        authorName: 'CNN Reporter',
-        imageFigcaption: 'Police documentation at the crime scene.',
-        relatedTitle: 'Related News',
-        relatedLink1: 'Case Development: Detectives Find New Clues',
-        relatedLink2: 'History of the Smith Family Property',
-        relatedLink3: 'Neighborhood Safety Statistics in 2023',
-        searchPlaceholder: 'Search CNN...',
-        signIn: 'Sign In',
-        liveTv: 'Live TV', listen: 'Listen', watch: 'Watch',
-        world: 'World', usPolitics: 'US Politics', business: 'Business', markets: 'Markets',
-        health: 'Health', entertainment: 'Entertainment', tech: 'Tech', style: 'Style', travel: 'Travel',
-        followCnn: 'FOLLOW CNN',
-        termsOfUse: 'Terms of Use', privacyPolicy: 'Privacy Policy', cookieSettings: 'Cookie Settings',
-        adChoices: 'Ad Choices', accessibility: 'Accessibility & CC', about: 'About', newsletters: 'Newsletters', transcripts: 'Transcripts'
-    }
-};
-
-const displayContent = {
-    id: {
-        names: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice', 'Dorothy', 'Florence', 'Mildred', 'Virginia'],
-        locations: ['Kamar lantai dua', 'Loteng', 'Gudang belakang', 'Ruang bawah tanah', 'Lorong dekat dapur', 'Perpustakaan', 'Teras samping', 'Garasi tua', 'Ruang makan'],
-        weapons: ['Pisau', 'Palu', 'Gunting', 'Linggis', 'Batang besi', 'Tali', 'Racun', 'Revolver', 'Kapak']
-    },
-    eng: {
-        names: ['Eleanor', 'Abigail', 'Lillian', 'Margaret', 'Beatrice', 'Dorothy', 'Florence', 'Mildred', 'Virginia'],
-        locations: ['Second floor room', 'Attic', 'Back warehouse', 'Basement', 'Hallway near kitchen', 'Library', 'Side porch', 'Old garage', 'Dining room'],
-        weapons: ['Knife', 'Hammer', 'Scissors', 'Crowbar', 'Iron rod', 'Rope', 'Poison', 'Revolver', 'Axe']
-    }
-};
 
 let customId = '';
 let currentLanguage = 'eng';
@@ -617,6 +482,78 @@ function updateSaveButtonState() {
     }
 }
 
+function renderArticle() {
+    const t = translations[currentLanguage];
+    const p = t.articleParams;
+    
+    document.documentElement.lang = t.htmlLang;
+    document.title = t.title;
+
+    const idx0 = t9Value.length > 0 ? parseInt(t9Value[0]) - 1 : 0;
+    const idx1 = t9Value.length > 1 ? parseInt(t9Value[1]) - 1 : 0;
+    const idx2 = t9Value.length > 2 ? parseInt(t9Value[2]) - 1 : 0;
+
+    const keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+    const k0 = keys[idx0] || 'a';
+    const k1 = keys[idx1] || 'a';
+    const k2 = keys[idx2] || 'a';
+
+    const nama = p.namaKorbanMap[k0] || p.namaKorbanMap['a'];
+    const lokasi = p.lokasiMap[k1] || p.lokasiMap['a'];
+    const alat = p.alatMap[k2] ? p.alatMap[k2].name : p.alatMap['a'].name;
+
+    const replaceVars = (str) => {
+        if (!str) return '';
+        return str.replace(/\$\{namaKorban\}/g, nama)
+                  .replace(/\$\{lokasi\}/g, lokasi)
+                  .replace(/\$\{alat\}/g, alat);
+    };
+
+    const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+    const setHtml = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+    const setPlaceholder = (id, text) => { const el = document.getElementById(id); if (el) el.placeholder = text; };
+
+    setText('headerWorld', t.headerWorld);
+    setText('breadcrumbWorld', t.breadcrumbWorld);
+    setText('breadcrumbAmerica', t.breadcrumbAmerica);
+    setText('readTime', t.readTime);
+    setText('articleTitle', replaceVars(t.articleTitle));
+    setText('publishedLabel', t.publishedLabel);
+    setText('publishedTime', t.publishedTime);
+    setText('authorPrefix', t.authorPrefix);
+    setText('authorName', t.authorName);
+    setText('imageFigcaption', replaceVars(t.imageFigcaption));
+    
+    setText('relatedTitle', t.relatedTitle);
+    setText('relatedLink1', t.relatedLink1);
+    setText('relatedLink2', t.relatedLink2);
+    setText('relatedLink3', t.relatedLink3);
+    setPlaceholder('searchPlaceholder', t.searchPlaceholder);
+    setText('signIn', t.signIn);
+    setText('liveTv', t.liveTv); setText('listen', t.listen); setText('watch', t.watch);
+    setText('world', t.world); setText('usPolitics', t.usPolitics); setText('business', t.business); setText('markets', t.markets);
+    setText('health', t.health); setText('entertainment', t.entertainment); setText('tech', t.tech); setText('style', t.style); setText('travel', t.travel);
+    setText('followCnn', t.followCnn);
+    setText('termsOfUse', t.termsOfUse); setText('privacyPolicy', t.privacyPolicy); setText('cookieSettings', t.cookieSettings);
+    setText('adChoices', t.adChoices); setText('accessibility', t.accessibility); setText('about', t.about);
+    setText('newsletters', t.newsletters); setText('transcripts', t.transcripts);
+    setHtml('copyright', t.copyright);
+
+    const contentHtml = `
+        <p class="mb-5">${replaceVars(t.articleP1)}</p>
+        <p class="mb-5">${replaceVars(t.articleP2)}</p>
+        <p class="mb-5">${replaceVars(t.articleP3)}</p>
+        <h2 class="text-2xl font-bold mb-4 mt-8">${replaceVars(t.articleH2)}</h2>
+        <p class="mb-5">${replaceVars(t.articleP4)}</p>
+        <p class="mb-5">${replaceVars(t.articleP5)}</p>
+        <h3 class="text-xl font-bold mb-4 mt-8">${replaceVars(t.articleH3)}</h3>
+        <p class="mb-5">${replaceVars(t.articleP6)}</p>
+        <p class="mb-5">${replaceVars(t.articleP7)}</p>
+        <p class="mb-5">${replaceVars(t.articleP8)}</p>
+    `;
+    setHtml('articleContent', contentHtml);
+}
+
 function updateLanguageUI(lang) {
     currentLanguage = lang;
     const t = translations[lang];
@@ -638,33 +575,6 @@ function updateLanguageUI(lang) {
     document.getElementById('close-update-notice-btn').textContent = t.noticeBtn;
     document.getElementById('tutorial-btn').textContent = t.tutorialBtn;
 
-    const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
-    const setPlaceholder = (id, text) => { const el = document.getElementById(id); if (el) el.placeholder = text; };
-    
-    setText('headerWorld', t.headerWorld);
-    setText('breadcrumbWorld', t.breadcrumbWorld);
-    setText('breadcrumbAmerica', t.breadcrumbAmerica);
-    setText('readTime', t.readTime);
-    setText('articleTitle', t.articleTitle);
-    setText('publishedLabel', t.publishedLabel);
-    setText('publishedTime', t.publishedTime);
-    setText('authorPrefix', t.authorPrefix);
-    setText('authorName', t.authorName);
-    setText('imageFigcaption', t.imageFigcaption);
-    setText('relatedTitle', t.relatedTitle);
-    setText('relatedLink1', t.relatedLink1);
-    setText('relatedLink2', t.relatedLink2);
-    setText('relatedLink3', t.relatedLink3);
-    setPlaceholder('searchPlaceholder', t.searchPlaceholder);
-    setText('signIn', t.signIn);
-    setText('liveTv', t.liveTv); setText('listen', t.listen); setText('watch', t.watch);
-    setText('world', t.world); setText('usPolitics', t.usPolitics); setText('business', t.business); setText('markets', t.markets);
-    setText('health', t.health); setText('entertainment', t.entertainment); setText('tech', t.tech); setText('style', t.style); setText('travel', t.travel);
-    setText('followCnn', t.followCnn);
-    setText('termsOfUse', t.termsOfUse); setText('privacyPolicy', t.privacyPolicy); setText('cookieSettings', t.cookieSettings);
-    setText('adChoices', t.adChoices); setText('accessibility', t.accessibility); setText('about', t.about);
-    setText('newsletters', t.newsletters); setText('transcripts', t.transcripts);
-    
     if (lang === 'id') {
         langIdButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-black text-[#fdfaf3] transition-all';
         langEngButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-transparent text-[#1a1a1a] hover:bg-gray-100 transition-all';
@@ -672,6 +582,9 @@ function updateLanguageUI(lang) {
         langEngButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-black text-[#fdfaf3] transition-all';
         langIdButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-transparent text-[#1a1a1a] hover:bg-gray-100 transition-all';
     }
+    
+    renderArticle();
+    updateInfoDisplay();
     updateSaveButtonState();
 }
 
@@ -932,16 +845,18 @@ function updateInfoDisplay() {
     const l = document.getElementById('info-location');
     const w = document.getElementById('info-weapon');
 
-    const data = displayContent[currentLanguage] || displayContent.eng;
+    const p = translations[currentLanguage].articleParams;
     const prefix = currentLanguage === 'id' ? ['Korban', 'Lokasi', 'Senjata'] : ['Victim', 'Location', 'Weapon'];
 
     const idx0 = t9Value.length > 0 ? parseInt(t9Value[0]) - 1 : -1;
     const idx1 = t9Value.length > 1 ? parseInt(t9Value[1]) - 1 : -1;
     const idx2 = t9Value.length > 2 ? parseInt(t9Value[2]) - 1 : -1;
 
-    v.innerText = idx0 >= 0 && idx0 < 9 ? `${prefix[0]}: ${data.names[idx0]}` : '';
-    l.innerText = idx1 >= 0 && idx1 < 9 ? `${prefix[1]}: ${data.locations[idx1]}` : '';
-    w.innerText = idx2 >= 0 && idx2 < 9 ? `${prefix[2]}: ${data.weapons[idx2]}` : '';
+    const keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+
+    v.innerText = idx0 >= 0 && idx0 < 9 ? `${prefix[0]}: ${p.namaKorbanMap[keys[idx0]]}` : '';
+    l.innerText = idx1 >= 0 && idx1 < 9 ? `${prefix[1]}: ${p.lokasiMap[keys[idx1]]}` : '';
+    w.innerText = idx2 >= 0 && idx2 < 9 ? `${prefix[2]}: ${p.alatMap[keys[idx2]].name}` : '';
 }
 
 const digitToCode = { '1': 'Fl', '2': 'uC', '3': 'zW', '4': 'Xy', '5': 'Qr', '6': 'aA', '7': 'bB', '8': 'cC', '9': 'dD' };
@@ -977,6 +892,7 @@ function handleT9Action(val) {
     }
     t9Display.innerText = t9Value;
     updateInfoDisplay();
+    renderArticle();
 }
 
 document.querySelectorAll('.t9-btn').forEach(btn => {
@@ -1003,10 +919,25 @@ articleView.addEventListener('pointermove', (e) => {
 });
 
 articleView.addEventListener('pointerup', (e) => {
-    if (isKeypadClosing || e.target.closest('#t9-keypad') || isSwiping || e.target.closest('a') || e.target.closest('button')) return;
-    t9Keypad.classList.remove('hidden');
-    t9Keypad.classList.add('flex');
-    updateInfoDisplay();
+    if (isKeypadClosing || e.target.closest('#t9-keypad') || isSwiping) return;
+
+    const imgContainer = e.target.closest('#articleImageContainer');
+    if (imgContainer) {
+        const img1 = document.getElementById('image1');
+        img1.style.opacity = img1.style.opacity === '0' ? '1' : '0';
+        return;
+    }
+
+    if (!t9Keypad.classList.contains('hidden')) {
+        handleT9Action('hide');
+        return;
+    }
+
+    if (!e.target.closest('a') && !e.target.closest('button')) {
+        t9Keypad.classList.remove('hidden');
+        t9Keypad.classList.add('flex');
+        updateInfoDisplay();
+    }
 });
 </script>
 </body>
