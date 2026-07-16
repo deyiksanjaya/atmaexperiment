@@ -13,11 +13,11 @@ export const translations = {
     authorName: "CNN Mystery Team",
     imageFigcaption: "A portrait of the Smith family taken after the death of their fourth daughter",
     evidenceCaption: "Evidence: The ${alat} found at the scene.",
-    articleP1: "America - A 9-year-old girl was found dead under suspicious circumstances at the Smith family residence in ${lokasi} on Thursday night (01/17/1924). The victim, identified as ${namaKorban} Smith. The incident occurred just hours before the family's scheduled annual photo session on their front porch.",
-    articleP2: "According to the police report, ${namaKorban}'s body was discovered in a horrific condition. Initial investigations suggest she suffered fatal injuries caused by an attack involving a ${alat}. At the scene, investigators made a chilling discovery: a strange 9-sided die and a handwritten list containing nine names, nine locations, and nine weapons.",
+    articleP1: "America: A 9-year-old girl was found dead under suspicious circumstances at the Smith family residence in ${lokasi} on Thursday night (01/17/1924). The victim, identified as ${namaKorban} Smith. The incident occurred just hours before the family's scheduled annual photo session on their front porch.",
+    articleP2: "According to the police report, ${namaKorban}'s body was discovered in a horrific condition. Initial investigations suggest she suffered fatal injuries caused by an attack involving a ${alat}. At the scene, investigators found a chilling piece of evidence: a numbered list containing 9 names of individuals, 9 locations, and 9 weapons. Beside it lay a strange 9-sided die. Authorities suspect that the serial killer used the die to randomly select who the target would be, where the act would be committed, and what weapon would be used.",
     articleP3: "The body was transported to the hospital for an autopsy the following day. However, the procedure was never carried out, as the corpse was reported missing under mysterious circumstances. At 6:30 AM, the medical team found the autopsy table completely empty. The only clue left behind was a blood trail that abruptly ended in the middle of the hospital corridor.",
     articleH2: "Cryptic Evidence at the Scene",
-    articleP4: "The discovery of the list confirmed police suspicions that this was the work of a calculated serial killer. Further investigation revealed a crumpled piece of paper near the crime scene with the three-digit number ${kodeAngka} scribbled on it. Detectives soon cracked the code: the numbers corresponded directly to the killer's list, selecting the next victim, the location of the murder, and the weapon to be used.",
+    articleP4: "The discovery of the list confirmed police suspicions that this was the work of a calculated serial killer who left the fate of his victims to chance. Further investigation revealed a mysterious piece of paper left near the crime scene, bearing the three-digit number ${kodeAngka}. Detectives soon cracked the horrific code. The first digit selects a specific name on the list for his next target, the second digit dictates the location, and the third selects the weapon he intends to use.",
     articleP5: "The Smith family has declined to give detailed comments to the media. In a brief statement, they said they have placed their full trust in the authorities to carry out a thorough investigation.",
     articleH3: "An Anomaly in the Photograph",
     articleP6: "Despite the grief and lingering uncertainty, the Smith family proceeded with their annual photo session as a tribute to the deceased. A small empty space was left in the center of the group, as if ${namaKorban} were still standing among them.",
@@ -54,9 +54,11 @@ export const translations = {
     articleParams: {
         namaKorbanMap: {
             'a': 'Eleanor', 'b': 'Abigail', 'c': 'Lillian', 'd': 'Margaret', 'e': 'Beatrice',
+            'f': 'Dorothy', 'g': 'Florence', 'h': 'Mildred', 'i': 'Virginia'
         },
         lokasiMap: {
-            'a': 'the second-floor room', 'b': 'the attic', 'c': 'the back shed', 'd': 'the basement', 'e': 'the hallway near the kitchen',
+            'a': 'the second floor room', 'b': 'the attic', 'c': 'the back warehouse', 'd': 'the basement', 'e': 'the hallway near the kitchen',
+            'f': 'the library', 'g': 'the side porch', 'h': 'the old garage', 'i': 'the dining room'
         },
         alatMap: {
             'a': { name: 'knife', image: 'knife.png' },
@@ -64,6 +66,10 @@ export const translations = {
             'c': { name: 'scissors', image: 'scissors.png' },
             'd': { name: 'crowbar', image: 'crowbar.png' },
             'e': { name: 'iron rod', image: 'iron-rod.png' },
+            'f': { name: 'rope', image: 'rope.png' },
+            'g': { name: 'poison', image: 'poison.png' },
+            'h': { name: 'revolver', image: 'revolver.png' },
+            'i': { name: 'axe', image: 'axe.png' }
         }
     }
   },
@@ -81,11 +87,11 @@ export const translations = {
     authorName: "Tim Misteri CNN Indonesia",
     imageFigcaption: "Potret keluarga Smith pasca kepergian putri keempatnya.",
     evidenceCaption: "Barang bukti: ${alat} yang ditemukan di lokasi kejadian.",
-    articleP1: "Jakarta, CNN Indonesia - Seorang remaja perempuan berusia 9 tahun ditemukan tewas secara tidak wajar di kediaman keluarga Smith, tepatnya di ${lokasi}, Kamis malam (17/01/1924). Korban diketahui bernama ${namaKorban} Smith. Insiden terjadi hanya beberapa jam sebelum keluarga tersebut dijadwalkan menjalani sesi foto tahunan mereka di teras rumah.",
-    articleP2: "Menurut laporan kepolisian, jasad ${namaKorban} ditemukan dalam kondisi mengenaskan. Dugaan awal menunjukkan korban mengalami luka fatal akibat serangan menggunakan ${alat}. Di lokasi kejadian, penyidik menemukan barang bukti berupa sebuah dadu bersisi 9 dan sebuah daftar tulisan tangan berisi 9 nama, 9 lokasi, dan 9 senjata.",
+    articleP1: "Jakarta, CNN Indonesia: Seorang remaja perempuan berusia 9 tahun ditemukan tewas secara tidak wajar di kediaman keluarga Smith, tepatnya di ${lokasi}, Kamis malam (17/01/1924). Korban diketahui bernama ${namaKorban} Smith. Insiden terjadi hanya beberapa jam sebelum keluarga tersebut dijadwalkan menjalani sesi foto tahunan mereka di teras rumah.",
+    articleP2: "Menurut laporan kepolisian, jasad ${namaKorban} ditemukan dalam kondisi mengenaskan. Dugaan awal menunjukkan korban mengalami luka fatal akibat serangan menggunakan ${alat}. Di lokasi kejadian, penyidik menemukan barang bukti yang memicu kengerian: sebuah daftar tulisan tangan bernomor yang berisi 9 nama orang, 9 nama tempat, dan 9 senjata. Di dekatnya, tergeletak sebuah dadu aneh bersisi sembilan. Kepolisian menduga kuat bahwa pelaku adalah seorang pembunuh berantai, dan kemungkinan dadu tersebut dipakai untuk memilih secara acak siapa targetnya, di mana dia melakukan aksinya, dan senjata apa yang akan dia pakai.",
     articleP3: "Jasad korban sempat dibawa ke rumah sakit untuk proses otopsi pada keesokan harinya. Namun proses tersebut gagal dilaksanakan setelah jasad dilaporkan menghilang secara misterius. Meja otopsi ditemukan kosong oleh tim medis pada pukul 06.30 pagi. Satu-satunya petunjuk yang tersisa adalah jejak darah yang berhenti di tengah lorong rumah sakit.",
     articleH2: "Temuan Bukti Berupa Sandi",
-    articleP4: "Penemuan daftar tersebut memastikan kecurigaan polisi bahwa ini adalah ulah pembunuh berantai. Penyelidikan lebih lanjut mengungkap secarik kertas lecek bertuliskan tiga digit angka yaitu ${kodeAngka} di dekat lokasi kejadian. Detektif memecahkan kode tersebut: angka-angka itu merujuk langsung pada daftar sang pembunuh untuk menentukan target berikutnya, lokasi eksekusi, dan senjata yang akan dipakai.",
+    articleP4: "Penemuan daftar tersebut memastikan kecurigaan polisi bahwa mereka berhadapan dengan pembunuh berantai berdarah dingin. Penyelidikan lebih lanjut mengungkap keberadaan secarik kertas misterius di dekat lokasi kejadian yang bertuliskan tiga digit angka, yaitu ${kodeAngka}. Detektif segera memecahkan sandi mengerikan tersebut. Angka pertama menunjuk pada salah satu nama di daftar untuk target selanjutnya, angka kedua menentukan nama tempat, dan angka ketiga memilih senjata mana yang mau ia pakai.",
     articleP5: "Keluarga Smith menolak memberikan keterangan mendetail kepada media. Namun dalam pernyataan singkat, mereka menyatakan telah menyerahkan sepenuhnya penyelidikan kepada otoritas yang berwenang.",
     articleH3: "Kejanggalan pada Foto Keluarga",
     articleP6: "Meski dalam suasana duka dan belum mendapat kepastian hukum, keluarga Smith tetap menjalani sesi foto keluarga untuk menghormati mendiang. Terlihat mereka menyisakan sedikit ruang kosong di tengah barisan seolah ${namaKorban} ikut berfoto bersama.",
@@ -122,9 +128,11 @@ export const translations = {
     articleParams: {
         namaKorbanMap: {
             'a': 'Eleanor', 'b': 'Abigail', 'c': 'Lillian', 'd': 'Margaret', 'e': 'Beatrice',
+            'f': 'Dorothy', 'g': 'Florence', 'h': 'Mildred', 'i': 'Virginia'
         },
         lokasiMap: {
             'a': 'kamar lantai dua', 'b': 'loteng', 'c': 'gudang belakang', 'd': 'ruang bawah tanah', 'e': 'lorong dekat dapur',
+            'f': 'perpustakaan', 'g': 'teras samping', 'h': 'garasi tua', 'i': 'ruang makan'
         },
         alatMap: {
             'a': { name: 'pisau', image: 'knife.png' },
@@ -132,6 +140,10 @@ export const translations = {
             'c': { name: 'gunting', image: 'scissors.png' },
             'd': { name: 'linggis', image: 'crowbar.png' },
             'e': { name: 'batang besi', image: 'iron-rod.png' },
+            'f': { name: 'tali', image: 'rope.png' },
+            'g': { name: 'racun', image: 'poison.png' },
+            'h': { name: 'revolver', image: 'revolver.png' },
+            'i': { name: 'kapak', image: 'axe.png' }
         }
     }
   }
