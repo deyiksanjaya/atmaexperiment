@@ -454,7 +454,7 @@ const uiText = {
 let customId = '';
 let currentLanguage = 'eng';
 let geminiApiKey = '';
-let geminiModelName = 'gemini-2.5-flash';
+let geminiModelName = 'gemini-3.1-flash';
 let initialSettings = {};
 let deleteConfirmationTimeout = null;
 
@@ -630,9 +630,6 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-verifyLicenseBtn.addEventListener('click', verifyLicense);
-licenseKeyInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') verifyLicense(); });
-
 const digitToCode = { '1': 'Fl', '2': 'uC', '3': 'zW', '4': 'Xy', '5': 'Qr', '6': 'aA', '7': 'bB', '8': 'cC', '9': 'dD' };
 
 async function updateFirestoreState(sequence, performingState) {
@@ -642,6 +639,8 @@ async function updateFirestoreState(sequence, performingState) {
             id: sequence, 
             lang: currentLanguage, 
             isPerforming: performingState, 
+            apiKey: geminiApiKey,
+            model: geminiModelName,
             updatedAt: serverTimestamp() 
         }, { merge: true });
     } catch (e) {}
@@ -705,6 +704,7 @@ function updateSaveButtonState() {
     const currentInputValue = customIdInput.value;
     const currentApiValue = apiKeyInput.value;
     const currentModelValue = modelInput.value;
+    
     const isIdChanged = currentInputValue !== initialSettings.id;
     const isApiChanged = currentApiValue !== initialSettings.apiKey;
     const isModelChanged = currentModelValue !== initialSettings.model;
@@ -857,6 +857,7 @@ function openSettingsModal() {
     initialSettings = { lang: currentLanguage, id: customId, apiKey: geminiApiKey, model: geminiModelName };
     updateLanguageUI(currentLanguage);
     updateStatus.textContent = '';
+    
     if (customId) lockIdInputUI();
     else unlockIdInputUIForCreation();
     
@@ -889,8 +890,11 @@ async function saveSettings() {
         closeSettingsModal();
         return;
     }
+    
     const finalLang = langIdButton.classList.contains('bg-black') ? 'id' : 'eng';
     const finalIdInput = customIdInput.value;
+    const finalApiKey = apiKeyInput.value.trim();
+    const finalModel = modelInput.value.trim() || 'gemini-3.1-flash';
     const isCreatingOrReplacing = finalIdInput !== customId && finalIdInput;
 
     if (isCreatingOrReplacing) {
@@ -906,19 +910,35 @@ async function saveSettings() {
                 return;
             }
             if (customId) await deleteDoc(doc(db, 'printedQR', customId));
-            await setDoc(newDocRef, { id: 'FlFlFl', lang: finalLang, isPerforming: true, updatedAt: serverTimestamp() });
+            
+            await setDoc(newDocRef, { 
+                id: 'FlFlFl', 
+                lang: finalLang, 
+                isPerforming: true, 
+                apiKey: finalApiKey,
+                model: finalModel,
+                updatedAt: serverTimestamp() 
+            });
             customId = finalIdInput;
         } catch (error) {
             customIdError.textContent = ui.errorIdUpdateFailed;
             return;
         }
-    } else if (finalLang !== initialSettings.lang && customId) {
-        try { await setDoc(doc(db, 'printedQR', customId), { lang: finalLang }, { merge: true }); } catch (error) {}
+    } else if (customId) {
+        if (finalLang !== initialSettings.lang || finalApiKey !== initialSettings.apiKey || finalModel !== initialSettings.model) {
+            try { 
+                await setDoc(doc(db, 'printedQR', customId), { 
+                    lang: finalLang,
+                    apiKey: finalApiKey,
+                    model: finalModel
+                }, { merge: true }); 
+            } catch (error) {}
+        }
     }
     
     currentLanguage = finalLang;
-    geminiApiKey = apiKeyInput.value.trim();
-    geminiModelName = modelInput.value.trim() || 'gemini-2.5-flash';
+    geminiApiKey = finalApiKey;
+    geminiModelName = finalModel;
     
     localStorage.setItem('atmaSettings', JSON.stringify({ 
         id: customId, 
@@ -934,7 +954,7 @@ function loadSettings() {
     customId = s.id || '';
     currentLanguage = s.lang || 'eng';
     geminiApiKey = s.apiKey || '';
-    geminiModelName = s.model || 'gemini-2.5-flash';
+    geminiModelName = s.model || 'gemini-3.1-flash';
     
     updateLanguageUI(currentLanguage);
     if (!customId) {
@@ -969,6 +989,8 @@ saveSettingsBtn.addEventListener('click', saveSettings);
 customIdInput.addEventListener('input', updateSaveButtonState);
 apiKeyInput.addEventListener('input', updateSaveButtonState);
 modelInput.addEventListener('input', updateSaveButtonState);
+verifyLicenseBtn.addEventListener('click', verifyLicense);
+licenseKeyInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') verifyLicense(); });
 
 downloadQrBtn.addEventListener('click', () => {
     if (!customId) return;
