@@ -515,7 +515,7 @@
             };
 
             const sceneOptionsEng = {
-                'a': 'the second-floor room', 'b': 'the attic', 'c': 'the back shed', 'd': 'the basement',
+                'a': 'the second floor room', 'b': 'the attic', 'c': 'the back warehouse', 'd': 'the basement',
                 'e': 'the hallway near the kitchen', 'f': 'the library', 'g': 'the side porch', 'h': 'the old garage', 'i': 'the dining room'
             };
 
@@ -546,17 +546,21 @@
             const isIndo = lang === 'id';
             const alatObject = isIndo ? weaponOptionsId[alatChar] : weaponOptionsEng[alatChar];
 
+            const charToNumber = { 'a': '1', 'b': '2', 'c': '3', 'd': '4', 'e': '5', 'f': '6', 'g': '7', 'h': '8', 'i': '9' };
+            const kodeAngka = (charToNumber[namaKorbanChar] || '1') + (charToNumber[lokasiChar] || '1') + (charToNumber[alatChar] || '1');
+
             return {
                 namaKorban: victimOptions[namaKorbanChar],
                 lokasi: isIndo ? sceneOptionsId[lokasiChar] : sceneOptionsEng[lokasiChar],
                 alat: alatObject.name,
-                alatImage: alatObject.image
+                alatImage: alatObject.image,
+                kodeAngka: kodeAngka
             };
         }
 
         function populateArticleContent(lang, articleParams) {
             const t = translations[lang];
-            const { namaKorban, lokasi, alat, alatImage } = articleParams;
+            const { namaKorban, lokasi, alat, alatImage, kodeAngka } = articleParams;
             const lokasiLower = lokasi;
             const alatLower = alat;
             
@@ -582,7 +586,9 @@
             let finalArticleHtml = articleHTML
                 .replace(/\$\{namaKorban\}/g, capitalizeFirstLetter(namaKorban))
                 .replace(/\$\{lokasi\}/g, lokasiLower)
-                .replace(/\$\{alat\}/g, alatLower);
+                .replace(/\$\{alat\}/g, alatLower)
+                .replace(/\$\{kodeAngka\}/g, kodeAngka);
+                
             document.getElementById('articleContent').innerHTML = finalArticleHtml;
         }
         
