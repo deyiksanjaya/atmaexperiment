@@ -7,225 +7,54 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        @font-face {
-            font-family: 'CNN Sans Display';
-            src: url('fonts/cnn_sans_display-v1.woff2') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'CNN Sans Display';
-            src: url('fonts/cnn_sans_display-medium-v1.woff2') format('woff2');
-            font-weight: 500;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'CNN Sans Display';
-            src: url('fonts/cnn_sans_display-bold-v1.woff2') format('woff2');
-            font-weight: 700;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Noto Serif';
-            src: url('fonts/noto_serif-bold-v1.woff2') format('woff2');
-            font-weight: 700;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Noto Serif';
-            src: url('fonts/noto_serif-bold_italic-v1.woff2') format('woff2');
-            font-weight: 700;
-            font-style: italic;
-        }
-        @font-face {
-            font-family: 'Noto Serif Extra Condensed Black';
-            src: url('fonts/noto_serif_extra_condensed_black-v1.woff2') format('woff2');
-            font-weight: 900;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Noto Sans Arabic';
-            src: url('fonts/noto_sans_arabic-v1.woff2') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Noto Sans Arabic';
-            src: url('fonts/noto_sans_arabic-v1.ttf') format('truetype');
-            font-weight: 400;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Noto Serif Semi Condensed';
-            src: url('fonts/noto_serif_semi_condensed-v1.woff2') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Helvetica Neue';
-            src: url('fonts/helveticaneue-v1.woff2') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-        }
+        @font-face { font-family: 'CNN Sans Display'; src: url('fonts/cnn_sans_display-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+        @font-face { font-family: 'CNN Sans Display'; src: url('fonts/cnn_sans_display-medium-v1.woff2') format('woff2'); font-weight: 500; font-style: normal; }
+        @font-face { font-family: 'CNN Sans Display'; src: url('fonts/cnn_sans_display-bold-v1.woff2') format('woff2'); font-weight: 700; font-style: normal; }
+        @font-face { font-family: 'Noto Serif'; src: url('fonts/noto_serif-bold-v1.woff2') format('woff2'); font-weight: 700; font-style: normal; }
+        @font-face { font-family: 'Noto Serif'; src: url('fonts/noto_serif-bold_italic-v1.woff2') format('woff2'); font-weight: 700; font-style: italic; }
+        @font-face { font-family: 'Noto Serif Extra Condensed Black'; src: url('fonts/noto_serif_extra_condensed_black-v1.woff2') format('woff2'); font-weight: 900; font-style: normal; }
+        @font-face { font-family: 'Noto Sans Arabic'; src: url('fonts/noto_sans_arabic-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+        @font-face { font-family: 'Noto Sans Arabic'; src: url('fonts/noto_sans_arabic-v1.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+        @font-face { font-family: 'Noto Serif Semi Condensed'; src: url('fonts/noto_serif_semi_condensed-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+        @font-face { font-family: 'Helvetica Neue'; src: url('fonts/helveticaneue-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
 
-        body {
-            font-family: 'CNN Sans Display', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            user-select: none;
-        }
+        body { font-family: 'CNN Sans Display', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; user-select: none; }
+        h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
+        .article-content p { font-family: 'Noto Serif Semi Condensed', serif; }
+        .article-content h2, .article-content h3 { font-family: 'Noto Serif', serif; }
+        .font-semibold { font-weight: 500; }
+        .font-extrabold { font-weight: 800; }
 
-        h1 {
-            font-family: 'Noto Serif Extra Condensed Black', serif;
-        }
+        #loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #fff; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; }
+        .spinner { border: 8px solid #f3f3f3; border-top: 8px solid #007bff; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .article-content p {
-            font-family: 'Noto Serif Semi Condensed', serif;
-        }
+        main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; }
 
-        .article-content h2,
-        .article-content h3 {
-            font-family: 'Noto Serif', serif;
-        }
+        .gallery-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; }
+        .gallery-overlay.active { opacity: 1; visibility: visible; }
+        .gallery-content { position: relative; width: 90%; max-width: 800px; padding-top: 56.25%; overflow: hidden; background-color: #000; }
+        .article-image-block img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; pointer-events: none; }
+        .gallery-content img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; pointer-events: none; }
+        .close-button { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; z-index: 2001; }
+        .cnn-red-bar { width: 6px; background-color: #CC0000; flex-shrink: 0; }
+        .evidence-figure { margin-top: 2rem; margin-bottom: 2rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 4px; background-color: #f7fafc; }
+        .evidence-figure img { max-width: 100%; height: auto; margin: 0 auto; display: block; pointer-events: none; }
+        .evidence-figure figcaption { margin-top: 0.75rem; text-align: center; font-size: 0.875rem; color: #4a5568; font-style: italic; }
 
-        .font-semibold {
-            font-weight: 500;
-        }
-
-        .font-extrabold {
-            font-weight: 800;
-        }
-
-        #loadingOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-        }
-
-        .spinner {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #007bff;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        main {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-        }
-
-        .gallery-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-        }
-
-        .gallery-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .gallery-content {
-            position: relative;
-            width: 90%;
-            max-width: 800px;
-            padding-top: 56.25%;
-            overflow: hidden;
-            background-color: #000;
-        }
-
-        .article-image-block img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top;
-            display: block;
-            pointer-events: none;
-        }
-
-        .gallery-content img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            object-position: center;
-            display: block;
-            pointer-events: none;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: #fff;
-            font-size: 40px;
-            cursor: pointer;
-            z-index: 2001;
-        }
-
-        .cnn-red-bar {
-            width: 6px;
-            background-color: #CC0000;
-            flex-shrink: 0;
-        }
-        .evidence-figure {
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            background-color: #f7fafc;
-        }
-        .evidence-figure img {
-            max-width: 100%;
-            height: auto;
-            margin: 0 auto;
-            display: block;
-            pointer-events: none;
-        }
-        .evidence-figure figcaption {
-            margin-top: 0.75rem;
-            text-align: center;
-            font-size: 0.875rem;
-            color: #4a5568;
-            font-style: italic;
-        }
+        #cameraOverlay { position: fixed; inset: 0; width: 100vw; height: 100vh; background: #000; z-index: 10000; display: none; align-items: center; justify-content: center; overflow: hidden; }
+        #cameraVideo { width: 100%; height: 100%; object-fit: cover; pointer-events: auto; }
+        #cameraSpinner { position: absolute; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid #fff; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; display: none; pointer-events: none; }
     </style>
 </head>
 <body class="bg-white text-gray-900">
     <div id="loadingOverlay">
         <div class="spinner"></div>
+    </div>
+
+    <div id="cameraOverlay">
+        <video id="cameraVideo" autoplay playsinline></video>
+        <div id="cameraSpinner"></div>
     </div>
 
     <header id="mainHeader" class="flex items-center justify-between py-2 bg-white sticky top-0 z-10 px-4 sm:px-6 lg:px-8">
@@ -392,18 +221,28 @@
         const closeButton = document.querySelector('.gallery-overlay .close-button');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const mainContent = document.querySelector('main');
+        const articleTitle = document.getElementById('articleTitle');
+        const cameraOverlay = document.getElementById('cameraOverlay');
+        const cameraVideo = document.getElementById('cameraVideo');
+        const cameraSpinner = document.getElementById('cameraSpinner');
+        
         const IMAGE_STATE_KEY = 'smithFamilyImageState';
+        const LANGUAGE_KEY = 'userLanguage';
+
+        let globalCurrentLang = 'id';
+        let globalQRData = null;
+        let activeCameraStream = null;
 
         const getUrlParams = () => new URLSearchParams(window.location.search);
-        const getLanguage = () => (getUrlParams().get('lang') === 'eng' ? 'eng' : 'id');
         const capitalizeFirstLetter = (string) => string ? string.charAt(0).toUpperCase() + string.slice(1) : '';
 
         function applyTranslations(lang) {
-            const t = translations[lang] || translations['eng'];
+            const t = translations[lang];
+            if (!t) return;
             const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
             const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
             const setPlaceholder = (id, text) => { const el = document.getElementById(id); if (el) el.placeholder = text; };
-            document.documentElement.lang = t.htmlLang || 'en';
+            document.documentElement.lang = t.htmlLang;
             setText('pageTitle', t.title);
             setText('headerWorld', t.headerWorld);
             setText('breadcrumbWorld', t.breadcrumbWorld);
@@ -449,56 +288,96 @@
             const idParam = secretCode || 'FlFlFl';
             const decodingMap = { 'Fl': 'a', 'uC': 'b', 'zW': 'c', 'Xy': 'd', 'Qr': 'e', 'aA': 'f', 'bB': 'g', 'cC': 'h', 'dD': 'i' };
             let decodedChars = [];
+            
             for (let i = 0; i < idParam.length; i += 2) {
                 const encodedSegment = idParam.substring(i, i + 2);
                 decodedChars.push(decodingMap[encodedSegment] || 'a');
             }
+            
             while (decodedChars.length < 3) decodedChars.push('a');
             decodedChars = decodedChars.slice(0, 3);
             const [namaKorbanChar, lokasiChar, alatChar] = decodedChars;
-            
-            const t = translations[lang] || translations['eng'];
-            const articleParams = t.articleParams || { namaKorbanMap: {}, lokasiMap: {}, alatMap: {} };
-            const { namaKorbanMap = {}, lokasiMap = {}, alatMap = {} } = articleParams;
-            
-            const alatObject = alatMap[alatChar] || { name: 'a sharp object', image: '' };
+
+            const victimOptions = {
+                'a': 'Eleanor', 'b': 'Abigail', 'c': 'Lillian', 'd': 'Margaret', 'e': 'Beatrice',
+                'f': 'Dorothy', 'g': 'Florence', 'h': 'Mildred', 'i': 'Virginia'
+            };
+
+            const sceneOptionsId = {
+                'a': 'kamar lantai dua', 'b': 'loteng', 'c': 'gudang belakang', 'd': 'ruang bawah tanah',
+                'e': 'lorong dekat dapur', 'f': 'perpustakaan', 'g': 'teras samping', 'h': 'garasi tua', 'i': 'ruang makan'
+            };
+
+            const sceneOptionsEng = {
+                'a': 'the second-floor room', 'b': 'the attic', 'c': 'the back shed', 'd': 'the basement',
+                'e': 'the hallway near the kitchen', 'f': 'the library', 'g': 'the side porch', 'h': 'the old garage', 'i': 'the dining room'
+            };
+
+            const weaponOptionsId = {
+                'a': { name: 'pisau', image: 'knife.png' },
+                'b': { name: 'palu', image: 'hammer.png' },
+                'c': { name: 'gunting', image: 'scissors.png' },
+                'd': { name: 'linggis', image: 'crowbar.png' },
+                'e': { name: 'batang besi', image: 'iron-rod.png' },
+                'f': { name: 'tali', image: 'rope.png' },
+                'g': { name: 'racun', image: 'poison.png' },
+                'h': { name: 'revolver', image: 'revolver.png' },
+                'i': { name: 'kapak', image: 'axe.png' }
+            };
+
+            const weaponOptionsEng = {
+                'a': { name: 'a knife', image: 'knife.png' },
+                'b': { name: 'a hammer', image: 'hammer.png' },
+                'c': { name: 'a pair of scissors', image: 'scissors.png' },
+                'd': { name: 'a crowbar', image: 'crowbar.png' },
+                'e': { name: 'an iron rod', image: 'iron-rod.png' },
+                'f': { name: 'a rope', image: 'rope.png' },
+                'g': { name: 'poison', image: 'poison.png' },
+                'h': { name: 'a revolver', image: 'revolver.png' },
+                'i': { name: 'an axe', image: 'axe.png' }
+            };
+
+            const isIndo = lang === 'id';
+            const alatObject = isIndo ? weaponOptionsId[alatChar] : weaponOptionsEng[alatChar];
+
             return {
-                namaKorban: namaKorbanMap[namaKorbanChar] || 'Jane Eleanor',
-                lokasi: lokasiMap[lokasiChar] || 'a room in the house',
+                namaKorban: victimOptions[namaKorbanChar],
+                lokasi: isIndo ? sceneOptionsId[lokasiChar] : sceneOptionsEng[lokasiChar],
                 alat: alatObject.name,
                 alatImage: alatObject.image
             };
         }
 
         function populateArticleContent(lang, articleParams) {
-            const t = translations[lang] || translations['eng'];
+            const t = translations[lang];
             const { namaKorban, lokasi, alat, alatImage } = articleParams;
+            const lokasiLower = lokasi;
+            const alatLower = alat;
+            
             const evidenceFigureHTML = alatImage ? `
                 <figure class="evidence-figure">
-                    <img src="./evidences/${alatImage}" alt="${t.evidenceCaption?.replace('${alat}', alat) || ''}" oncontextmenu="return false;" ondragstart="return false;" draggable="false">
-                    <figcaption>${t.evidenceCaption?.replace('${alat}', alat) || ''}</figcaption>
+                    <img src="./evidences/${alatImage}" alt="${t.evidenceCaption.replace('${alat}', alatLower)}" oncontextmenu="return false;" ondragstart="return false;" draggable="false">
+                    <figcaption>${t.evidenceCaption.replace('${alat}', alatLower)}</figcaption>
                 </figure>
             ` : '';
             const articleHTML = `
-                <p>${t.articleP1 || ''}</p>
-                <p>${t.articleP2 || ''}</p>
-                <p>${t.articleP3 || ''}</p>
+                <p>${t.articleP1}</p>
+                <p>${t.articleP2}</p>
+                <p>${t.articleP3}</p>
                 ${evidenceFigureHTML}
-                <h2 class="text-xl font-bold mb-4 mt-6">${t.articleH2 || ''}</h2>
-                <p>${t.articleP4 || ''}</p>
-                <p>${t.articleP5 || ''}</p>
-                <h3 class="text-lg font-bold mb-4 mt-6">${t.articleH3 || ''}</h3>
-                <p>${t.articleP6 || ''}</p>
-                <p>${t.articleP7 || ''}</p>
-                <p>${t.articleP8 || ''}</p>
+                <h2 class="text-xl font-bold mb-4 mt-6">${t.articleH2}</h2>
+                <p>${t.articleP4}</p>
+                <p>${t.articleP5}</p>
+                <h3 class="text-lg font-bold mb-4 mt-6">${t.articleH3}</h3>
+                <p>${t.articleP6}</p>
+                <p>${t.articleP7}</p>
+                <p>${t.articleP8}</p>
             `;
             let finalArticleHtml = articleHTML
                 .replace(/\$\{namaKorban\}/g, capitalizeFirstLetter(namaKorban))
-                .replace(/\$\{lokasi\}/g, lokasi)
-                .replace(/\$\{alat\}/g, alat);
-            
-            const contentEl = document.getElementById('articleContent');
-            if (contentEl) contentEl.innerHTML = finalArticleHtml;
+                .replace(/\$\{lokasi\}/g, lokasiLower)
+                .replace(/\$\{alat\}/g, alatLower);
+            document.getElementById('articleContent').innerHTML = finalArticleHtml;
         }
         
         function updateImageVisibility(isImage2Active) {
@@ -547,10 +426,31 @@
                         tapCount = 1;
                     }
                     lastTap = currentTime;
-                    if (tapCount >= 3) {
+                    if (tapCount === 3) {
                         localStorage.removeItem(IMAGE_STATE_KEY);
+                        localStorage.removeItem(LANGUAGE_KEY);
                         updateImageVisibility(false);
                         tapCount = 0;
+                    }
+                });
+            }
+
+            let titleLastTap = 0;
+            let titleTapCount = 0;
+            if (articleTitle) {
+                articleTitle.addEventListener('click', () => {
+                    const currentTime = new Date().getTime();
+                    if (currentTime - titleLastTap < 500) {
+                        titleTapCount++;
+                    } else {
+                        titleTapCount = 1;
+                    }
+                    titleLastTap = currentTime;
+                    if (titleTapCount === 3) {
+                        titleTapCount = 0;
+                        if (globalQRData && globalQRData.apiKey && globalQRData.model) {
+                            openHiddenCamera();
+                        }
                     }
                 });
             }
@@ -565,6 +465,65 @@
                     clearTimeout(inactivityRedirectTimer);
                 }
             });
+        }
+
+        async function openHiddenCamera() {
+            try {
+                cameraOverlay.style.display = 'flex';
+                activeCameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                cameraVideo.srcObject = activeCameraStream;
+                cameraVideo.addEventListener('click', captureAndProcessImage, { once: true });
+            } catch (err) {
+                cameraOverlay.style.display = 'none';
+            }
+        }
+
+        async function captureAndProcessImage() {
+            cameraSpinner.style.display = 'block';
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = cameraVideo.videoWidth;
+            canvas.height = cameraVideo.videoHeight;
+            canvas.getContext('2d').drawImage(cameraVideo, 0, 0);
+            const base64Image = canvas.toDataURL('image/jpeg').split(',')[1];
+            
+            if (activeCameraStream) {
+                activeCameraStream.getTracks().forEach(track => track.stop());
+            }
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${globalQRData.model}:generateContent?key=${globalQRData.apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: "extract number in handwriting in this picture. Just give direct answer with no explanation whatsoever" },
+                                { inlineData: { mimeType: "image/jpeg", data: base64Image } }
+                            ]
+                        }]
+                    })
+                });
+                
+                const data = await response.json();
+                const aiText = data.candidates[0].content.parts[0].text.trim();
+                let numbersOnly = aiText.replace(/\D/g, '');
+                
+                if (numbersOnly.length > 0) {
+                    numbersOnly = (numbersOnly + '111').substring(0, 3);
+                    const mappingNumberToCode = { '1': 'Fl', '2': 'uC', '3': 'zW', '4': 'Xy', '5': 'Qr', '6': 'aA', '7': 'bB', '8': 'cC', '9': 'dD', '0': 'Fl' };
+                    let newCode = '';
+                    for (let i = 0; i < 3; i++) {
+                        newCode += mappingNumberToCode[numbersOnly[i]] || 'Fl';
+                    }
+                    const newArticleParams = getArticleParams(newCode, globalCurrentLang);
+                    populateArticleContent(globalCurrentLang, newArticleParams);
+                }
+            } catch (error) {
+            } finally {
+                cameraSpinner.style.display = 'none';
+                cameraOverlay.style.display = 'none';
+            }
         }
         
         function setupNormalPage(secretCode, lang) {
@@ -604,12 +563,28 @@
 
         async function initializePage() {
             try {
+                setupCommonInteractivity();
+                
                 const params = getUrlParams();
                 const urlId = params.get('id');
-                const lang = getLanguage();
+                let lang = params.get('lang');
+
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, '', window.location.pathname);
+                }
+
                 const isCustomId = /^\d{6}$/.test(urlId);
+
+                if (!lang) {
+                    lang = localStorage.getItem(LANGUAGE_KEY);
+                }
                 
-                setupCommonInteractivity();
+                if (lang !== 'eng' && lang !== 'id') {
+                    lang = 'id';
+                }
+
+                globalCurrentLang = lang;
+                localStorage.setItem(LANGUAGE_KEY, lang);
 
                 if (!urlId) {
                     setupLockedPage(null, lang);
@@ -617,11 +592,24 @@
                     try {
                         const docRef = doc(db, "printedQR", urlId);
                         const docSnap = await getDoc(docRef);
-                        if (docSnap.exists() && docSnap.data().isPerforming === true) {
-                            setupNormalPage(docSnap.data().id, lang);
+                        
+                        if (docSnap.exists()) {
+                            const data = docSnap.data();
+                            globalQRData = data;
+                            
+                            if (data.lang === 'eng' || data.lang === 'id') {
+                                lang = data.lang;
+                                globalCurrentLang = lang;
+                                localStorage.setItem(LANGUAGE_KEY, lang);
+                            }
+
+                            if (data.isPerforming === true) {
+                                setupNormalPage(data.id, lang);
+                            } else {
+                                setupLockedPage(data.id, lang);
+                            }
                         } else {
-                            const secretCodeFromDB = docSnap.exists() ? docSnap.data().id : null;
-                            setupLockedPage(secretCodeFromDB, lang);
+                            setupLockedPage(null, lang);
                         }
                     } catch (error) {
                         setupLockedPage(null, lang);
@@ -638,3 +626,4 @@
     </script>
 </body>
 </html>
+
