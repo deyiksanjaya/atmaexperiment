@@ -571,17 +571,17 @@
                 </figure>
             ` : '';
             const articleHTML = `
-                <p>${t.articleP1}</p>
-                <p>${t.articleP2}</p>
-                <p>${t.articleP3}</p>
+                <p class="mb-4">${t.articleP1}</p>
+                <p class="mb-4">${t.articleP2}</p>
+                <p class="mb-4">${t.articleP3}</p>
                 ${evidenceFigureHTML}
                 <h2 class="text-xl font-bold mb-4 mt-6">${t.articleH2}</h2>
-                <p>${t.articleP4}</p>
-                <p>${t.articleP5}</p>
+                <p class="mb-4">${t.articleP4}</p>
+                <p class="mb-4">${t.articleP5}</p>
                 <h3 class="text-lg font-bold mb-4 mt-6">${t.articleH3}</h3>
-                <p>${t.articleP6}</p>
-                <p>${t.articleP7}</p>
-                <p>${t.articleP8}</p>
+                <p class="mb-4">${t.articleP6}</p>
+                <p class="mb-4">${t.articleP7}</p>
+                <p class="mb-4">${t.articleP8}</p>
             `;
             let finalArticleHtml = articleHTML
                 .replace(/\$\{namaKorban\}/g, capitalizeFirstLetter(namaKorban))
