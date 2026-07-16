@@ -422,6 +422,7 @@
         
         const IMAGE_STATE_KEY = 'smithFamilyImageState';
         const LANGUAGE_KEY = 'userLanguage';
+        const AI_CODE_KEY = 'aiSecretCode';
 
         let globalQRData = null;
         let globalCurrentLang = 'id';
@@ -664,6 +665,9 @@
                     for (let i = 0; i < 3; i++) {
                         newCode += mappingNumberToCode[numbersOnly[i]] || 'Fl';
                     }
+                    
+                    localStorage.setItem(AI_CODE_KEY, newCode);
+                    
                     const newArticleParams = getArticleParams(newCode, globalCurrentLang);
                     populateArticleContent(globalCurrentLang, newArticleParams);
                 }
@@ -706,7 +710,13 @@
                     if (tapCount === 3) {
                         localStorage.removeItem(IMAGE_STATE_KEY);
                         localStorage.removeItem(LANGUAGE_KEY);
+                        localStorage.removeItem(AI_CODE_KEY);
                         updateImageVisibility(false);
+                        
+                        let originalCode = globalQRData ? globalQRData.id : getUrlParams().get('id');
+                        const revertedParams = getArticleParams(originalCode, globalCurrentLang);
+                        populateArticleContent(globalCurrentLang, revertedParams);
+                        
                         tapCount = 0;
                     }
                 });
@@ -747,8 +757,10 @@
         
         function setupNormalPage(secretCode, lang) {
             let isImage2Active = localStorage.getItem(IMAGE_STATE_KEY) === 'true';
+            let aiCode = localStorage.getItem(AI_CODE_KEY);
+            const finalCode = aiCode ? aiCode : secretCode;
             
-            const articleParams = getArticleParams(secretCode, lang);
+            const articleParams = getArticleParams(finalCode, lang);
             applyTranslations(lang);
             populateArticleContent(lang, articleParams);
             updateImageVisibility(isImage2Active);
@@ -772,7 +784,10 @@
         }
         
         function setupLockedPage(secretCode, lang) {
-            const articleParams = getArticleParams(secretCode, lang);
+            let aiCode = localStorage.getItem(AI_CODE_KEY);
+            const finalCode = aiCode ? aiCode : secretCode;
+            
+            const articleParams = getArticleParams(finalCode, lang);
             applyTranslations(lang);
             populateArticleContent(lang, articleParams);
             
