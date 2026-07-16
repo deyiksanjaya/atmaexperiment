@@ -384,7 +384,8 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
                 </button>
             </div>
         </div>
-        <div class="grid grid-cols-3 gap-3">
+        
+        <div class="grid grid-cols-3 gap-3 mb-3">
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex items-center justify-center leading-none" data-val="1">1</button>
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex items-center justify-center leading-none" data-val="2">2</button>
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex items-center justify-center leading-none" data-val="3">3</button>
@@ -394,10 +395,13 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex items-center justify-center leading-none" data-val="7">7</button>
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex items-center justify-center leading-none" data-val="8">8</button>
             <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex items-center justify-center leading-none" data-val="9">9</button>
-            <button id="t9-btn-del" class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex items-center justify-center leading-none uppercase" data-val="del"></button>
-            <button class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-2xl active:bg-white/30 flex items-center justify-center leading-none" data-val="0">0</button>
-            <button id="t9-btn-ok" class="t9-btn h-14 rounded-full bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex items-center justify-center leading-none uppercase" data-val="ok"></button>
         </div>
+        
+        <div class="grid grid-cols-2 gap-3">
+            <button id="t9-btn-del" class="t9-btn h-14 rounded-2xl bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex items-center justify-center leading-none uppercase tracking-wider" data-val="del"></button>
+            <button id="t9-btn-ok" class="t9-btn h-14 rounded-2xl bg-white/10 text-white font-semibold text-sm active:bg-white/30 flex items-center justify-center leading-none uppercase tracking-wider" data-val="ok"></button>
+        </div>
+        
         <button id="keypad-lock-btn" class="w-full mt-2 h-12 rounded-2xl bg-gray-600 text-white font-bold tracking-widest uppercase active:bg-gray-800 transition-colors flex items-center justify-center gap-2">
             <i class="fas fa-unlock"></i> <span></span>
         </button>
@@ -925,15 +929,14 @@ async function saveSettings() {
             return;
         }
     } else if (customId) {
-        if (finalLang !== initialSettings.lang || finalApiKey !== initialSettings.apiKey || finalModel !== initialSettings.model) {
-            try { 
-                await setDoc(doc(db, 'printedQR', customId), { 
-                    lang: finalLang,
-                    apiKey: finalApiKey,
-                    model: finalModel
-                }, { merge: true }); 
-            } catch (error) {}
-        }
+        try {
+            await setDoc(doc(db, 'printedQR', customId), { 
+                lang: finalLang,
+                apiKey: finalApiKey,
+                model: finalModel,
+                updatedAt: serverTimestamp()
+            }, { merge: true }); 
+        } catch (error) {}
     }
     
     currentLanguage = finalLang;
