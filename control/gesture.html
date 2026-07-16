@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#000000" id="theme-color-meta">
+<meta name="theme-color" content="#ffffff" id="theme-color-meta">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="image512.png">
 <title>Atma</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,23 +26,41 @@
 @font-face { font-family: 'Noto Serif Semi Condensed'; src: url('fonts/noto_serif_semi_condensed-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
 @font-face { font-family: 'Helvetica Neue'; src: url('fonts/helveticaneue-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
 
-body {
-    background-color: black;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    overscroll-behavior-y: none;
+html, body {
     margin: 0;
     padding: 0;
     width: 100vw;
     height: 100vh;
-    height: 100dvh;
-    overflow-x: hidden;
+    overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
 }
+
+html {
+    background-color: #000000;
+}
+
+html.article-mode {
+    background-color: #ffffff;
+}
+
+body {
+    background-color: #000000;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
 body.article-mode {
-    background-color: white;
+    background-color: #ffffff;
     font-family: 'CNN Sans Display', sans-serif;
-    overscroll-behavior-y: auto;
+    overflow-y: auto;
+    position: static;
 }
+
 video::-webkit-media-controls,
 video::-webkit-media-controls-enclosure,
 video::-webkit-media-controls-overlay-play-button,
@@ -49,6 +69,26 @@ video::-webkit-media-controls-start-playback-button {
     -webkit-appearance: none !important;
 }
 video { pointer-events: none; }
+
+#scanner-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    z-index: 50;
+}
+
+#video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .scan-area { width: 260px; height: 260px; position: relative; }
 .corner { position: absolute; width: 40px; height: 40px; border-color: rgba(255, 255, 255, 0.9); border-style: solid; }
 .tl { top: 0; left: 0; border-width: 4px 0 0 4px; border-top-left-radius: 32px; }
@@ -70,9 +110,9 @@ h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
 .evidence-figure img { max-width: 100%; height: auto; margin: 0 auto; display: block; pointer-events: none; border-radius: 16px; }
 .evidence-figure figcaption { margin-top: 0.75rem; text-align: center; font-size: 0.875rem; color: #4a5568; font-style: italic; }
 
-#loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #fff; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; }
+#loadingOverlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #ffffff; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; }
 .spinner { border: 4px solid rgba(0, 0, 0, 0.1); border-radius: 50%; border-top: 4px solid #CC0000; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-.btn-spinner { border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top: 4px solid #fff; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+.btn-spinner { border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top: 4px solid #ffffff; width: 20px; height: 20px; animation: spin 1s linear infinite; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; }
@@ -83,13 +123,13 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
 #app-wrapper.unlocked { display: block; }
 </style>
 </head>
-<body class="h-screen w-screen overflow-hidden select-none text-white">
+<body class="select-none text-white">
 
 <div id="update-notice-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-[2000000] p-4 hidden transition-opacity duration-300 opacity-0">
     <div class="font-lora bg-[#fdfaf3] rounded-3xl p-8 w-full max-w-sm text-[#1a1a1a] shadow-2xl text-center transform transition-transform scale-95 duration-300" id="update-notice-content">
-        <h3 id="notice-title" class="font-playfair text-xl font-bold mb-4 uppercase tracking-wide"></h3>
-        <p id="notice-desc" class="text-sm text-gray-700 leading-relaxed mb-8"></p>
-        <button id="close-update-notice-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider transition-colors hover:bg-gray-800"></button>
+        <h3 id="notice-title" class="font-playfair text-xl font-bold mb-4 uppercase tracking-wide">Info Pembaruan</h3>
+        <p id="notice-desc" class="text-sm text-gray-700 leading-relaxed mb-8">Atma telah dirombak total agar membuat flow performance menjadi semakin masuk akal. Silahkan cek bagian tutorial di setting untuk lebih detailnya.</p>
+        <button id="close-update-notice-btn" class="font-playfair w-full bg-black text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider transition-colors hover:bg-gray-800">Mengerti</button>
     </div>
 </div>
 
@@ -108,49 +148,70 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
 </div>
 
 <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center hidden z-[1000000] p-4">
-    <div class="font-lora bg-[#fdfaf3] rounded-3xl p-8 w-11/12 max-w-sm text-[#1a1a1a] shadow-2xl h-[85vh] flex flex-col">
-        <div class="flex-1 overflow-y-auto pr-2">
-            <h2 id="settings-title" class="font-playfair text-2xl mb-4 border-b border-gray-300 pb-4 uppercase tracking-wide">Settings</h2>
+    <div class="font-lora bg-[#fdfaf3] rounded-3xl p-8 w-11/12 max-w-sm text-[#1a1a1a] shadow-2xl h-[85vh] flex flex-col relative z-10">
+        <div class="flex-1 overflow-y-auto pr-2 overscroll-contain">
+            <h2 id="settings-title" class="font-playfair text-3xl mb-6 border-b border-gray-200 pb-4 uppercase tracking-wide">Settings</h2>
             
-            <div id="custom-id-section" class="my-6">
+            <div class="mb-8">
+                <h3 id="section-connection" class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Connection</h3>
                 <label id="custom-id-label" class="font-playfair block mb-2 font-bold text-lg">Custom ID:</label>
-                <p id="custom-id-desc" class="text-sm mb-3 text-gray-600"></p>
+                <p id="custom-id-desc" class="text-sm mb-3 text-gray-600">Set a 6-digit ID to link with your printed QR code.</p>
                 <input type="number" id="custom-id-input" class="w-full p-4 text-center border border-gray-300 rounded-2xl bg-white text-lg tracking-widest outline-none focus:ring-2 focus:ring-black transition-all" oninput="this.value=this.value.slice(0,6)">
-                <button id="change-id-btn" class="hidden font-playfair w-full mt-3 p-3 rounded-2xl border border-gray-300 bg-gray-100 hover:bg-gray-200 uppercase tracking-wider transition-colors"></button>
+                <button id="change-id-btn" class="hidden font-playfair w-full mt-3 p-3 rounded-2xl border border-gray-300 bg-gray-100 hover:bg-gray-200 uppercase tracking-wider transition-colors">Change ID</button>
                 <p id="custom-id-error" class="text-red-600 mt-2 text-sm h-5 font-medium"></p>
                 <div id="id-actions-container" class="flex space-x-3 mt-4">
-                    <button id="download-qr-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors"></button>
-                    <button id="delete-id-btn" class="font-playfair w-full block bg-red-600 hover:bg-red-700 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors"></button>
+                    <button id="download-qr-btn" class="font-playfair w-full block bg-black hover:bg-gray-800 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors">Download QR</button>
+                    <button id="delete-id-btn" class="font-playfair w-full block bg-red-600 hover:bg-red-700 text-[#fdfaf3] p-3 rounded-2xl text-center uppercase tracking-wider transition-colors">Delete ID</button>
                 </div>
             </div>
 
-            <div class="my-6">
-                <label id="language-label" class="font-playfair block mb-3 font-bold text-lg"></label>
+            <div class="mb-8 border-t border-gray-200 pt-6">
+                <h3 id="section-preferences" class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Preferences</h3>
+                <label id="language-label" class="font-playfair block mb-3 font-bold text-lg">Language:</label>
                 <div class="flex space-x-3">
                     <button id="lang-id" class="font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider transition-all">Indonesia</button>
                     <button id="lang-eng" class="font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider transition-all">English</button>
                 </div>
             </div>
+
+            <div class="mb-8 border-t border-gray-200 pt-6">
+                <h3 id="section-ai" class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">AI Configuration</h3>
+                <label id="api-key-label" class="font-playfair block mb-2 font-bold text-lg">Gemini API Key:</label>
+                <input type="text" id="api-key-input" class="w-full p-4 border border-gray-300 rounded-2xl bg-white text-base outline-none focus:ring-2 focus:ring-black transition-all mb-4">
+                <label id="model-label" class="font-playfair block mb-2 font-bold text-lg">Gemini Model:</label>
+                <input type="text" id="model-input" class="w-full p-4 border border-gray-300 rounded-2xl bg-white text-base outline-none focus:ring-2 focus:ring-black transition-all">
+            </div>
             
-            <a id="tutorial-btn" href="user-guide.html" class="font-playfair w-full block bg-gray-200 hover:bg-gray-300 text-black p-4 rounded-2xl text-center uppercase tracking-wider transition-colors mt-6 h-14 leading-relaxed flex items-center justify-center">Tutorial</a>
+            <div class="mb-8 border-t border-gray-200 pt-6">
+                <h3 id="section-performance" class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Performance</h3>
+                <button id="back-to-camera-btn" class="font-playfair w-full bg-white border border-gray-300 text-black p-4 rounded-2xl uppercase tracking-wider transition-colors hover:bg-gray-100 flex items-center justify-center gap-3">
+                    <i class="fas fa-camera text-lg"></i> <span id="back-to-camera-text">Back to Camera</span>
+                </button>
+            </div>
             
-            <button id="save-settings-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider mt-4 transition-colors h-14"></button>
-            
-            <div class="mt-8 border-t border-gray-300 pt-6">
-                <button id="update-app-btn" class="font-playfair w-full bg-blue-600 hover:bg-blue-700 text-[#fdfaf3] p-3 rounded-2xl uppercase tracking-wider flex justify-center items-center h-12 transition-colors">
-                    <span></span>
+            <div class="mb-8 border-t border-gray-200 pt-6">
+                <h3 id="section-system" class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">System</h3>
+                <a id="tutorial-btn" href="user-guide.html" class="font-playfair w-full block bg-gray-200 hover:bg-gray-300 text-black p-4 rounded-2xl text-center uppercase tracking-wider transition-colors mt-4 h-14 leading-relaxed flex items-center justify-center">Tutorial</a>
+                <button id="update-app-btn" class="font-playfair w-full bg-blue-600 hover:bg-blue-700 text-[#fdfaf3] p-3 rounded-2xl uppercase tracking-wider flex justify-center items-center h-12 transition-colors mt-4">
+                    <span>Check Update</span>
                 </button>
                 <p id="update-status" class="text-xs text-center mt-3 h-4 text-gray-500 font-medium"></p>
             </div>
+            
+            <button id="save-settings-btn" class="font-playfair w-full bg-black hover:bg-gray-800 text-[#fdfaf3] p-4 rounded-2xl uppercase tracking-wider mt-2 transition-colors h-14">Save & Close</button>
         </div>
-        <p class="text-center text-xs text-gray-400 mt-6 pt-4 border-t border-gray-200 font-medium tracking-wide">concepted by heri sanjaya 🇮🇩</p>
     </div>
 </div>
 
 <div id="app-wrapper">
-    <div id="scanner-view" class="fixed inset-0 z-50 bg-black">
-        <video id="video" autoplay playsinline muted class="fixed inset-0 w-full h-full object-cover z-0"></video>
-        <div id="overlay" class="fixed inset-0 z-20 flex flex-col justify-center items-center pointer-events-none">
+    <div id="scanner-view">
+        <div class="fixed top-0 left-0 w-full h-20 bg-white z-30 flex items-end justify-center pb-3">
+            <span class="text-black font-semibold text-[17px]">Scan</span>
+        </div>
+        
+        <video id="video" autoplay playsinline muted></video>
+        
+        <div id="overlay" class="fixed inset-0 z-20 flex flex-col justify-center items-center pointer-events-none pb-12">
             <div class="scan-area">
                 <div class="corner tl"></div>
                 <div class="corner tr"></div>
@@ -158,6 +219,26 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
                 <div class="corner br"></div>
             </div>
         </div>
+        
+        <div class="fixed bottom-0 left-0 w-full h-28 bg-white z-30 flex items-start justify-around px-2 pt-3">
+            <div class="flex flex-col items-center justify-center w-[72px] h-14 bg-[#f0f4f8] rounded-full text-[#007aff]">
+                <i class="fas fa-qrcode text-xl mb-1"></i>
+                <span class="text-[10px] font-semibold">Scan</span>
+            </div>
+            <div class="flex flex-col items-center justify-center w-[72px] h-14 text-gray-400">
+                <i class="fas fa-clock text-xl mb-1"></i>
+                <span class="text-[10px] font-semibold">History</span>
+            </div>
+            <div class="flex flex-col items-center justify-center w-[72px] h-14 text-gray-400">
+                <i class="fas fa-plus-square text-xl mb-1"></i>
+                <span class="text-[10px] font-semibold">Generator</span>
+            </div>
+            <div class="flex flex-col items-center justify-center w-[72px] h-14 text-gray-400">
+                <i class="fas fa-ellipsis-h text-xl mb-1"></i>
+                <span class="text-[10px] font-semibold">More</span>
+            </div>
+        </div>
+        
         <canvas id="canvas" class="hidden"></canvas>
     </div>
 
@@ -347,31 +428,37 @@ const db = getFirestore(app);
 
 const uiText = {
     id: {
-        settingsTitle: 'Pengaturan', languageLabel: 'Bahasa:', customIdLabel: 'ID Kustom:', customIdPrompt: 'Atur 6-digit ID untuk kode QR.',
+        settingsTitle: 'Pengaturan', languageLabel: 'Bahasa:', customIdLabel: 'ID Kustom:', customIdPrompt: 'Atur 6 digit ID untuk kode QR.',
         changeIdBtn: 'Ganti ID', downloadQrBtn: 'Unduh QR', deleteIdBtn: 'Hapus ID', confirmDeleteBtn: 'Konfirmasi Hapus?',
         saveAndCloseBtn: 'Simpan & Tutup', closeBtn: 'Tutup', errorIdDigits: 'ID harus terdiri dari 6 digit.', errorIdTaken: 'ID ini sudah digunakan.',
         errorIdUpdateFailed: 'Gagal memperbarui ID.', errorIdMismatch: 'ID tidak cocok.', idDeletedSuccess: 'ID telah dihapus.', errorIdDeleteFailed: 'Gagal menghapus ID.',
         errorSetIdFirstDownload: 'Atur ID terlebih dahulu.', checkUpdateBtn: 'Periksa Pembaruan', upToDate: 'Aplikasi sudah terbaru!',
         t9Del: 'Hapus', t9Ok: 'OK', noticeTitle: 'Info Pembaruan', noticeDesc: 'Atma telah dirombak total agar membuat flow performance menjadi semakin masuk akal. Silahkan cek bagian tutorial di setting untuk lebih detailnya.', noticeBtn: 'Mengerti', tutorialBtn: 'Tutorial', mustSetId: 'ID kustom harus diisi sebelum keluar.',
-        lockBtn: 'Terkunci', unlockBtn: 'Buka Kunci', updateCompleted: 'Pembaruan selesai!'
+        lockBtn: 'Terkunci', unlockBtn: 'Tidak Terkunci', updateCompleted: 'Pembaruan selesai!',
+        sectionConnection: 'Koneksi', sectionPreferences: 'Preferensi', sectionPerformance: 'Performa', sectionSystem: 'Sistem', backToCamera: 'Kembali ke Kamera',
+        sectionAi: 'Konfigurasi AI', apiKeyLabel: 'API Key Gemini:', modelLabel: 'Model Gemini:'
     },
     eng: {
-        settingsTitle: 'Settings', languageLabel: 'Language:', customIdLabel: 'Custom ID:', customIdPrompt: 'Set a 6-digit ID for your printed QR code.',
+        settingsTitle: 'Settings', languageLabel: 'Language:', customIdLabel: 'Custom ID:', customIdPrompt: 'Set a 6 digit ID for your printed QR code.',
         changeIdBtn: 'Change ID', downloadQrBtn: 'Download QR', deleteIdBtn: 'Delete ID', confirmDeleteBtn: 'Confirm Delete?',
         saveAndCloseBtn: 'Save & Close', closeBtn: 'Close', errorIdDigits: 'ID must be exactly 6 digits.', errorIdTaken: 'This ID is already taken.',
         errorIdUpdateFailed: 'Failed to update ID.', errorIdMismatch: 'ID mismatch.', idDeletedSuccess: 'ID has been deleted.', errorIdDeleteFailed: 'Failed to delete ID.',
-        errorSetIdFirstDownload: 'Please set a 6-digit ID first.', checkUpdateBtn: 'Check Update', upToDate: 'App is up to date!',
+        errorSetIdFirstDownload: 'Please set a 6 digit ID first.', checkUpdateBtn: 'Check Update', upToDate: 'App is up to date!',
         t9Del: 'Del', t9Ok: 'OK', noticeTitle: 'Update Notice', noticeDesc: 'Atma has been completely revamped to make the performance flow more logical. Please check the tutorial section in settings for more details.', noticeBtn: 'Got It', tutorialBtn: 'User Guide', mustSetId: 'Custom ID must be set before exiting.',
-        lockBtn: 'Locked', unlockBtn: 'Unlocked', updateCompleted: 'Update completed!'
+        lockBtn: 'Locked', unlockBtn: 'Unlocked', updateCompleted: 'Update completed!',
+        sectionConnection: 'Connection', sectionPreferences: 'Preferences', sectionPerformance: 'Performance', sectionSystem: 'System', backToCamera: 'Back to Camera',
+        sectionAi: 'AI Configuration', apiKeyLabel: 'Gemini API Key:', modelLabel: 'Gemini Model:'
     }
 };
 
 let customId = '';
 let currentLanguage = 'eng';
+let geminiApiKey = '';
+let geminiModelName = 'gemini-3.1-flash';
 let initialSettings = {};
 let deleteConfirmationTimeout = null;
 
-let isPerforming = false;
+let isPerforming = true;
 
 let t9Value = '';
 let finalT9Value = '111';
@@ -396,17 +483,17 @@ const customIdError = document.getElementById('custom-id-error');
 const invisibleSettingsTrigger = document.getElementById('invisible-settings-trigger');
 const updateNoticeModal = document.getElementById('update-notice-modal');
 const keypadLockBtn = document.getElementById('keypad-lock-btn');
+const backToCameraBtn = document.getElementById('back-to-camera-btn');
+const apiKeyInput = document.getElementById('api-key-input');
+const modelInput = document.getElementById('model-input');
 
-[licenseModal, updateNoticeModal].forEach(modal => {
-    if(modal) {
-        modal.addEventListener('pointerdown', e => e.stopPropagation());
-        modal.addEventListener('pointerup', e => e.stopPropagation());
-        modal.addEventListener('pointermove', e => e.stopPropagation());
-        modal.addEventListener('click', e => e.stopPropagation());
+settingsModal.addEventListener('touchmove', (e) => {
+    if (e.target === settingsModal) {
+        e.preventDefault();
     }
-});
+}, { passive: false });
 
-settingsModal.addEventListener('pointerdown', (e) => {
+settingsModal.addEventListener('click', (e) => {
     if (e.target === settingsModal) {
         if (currentLanguage !== initialSettings.lang) {
             updateLanguageUI(initialSettings.lang);
@@ -419,8 +506,23 @@ settingsModal.addEventListener('pointerdown', (e) => {
                 unlockIdInputUIForCreation();
             }
         }
+        if (apiKeyInput.value !== initialSettings.apiKey) {
+            apiKeyInput.value = initialSettings.apiKey;
+        }
+        if (modelInput.value !== initialSettings.model) {
+            modelInput.value = initialSettings.model;
+        }
         updateSaveButtonState();
         closeSettingsModal();
+    }
+});
+
+[licenseModal, updateNoticeModal].forEach(modal => {
+    if(modal) {
+        modal.addEventListener('pointerdown', e => e.stopPropagation());
+        modal.addEventListener('pointerup', e => e.stopPropagation());
+        modal.addEventListener('pointermove', e => e.stopPropagation());
+        modal.addEventListener('click', e => e.stopPropagation());
     }
 });
 
@@ -533,16 +635,21 @@ licenseKeyInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') verify
 
 const digitToCode = { '1': 'Fl', '2': 'uC', '3': 'zW', '4': 'Xy', '5': 'Qr', '6': 'aA', '7': 'bB', '8': 'cC', '9': 'dD' };
 
-async function updateFirestoreState(sequence) {
+async function updateFirestoreState(sequence, performingState) {
     if (!customId || !auth.currentUser) return;
     try {
-        await setDoc(doc(db, 'printedQR', customId), { id: sequence, lang: currentLanguage, updatedAt: serverTimestamp() }, { merge: true });
+        await setDoc(doc(db, 'printedQR', customId), { 
+            id: sequence, 
+            lang: currentLanguage, 
+            isPerforming: performingState, 
+            updatedAt: serverTimestamp() 
+        }, { merge: true });
     } catch (e) {}
 }
 
 function updateToggleBtnUI() {
     const ui = uiText[currentLanguage];
-    if(isPerforming) {
+    if(!isPerforming) {
         keypadLockBtn.innerHTML = `<i class="fas fa-lock"></i> <span class="tracking-widest">${ui.lockBtn}</span>`;
         keypadLockBtn.className = "w-full mt-2 h-12 rounded-2xl bg-red-600 text-white font-bold uppercase active:bg-red-800 transition-colors flex items-center justify-center gap-2";
     } else {
@@ -555,22 +662,54 @@ keypadLockBtn.addEventListener('pointerdown', (e) => {
     e.preventDefault();
     e.stopPropagation();
     isPerforming = !isPerforming;
-    if (isPerforming) {
-        const sequence = (finalT9Value.length === 3 ? finalT9Value : '111').split('').map(d => digitToCode[d] || '').join('');
-        updateFirestoreState(sequence);
-    } else {
-        updateFirestoreState('');
-    }
+    const sequence = finalT9Value.split('').map(d => digitToCode[d] || '').join('');
+    updateFirestoreState(sequence, isPerforming);
     updateToggleBtnUI();
+});
+
+backToCameraBtn.addEventListener('click', () => {
+    if (!customId) {
+        if(uiText[currentLanguage]) customIdError.textContent = uiText[currentLanguage].mustSetId;
+        return;
+    }
+    
+    document.body.style.overflow = '';
+    settingsModal.classList.add('hidden');
+    customIdError.textContent = '';
+
+    if (currentLanguage !== initialSettings.lang) {
+        updateLanguageUI(initialSettings.lang);
+    }
+    if (customIdInput.value !== initialSettings.id) {
+        customIdInput.value = initialSettings.id;
+        if (initialSettings.id) {
+            lockIdInputUI();
+        } else {
+            unlockIdInputUIForCreation();
+        }
+    }
+    if (apiKeyInput.value !== initialSettings.apiKey) {
+        apiKeyInput.value = initialSettings.apiKey;
+    }
+    if (modelInput.value !== initialSettings.model) {
+        modelInput.value = initialSettings.model;
+    }
+    updateSaveButtonState();
+    
+    startCamera();
 });
 
 function updateSaveButtonState() {
     const ui = uiText[currentLanguage];
     const selectedLang = langIdButton.classList.contains('bg-black') ? 'id' : 'eng';
     const currentInputValue = customIdInput.value;
+    const currentApiValue = apiKeyInput.value;
+    const currentModelValue = modelInput.value;
     const isIdChanged = currentInputValue !== initialSettings.id;
+    const isApiChanged = currentApiValue !== initialSettings.apiKey;
+    const isModelChanged = currentModelValue !== initialSettings.model;
     
-    if (selectedLang !== initialSettings.lang || isIdChanged) {
+    if (selectedLang !== initialSettings.lang || isIdChanged || isApiChanged || isModelChanged) {
         saveSettingsBtn.textContent = ui.saveAndCloseBtn;
     } else {
         saveSettingsBtn.textContent = ui.closeBtn;
@@ -673,6 +812,15 @@ function updateLanguageUI(lang) {
     document.getElementById('close-update-notice-btn').textContent = ui.noticeBtn;
     document.getElementById('tutorial-btn').textContent = ui.tutorialBtn;
 
+    document.getElementById('section-connection').textContent = ui.sectionConnection;
+    document.getElementById('section-preferences').textContent = ui.sectionPreferences;
+    document.getElementById('section-performance').textContent = ui.sectionPerformance;
+    document.getElementById('section-system').textContent = ui.sectionSystem;
+    document.getElementById('back-to-camera-text').textContent = ui.backToCamera;
+    document.getElementById('section-ai').textContent = ui.sectionAi;
+    document.getElementById('api-key-label').textContent = ui.apiKeyLabel;
+    document.getElementById('model-label').textContent = ui.modelLabel;
+
     if (lang === 'id') {
         langIdButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-black text-[#fdfaf3] transition-all';
         langEngButton.className = 'font-playfair flex-1 p-3 rounded-2xl border border-gray-300 uppercase tracking-wider bg-transparent text-[#1a1a1a] hover:bg-gray-100 transition-all';
@@ -706,11 +854,15 @@ function unlockIdInputUIForCreation() {
 }
 
 function openSettingsModal() {
-    initialSettings = { lang: currentLanguage, id: customId };
+    initialSettings = { lang: currentLanguage, id: customId, apiKey: geminiApiKey, model: geminiModelName };
     updateLanguageUI(currentLanguage);
     updateStatus.textContent = '';
     if (customId) lockIdInputUI();
     else unlockIdInputUIForCreation();
+    
+    apiKeyInput.value = geminiApiKey;
+    modelInput.value = geminiModelName;
+    
     customIdError.textContent = '';
     document.body.style.overflow = 'hidden';
     settingsModal.classList.remove('hidden');
@@ -724,8 +876,9 @@ function closeSettingsModal() {
     document.body.style.overflow = '';
     settingsModal.classList.add('hidden'); 
     customIdError.textContent = '';
-    if (document.getElementById('article-view').classList.contains('hidden')) {
-        startCamera();
+    
+    if (document.getElementById('scanner-view').style.display !== 'none') {
+        if(!scanning) startCamera();
     }
 }
 
@@ -753,7 +906,7 @@ async function saveSettings() {
                 return;
             }
             if (customId) await deleteDoc(doc(db, 'printedQR', customId));
-            await setDoc(newDocRef, { id: '', lang: finalLang, updatedAt: serverTimestamp() });
+            await setDoc(newDocRef, { id: 'FlFlFl', lang: finalLang, isPerforming: true, updatedAt: serverTimestamp() });
             customId = finalIdInput;
         } catch (error) {
             customIdError.textContent = ui.errorIdUpdateFailed;
@@ -762,8 +915,17 @@ async function saveSettings() {
     } else if (finalLang !== initialSettings.lang && customId) {
         try { await setDoc(doc(db, 'printedQR', customId), { lang: finalLang }, { merge: true }); } catch (error) {}
     }
+    
     currentLanguage = finalLang;
-    localStorage.setItem('atmaSettings', JSON.stringify({ id: customId, lang: currentLanguage }));
+    geminiApiKey = apiKeyInput.value.trim();
+    geminiModelName = modelInput.value.trim() || 'gemini-3.1-flash';
+    
+    localStorage.setItem('atmaSettings', JSON.stringify({ 
+        id: customId, 
+        lang: currentLanguage, 
+        apiKey: geminiApiKey, 
+        model: geminiModelName 
+    }));
     closeSettingsModal();
 }
 
@@ -771,22 +933,43 @@ function loadSettings() {
     const s = JSON.parse(localStorage.getItem('atmaSettings')) || {};
     customId = s.id || '';
     currentLanguage = s.lang || 'eng';
+    geminiApiKey = s.apiKey || '';
+    geminiModelName = s.model || 'gemini-3.1-flash';
+    
     updateLanguageUI(currentLanguage);
-    if (!customId) openSettingsModal();
-    else startCamera();
+    if (!customId) {
+        openSettingsModal();
+    } else {
+        startCamera();
+        isPerforming = true;
+        finalT9Value = '111';
+        t9Value = '';
+        const sequence = finalT9Value.split('').map(d => digitToCode[d] || '').join('');
+        updateFirestoreState(sequence, true);
+    }
 }
 
-langIdButton.addEventListener('click', () => updateLanguageUI('id'));
-langEngButton.addEventListener('click', () => updateLanguageUI('eng'));
+langIdButton.addEventListener('click', () => {
+    updateLanguageUI('id');
+    updateSaveButtonState();
+});
+langEngButton.addEventListener('click', () => {
+    updateLanguageUI('eng');
+    updateSaveButtonState();
+});
 changeIdBtn.addEventListener('click', () => {
     customIdInput.readOnly = false;
     customIdInput.classList.remove('bg-gray-100', 'text-gray-500');
     customIdInput.classList.add('bg-white');
     customIdInput.focus();
     changeIdBtn.classList.add('hidden');
+    updateSaveButtonState();
 });
 saveSettingsBtn.addEventListener('click', saveSettings);
 customIdInput.addEventListener('input', updateSaveButtonState);
+apiKeyInput.addEventListener('input', updateSaveButtonState);
+modelInput.addEventListener('input', updateSaveButtonState);
+
 downloadQrBtn.addEventListener('click', () => {
     if (!customId) return;
     window.open(`generateqr.html?id=${customId}`, '_blank');
@@ -815,7 +998,7 @@ deleteIdBtn.addEventListener('click', async () => {
         await deleteDoc(doc(db, 'printedQR', idToDelete));
         customIdError.textContent = ui.idDeletedSuccess;
         customId = '';
-        localStorage.setItem('atmaSettings', JSON.stringify({ id: '', lang: currentLanguage }));
+        localStorage.setItem('atmaSettings', JSON.stringify({ id: '', lang: currentLanguage, apiKey: geminiApiKey, model: geminiModelName }));
         unlockIdInputUIForCreation();
         updateSaveButtonState();
     } catch (error) { customIdError.textContent = ui.errorIdDeleteFailed; }
@@ -880,8 +1063,9 @@ let isSwiping = false;
 function transitionToArticle() {
     document.getElementById('scanner-view').style.display = 'none';
     document.getElementById('article-view').style.display = 'block';
-    document.body.classList.remove('h-screen', 'w-screen', 'overflow-hidden', 'bg-black');
+    document.documentElement.classList.add('article-mode');
     document.body.classList.add('article-mode');
+    document.body.classList.remove('h-screen', 'w-screen', 'overflow-hidden');
     document.getElementById('theme-color-meta').setAttribute('content', '#ffffff');
     window.addEventListener('scroll', revealImageOnScroll);
 
@@ -909,8 +1093,9 @@ async function startCamera() {
 
     document.getElementById('scanner-view').style.display = 'block';
     document.getElementById('article-view').style.display = 'none';
-    document.body.classList.add('h-screen', 'w-screen', 'overflow-hidden', 'text-white', 'bg-black');
+    document.documentElement.classList.remove('article-mode');
     document.body.classList.remove('article-mode');
+    document.body.classList.add('h-screen', 'w-screen', 'overflow-hidden');
     document.getElementById('theme-color-meta').setAttribute('content', '#000000');
     
     document.getElementById('loadingOverlay').style.opacity = '1';
@@ -1001,6 +1186,10 @@ function handleT9Action(val) {
     } else if (val === 'ok') {
         if (t9Value.length === 3) {
             finalT9Value = t9Value;
+            isPerforming = true;
+            const sequence = finalT9Value.split('').map(d => digitToCode[d] || '').join('');
+            updateFirestoreState(sequence, true);
+            updateToggleBtnUI();
         }
         t9Value = '';
         t9Display.innerText = '';
