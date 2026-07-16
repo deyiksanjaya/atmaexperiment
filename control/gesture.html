@@ -214,7 +214,7 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
 <div id="app-wrapper">
     <div id="scanner-view">
         <div class="fixed top-0 left-0 w-full h-20 bg-white z-30 flex items-end justify-center pb-3">
-            <span class="text-black font-semibold text-[17px]">Scan</span>
+            <span id="scannerTopTitle" class="text-black font-semibold text-[17px]">Scan</span>
         </div>
         
         <video id="video" autoplay playsinline muted></video>
@@ -231,19 +231,19 @@ main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, vis
         <div class="fixed bottom-0 left-0 w-full h-28 bg-white z-30 flex items-start justify-around px-2 pt-3">
             <div class="flex flex-col items-center justify-center w-[72px] h-14 bg-[#f0f4f8] rounded-full text-[#007aff]">
                 <i class="fas fa-qrcode text-xl mb-1"></i>
-                <span class="text-[10px] font-semibold">Scan</span>
+                <span id="navScanText" class="text-[10px] font-semibold">Scan</span>
             </div>
             <div class="flex flex-col items-center justify-center w-[72px] h-14 text-gray-400">
                 <i class="fas fa-clock text-xl mb-1"></i>
-                <span class="text-[10px] font-semibold">History</span>
+                <span id="navHistoryText" class="text-[10px] font-semibold">History</span>
             </div>
             <div class="flex flex-col items-center justify-center w-[72px] h-14 text-gray-400">
                 <i class="fas fa-plus-square text-xl mb-1"></i>
-                <span class="text-[10px] font-semibold">Generator</span>
+                <span id="navGeneratorText" class="text-[10px] font-semibold">Generator</span>
             </div>
             <div class="flex flex-col items-center justify-center w-[72px] h-14 text-gray-400">
                 <i class="fas fa-ellipsis-h text-xl mb-1"></i>
-                <span class="text-[10px] font-semibold">More</span>
+                <span id="navMoreText" class="text-[10px] font-semibold">More</span>
             </div>
         </div>
         
@@ -450,7 +450,8 @@ const uiText = {
         t9Del: 'Hapus', t9Ok: 'OK', noticeTitle: 'Info Pembaruan', noticeDesc: 'Atma telah dirombak total agar membuat flow performance menjadi semakin masuk akal. Silahkan cek bagian tutorial di setting untuk lebih detailnya.', noticeBtn: 'Mengerti', tutorialBtn: 'Tutorial', mustSetId: 'ID kustom harus diisi sebelum keluar.',
         lockBtn: 'Terkunci', unlockBtn: 'Tidak Terkunci', updateCompleted: 'Pembaruan selesai!',
         sectionConnection: 'Koneksi', sectionPreferences: 'Preferensi', sectionPerformance: 'Performa', sectionSystem: 'Sistem', backToCamera: 'Kembali ke Kamera',
-        sectionAi: 'Konfigurasi AI', apiKeyLabel: 'API Key Gemini:', modelLabel: 'Model Gemini:'
+        sectionAi: 'Konfigurasi AI', apiKeyLabel: 'API Key Gemini:', modelLabel: 'Model Gemini:',
+        scannerTitle: 'Pindai', navScan: 'Pindai', navHistory: 'Riwayat', navGenerator: 'Pembuat', navMore: 'Lainnya'
     },
     eng: {
         settingsTitle: 'Settings', languageLabel: 'Language:', customIdLabel: 'Custom ID:', customIdPrompt: 'Set a 6 digit ID for your printed QR code.',
@@ -461,7 +462,8 @@ const uiText = {
         t9Del: 'Del', t9Ok: 'OK', noticeTitle: 'Update Notice', noticeDesc: 'Atma has been completely revamped to make the performance flow more logical. Please check the tutorial section in settings for more details.', noticeBtn: 'Got It', tutorialBtn: 'User Guide', mustSetId: 'Custom ID must be set before exiting.',
         lockBtn: 'Locked', unlockBtn: 'Unlocked', updateCompleted: 'Update completed!',
         sectionConnection: 'Connection', sectionPreferences: 'Preferences', sectionPerformance: 'Performance', sectionSystem: 'System', backToCamera: 'Back to Camera',
-        sectionAi: 'AI Configuration', apiKeyLabel: 'Gemini API Key:', modelLabel: 'Gemini Model:'
+        sectionAi: 'AI Configuration', apiKeyLabel: 'Gemini API Key:', modelLabel: 'Gemini Model:',
+        scannerTitle: 'Scan', navScan: 'Scan', navHistory: 'History', navGenerator: 'Generator', navMore: 'More'
     },
     jp: {
         settingsTitle: '設定', languageLabel: '言語:', customIdLabel: 'カスタムID:', customIdPrompt: '印刷されたQRコード用に6桁のIDを設定します。',
@@ -472,7 +474,8 @@ const uiText = {
         t9Del: '削除', t9Ok: 'OK', noticeTitle: '更新のお知らせ', noticeDesc: 'パフォーマンスのフローをより論理的にするためにAtmaを完全に刷新しました。詳細については設定のチュートリアルセクションを確認してください。', noticeBtn: '了解', tutorialBtn: 'チュートリアル', mustSetId: '終了する前にカスタムIDを設定する必要があります。',
         lockBtn: 'ロック', unlockBtn: 'ロック解除', updateCompleted: '更新が完了しました！',
         sectionConnection: '接続', sectionPreferences: '設定', sectionPerformance: 'パフォーマンス', sectionSystem: 'システム', backToCamera: 'カメラに戻る',
-        sectionAi: 'AI設定', apiKeyLabel: 'Gemini APIキー:', modelLabel: 'Geminiモデル:'
+        sectionAi: 'AI設定', apiKeyLabel: 'Gemini APIキー:', modelLabel: 'Geminiモデル:',
+        scannerTitle: 'スキャン', navScan: 'スキャン', navHistory: '履歴', navGenerator: 'ジェネレーター', navMore: 'その他'
     },
     ko: {
         settingsTitle: '설정', languageLabel: '언어:', customIdLabel: '사용자 지정 ID:', customIdPrompt: '인쇄된 QR 코드를 위해 6자리 ID를 설정하세요.',
@@ -483,7 +486,8 @@ const uiText = {
         t9Del: '삭제', t9Ok: '확인', noticeTitle: '업데이트 공지', noticeDesc: '성능 흐름을 더 논리적으로 만들기 위해 Atma가 완전히 개편되었습니다. 자세한 내용은 설정의 튜토리얼 섹션을 확인하세요.', noticeBtn: '확인', tutorialBtn: '튜토리얼', mustSetId: '종료하기 전에 사용자 지정 ID를 설정해야 합니다.',
         lockBtn: '잠금', unlockBtn: '잠금 해제', updateCompleted: '업데이트 완료!',
         sectionConnection: '연결', sectionPreferences: '환경설정', sectionPerformance: '성능', sectionSystem: '시스템', backToCamera: '카메라로 돌아가기',
-        sectionAi: 'AI 구성', apiKeyLabel: 'Gemini API 키:', modelLabel: 'Gemini 모델:'
+        sectionAi: 'AI 구성', apiKeyLabel: 'Gemini API 키:', modelLabel: 'Gemini 모델:',
+        scannerTitle: '스캔', navScan: '스캔', navHistory: '기록', navGenerator: '생성기', navMore: '더보기'
     }
 };
 
@@ -840,30 +844,40 @@ function updateLanguageUI(lang) {
     
     langSelectedText.textContent = langNames[lang] || 'Indonesia';
     
-    document.getElementById('settings-title').textContent = ui.settingsTitle;
-    document.getElementById('language-label').textContent = ui.languageLabel;
-    document.getElementById('custom-id-label').textContent = ui.customIdLabel;
-    document.getElementById('custom-id-desc').textContent = ui.customIdPrompt;
-    changeIdBtn.textContent = ui.changeIdBtn;
-    downloadQrBtn.textContent = ui.downloadQrBtn;
-    deleteIdBtn.textContent = ui.deleteIdBtn;
-    updateAppBtn.querySelector('span').textContent = ui.checkUpdateBtn;
-    
-    document.getElementById('t9-btn-del').textContent = ui.t9Del;
-    document.getElementById('t9-btn-ok').textContent = ui.t9Ok;
-    document.getElementById('notice-title').textContent = ui.noticeTitle;
-    document.getElementById('notice-desc').textContent = ui.noticeDesc;
-    document.getElementById('close-update-notice-btn').textContent = ui.noticeBtn;
-    document.getElementById('tutorial-btn').textContent = ui.tutorialBtn;
+    const setElemText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
 
-    document.getElementById('section-connection').textContent = ui.sectionConnection;
-    document.getElementById('section-preferences').textContent = ui.sectionPreferences;
-    document.getElementById('section-performance').textContent = ui.sectionPerformance;
-    document.getElementById('section-system').textContent = ui.sectionSystem;
-    document.getElementById('back-to-camera-text').textContent = ui.backToCamera;
-    document.getElementById('section-ai').textContent = ui.sectionAi;
-    document.getElementById('api-key-label').textContent = ui.apiKeyLabel;
-    document.getElementById('model-label').textContent = ui.modelLabel;
+    setElemText('settings-title', ui.settingsTitle);
+    setElemText('language-label', ui.languageLabel);
+    setElemText('custom-id-label', ui.customIdLabel);
+    setElemText('custom-id-desc', ui.customIdPrompt);
+    setElemText('change-id-btn', ui.changeIdBtn);
+    setElemText('download-qr-btn', ui.downloadQrBtn);
+    setElemText('delete-id-btn', ui.deleteIdBtn);
+    
+    const updateSpan = updateAppBtn.querySelector('span');
+    if (updateSpan) updateSpan.textContent = ui.checkUpdateBtn;
+    
+    setElemText('t9-btn-del', ui.t9Del);
+    setElemText('t9-btn-ok', ui.t9Ok);
+    setElemText('notice-title', ui.noticeTitle);
+    setElemText('notice-desc', ui.noticeDesc);
+    setElemText('close-update-notice-btn', ui.noticeBtn);
+    setElemText('tutorial-btn', ui.tutorialBtn);
+
+    setElemText('section-connection', ui.sectionConnection);
+    setElemText('section-preferences', ui.sectionPreferences);
+    setElemText('section-performance', ui.sectionPerformance);
+    setElemText('section-system', ui.sectionSystem);
+    setElemText('back-to-camera-text', ui.backToCamera);
+    setElemText('section-ai', ui.sectionAi);
+    setElemText('api-key-label', ui.apiKeyLabel);
+    setElemText('model-label', ui.modelLabel);
+
+    setElemText('scannerTopTitle', ui.scannerTitle);
+    setElemText('navScanText', ui.navScan);
+    setElemText('navHistoryText', ui.navHistory);
+    setElemText('navGeneratorText', ui.navGenerator);
+    setElemText('navMoreText', ui.navMore);
 
     updateToggleBtnUI();
     renderArticle();
@@ -900,11 +914,30 @@ document.addEventListener('click', () => {
 });
 
 langOptions.forEach(opt => {
-    opt.addEventListener('click', (e) => {
+    opt.addEventListener('click', async (e) => {
         e.stopPropagation();
         selectedSettingsLang = opt.dataset.lang;
-        updateLanguageUI(selectedSettingsLang);
+        currentLanguage = selectedSettingsLang;
+        localStorage.setItem(LANGUAGE_KEY, currentLanguage);
+
+        if (customId && auth.currentUser) {
+            try {
+                await setDoc(doc(db, 'printedQR', customId), {
+                    lang: currentLanguage,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+            } catch(error) {}
+        }
+
+        updateLanguageUI(currentLanguage);
         closeDropdown();
+
+        let aiCode = localStorage.getItem(AI_CODE_KEY);
+        let secretCode = globalQRData ? globalQRData.id : getUrlParams().get('id');
+        const finalCode = aiCode ? aiCode : secretCode;
+
+        const articleParams = getArticleParams(finalCode, currentLanguage);
+        populateArticleContent(currentLanguage, articleParams);
     });
 });
 
