@@ -454,7 +454,7 @@ const uiText = {
 let customId = '';
 let currentLanguage = 'eng';
 let geminiApiKey = '';
-let geminiModelName = 'gemini-3.1-flash';
+let geminiModelName = 'gemini-2.5-flash';
 let initialSettings = {};
 let deleteConfirmationTimeout = null;
 
@@ -918,7 +918,7 @@ async function saveSettings() {
     
     currentLanguage = finalLang;
     geminiApiKey = apiKeyInput.value.trim();
-    geminiModelName = modelInput.value.trim() || 'gemini-3.1-flash';
+    geminiModelName = modelInput.value.trim() || 'gemini-2.5-flash';
     
     localStorage.setItem('atmaSettings', JSON.stringify({ 
         id: customId, 
@@ -934,7 +934,7 @@ function loadSettings() {
     customId = s.id || '';
     currentLanguage = s.lang || 'eng';
     geminiApiKey = s.apiKey || '';
-    geminiModelName = s.model || 'gemini-3.1-flash';
+    geminiModelName = s.model || 'gemini-2.5-flash';
     
     updateLanguageUI(currentLanguage);
     if (!customId) {
