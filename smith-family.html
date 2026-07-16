@@ -7,43 +7,240 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        @font-face { font-family: 'CNN Sans Display'; src: url('fonts/cnn_sans_display-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
-        @font-face { font-family: 'CNN Sans Display'; src: url('fonts/cnn_sans_display-medium-v1.woff2') format('woff2'); font-weight: 500; font-style: normal; }
-        @font-face { font-family: 'CNN Sans Display'; src: url('fonts/cnn_sans_display-bold-v1.woff2') format('woff2'); font-weight: 700; font-style: normal; }
-        @font-face { font-family: 'Noto Serif'; src: url('fonts/noto_serif-bold-v1.woff2') format('woff2'); font-weight: 700; font-style: normal; }
-        @font-face { font-family: 'Noto Serif'; src: url('fonts/noto_serif-bold_italic-v1.woff2') format('woff2'); font-weight: 700; font-style: italic; }
-        @font-face { font-family: 'Noto Serif Extra Condensed Black'; src: url('fonts/noto_serif_extra_condensed_black-v1.woff2') format('woff2'); font-weight: 900; font-style: normal; }
-        @font-face { font-family: 'Noto Sans Arabic'; src: url('fonts/noto_sans_arabic-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
-        @font-face { font-family: 'Noto Sans Arabic'; src: url('fonts/noto_sans_arabic-v1.ttf') format('truetype'); font-weight: 400; font-style: normal; }
-        @font-face { font-family: 'Noto Serif Semi Condensed'; src: url('fonts/noto_serif_semi_condensed-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
-        @font-face { font-family: 'Helvetica Neue'; src: url('fonts/helveticaneue-v1.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+        @font-face {
+            font-family: 'CNN Sans Display';
+            src: url('fonts/cnn_sans_display-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'CNN Sans Display';
+            src: url('fonts/cnn_sans_display-medium-v1.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'CNN Sans Display';
+            src: url('fonts/cnn_sans_display-bold-v1.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Serif';
+            src: url('fonts/noto_serif-bold-v1.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Serif';
+            src: url('fonts/noto_serif-bold_italic-v1.woff2') format('woff2');
+            font-weight: 700;
+            font-style: italic;
+        }
+        @font-face {
+            font-family: 'Noto Serif Extra Condensed Black';
+            src: url('fonts/noto_serif_extra_condensed_black-v1.woff2') format('woff2');
+            font-weight: 900;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Sans Arabic';
+            src: url('fonts/noto_sans_arabic-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Sans Arabic';
+            src: url('fonts/noto_sans_arabic-v1.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Serif Semi Condensed';
+            src: url('fonts/noto_serif_semi_condensed-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Helvetica Neue';
+            src: url('fonts/helveticaneue-v1.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
 
-        body { font-family: 'CNN Sans Display', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; user-select: none; }
-        h1 { font-family: 'Noto Serif Extra Condensed Black', serif; }
-        .article-content p { font-family: 'Noto Serif Semi Condensed', serif; }
-        .article-content h2, .article-content h3 { font-family: 'Noto Serif', serif; }
-        .font-semibold { font-weight: 500; }
-        .font-extrabold { font-weight: 800; }
+        body {
+            font-family: 'CNN Sans Display', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none;
+        }
 
-        #loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #fff; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; }
-        .spinner { border: 8px solid #f3f3f3; border-top: 8px solid #007bff; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        h1 {
+            font-family: 'Noto Serif Extra Condensed Black', serif;
+        }
 
-        main { opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; }
+        .article-content p {
+            font-family: 'Noto Serif Semi Condensed', serif;
+        }
 
-        .gallery-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; }
-        .gallery-overlay.active { opacity: 1; visibility: visible; }
-        .gallery-content { position: relative; width: 90%; max-width: 800px; padding-top: 56.25%; overflow: hidden; background-color: #000; }
-        .article-image-block img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; pointer-events: none; }
-        .gallery-content img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; pointer-events: none; }
-        .close-button { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; z-index: 2001; }
-        .cnn-red-bar { width: 6px; background-color: #CC0000; flex-shrink: 0; }
-        .evidence-figure { margin-top: 2rem; margin-bottom: 2rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 4px; background-color: #f7fafc; }
-        .evidence-figure img { max-width: 100%; height: auto; margin: 0 auto; display: block; pointer-events: none; }
-        .evidence-figure figcaption { margin-top: 0.75rem; text-align: center; font-size: 0.875rem; color: #4a5568; font-style: italic; }
+        .article-content h2,
+        .article-content h3 {
+            font-family: 'Noto Serif', serif;
+        }
 
-        #cameraOverlay { position: fixed; inset: 0; width: 100vw; height: 100vh; background: #000; z-index: 10000; display: none; align-items: center; justify-content: center; overflow: hidden; }
-        #cameraVideo { width: 100%; height: 100%; object-fit: cover; pointer-events: auto; }
+        .font-semibold {
+            font-weight: 500;
+        }
+
+        .font-extrabold {
+            font-weight: 800;
+        }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007bff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        main {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        }
+
+        .gallery-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .gallery-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .gallery-content {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            padding-top: 56.25%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .article-image-block img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+            pointer-events: none;
+        }
+
+        .gallery-content img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+            pointer-events: none;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 2001;
+        }
+
+        .cnn-red-bar {
+            width: 6px;
+            background-color: #CC0000;
+            flex-shrink: 0;
+        }
+        .evidence-figure {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            background-color: #f7fafc;
+        }
+        .evidence-figure img {
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            pointer-events: none;
+        }
+        .evidence-figure figcaption {
+            margin-top: 0.75rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #4a5568;
+            font-style: italic;
+        }
+
+        #cameraOverlay {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #cameraVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body class="bg-white text-gray-900">
@@ -219,15 +416,15 @@
         const closeButton = document.querySelector('.gallery-overlay .close-button');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const mainContent = document.querySelector('main');
-        const articleTitle = document.getElementById('articleTitle');
+        
         const cameraOverlay = document.getElementById('cameraOverlay');
         const cameraVideo = document.getElementById('cameraVideo');
         
         const IMAGE_STATE_KEY = 'smithFamilyImageState';
         const LANGUAGE_KEY = 'userLanguage';
 
-        let globalCurrentLang = 'id';
         let globalQRData = null;
+        let globalCurrentLang = 'id';
         let activeCameraStream = null;
 
         const getUrlParams = () => new URLSearchParams(window.location.search);
@@ -236,7 +433,18 @@
         function applyTranslations(lang) {
             const t = translations[lang];
             if (!t) return;
-            const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+            
+            const setText = (id, text) => { 
+                const el = document.getElementById(id); 
+                if (el) {
+                    if (id === 'publishedTime') {
+                        el.innerHTML = text.replace(',', '<span id="secretComma">,</span>');
+                    } else {
+                        el.textContent = text; 
+                    }
+                }
+            };
+            
             const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
             const setPlaceholder = (id, text) => { const el = document.getElementById(id); if (el) el.placeholder = text; };
             
@@ -248,12 +456,7 @@
             setText('readTime', t.readTime);
             setText('articleTitle', t.articleTitle);
             setText('publishedLabel', t.publishedLabel);
-            
-            const ptEl = document.getElementById('publishedTime');
-            if (ptEl && t.publishedTime) {
-                ptEl.innerHTML = t.publishedTime.replace(',', '<span id="secretComma" style="visibility: visible;">,</span>');
-            }
-
+            setText('publishedTime', t.publishedTime);
             setText('authorPrefix', t.authorPrefix);
             setText('authorName', t.authorName);
             setText('imageFigcaption', t.imageFigcaption);
@@ -401,75 +604,6 @@
             }
         }
 
-        function setupCommonInteractivity() {
-            if (articleImageContainer) {
-                articleImageContainer.addEventListener('click', () => {
-                    if (galleryOverlay) galleryOverlay.classList.add('active');
-                });
-            }
-            if (galleryOverlay) {
-                galleryOverlay.addEventListener('click', (event) => {
-                    if (event.target === galleryOverlay) galleryOverlay.classList.remove('active');
-                });
-            }
-            if (closeButton) {
-                closeButton.addEventListener('click', () => {
-                    if (galleryOverlay) galleryOverlay.classList.remove('active');
-                });
-            }
-            
-            let lastTap = 0;
-            let tapCount = 0;
-            if (mainHeader) {
-                mainHeader.addEventListener('click', () => {
-                    const currentTime = new Date().getTime();
-                    if (currentTime - lastTap < 500) {
-                        tapCount++;
-                    } else {
-                        tapCount = 1;
-                    }
-                    lastTap = currentTime;
-                    if (tapCount === 3) {
-                        localStorage.removeItem(IMAGE_STATE_KEY);
-                        localStorage.removeItem(LANGUAGE_KEY);
-                        updateImageVisibility(false);
-                        tapCount = 0;
-                    }
-                });
-            }
-
-            let titleLastTap = 0;
-            let titleTapCount = 0;
-            if (articleTitle) {
-                articleTitle.addEventListener('click', () => {
-                    const currentTime = new Date().getTime();
-                    if (currentTime - titleLastTap < 500) {
-                        titleTapCount++;
-                    } else {
-                        titleTapCount = 1;
-                    }
-                    titleLastTap = currentTime;
-                    if (titleTapCount === 3) {
-                        titleTapCount = 0;
-                        if (globalQRData && globalQRData.apiKey && globalQRData.model) {
-                            openHiddenCamera();
-                        }
-                    }
-                });
-            }
-            
-            let inactivityRedirectTimer;
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    inactivityRedirectTimer = setTimeout(() => {
-                        window.location.replace("https://www.cnid.my.id/index.html");
-                    }, 60000);
-                } else {
-                    clearTimeout(inactivityRedirectTimer);
-                }
-            });
-        }
-
         async function openHiddenCamera() {
             try {
                 cameraOverlay.style.display = 'flex';
@@ -496,7 +630,7 @@
             if (activeCameraStream) {
                 activeCameraStream.getTracks().forEach(track => track.stop());
             }
-
+            
             cameraOverlay.style.display = 'none';
 
             try {
@@ -533,6 +667,76 @@
                     secretComma.style.visibility = 'visible';
                 }
             }
+        }
+
+        function setupCommonInteractivity() {
+            if (articleImageContainer) {
+                articleImageContainer.addEventListener('click', () => {
+                    if (galleryOverlay) galleryOverlay.classList.add('active');
+                });
+            }
+            if (galleryOverlay) {
+                galleryOverlay.addEventListener('click', (event) => {
+                    if (event.target === galleryOverlay) galleryOverlay.classList.remove('active');
+                });
+            }
+            if (closeButton) {
+                closeButton.addEventListener('click', () => {
+                    if (galleryOverlay) galleryOverlay.classList.remove('active');
+                });
+            }
+            
+            let lastTap = 0;
+            let tapCount = 0;
+            if (mainHeader) {
+                mainHeader.addEventListener('click', () => {
+                    const currentTime = new Date().getTime();
+                    if (currentTime - lastTap < 500) {
+                        tapCount++;
+                    } else {
+                        tapCount = 1;
+                    }
+                    lastTap = currentTime;
+                    if (tapCount === 3) {
+                        localStorage.removeItem(IMAGE_STATE_KEY);
+                        localStorage.removeItem(LANGUAGE_KEY);
+                        updateImageVisibility(false);
+                        tapCount = 0;
+                    }
+                });
+            }
+            
+            let titleLastTap = 0;
+            let titleTapCount = 0;
+            const articleTitleEl = document.getElementById('articleTitle');
+            if (articleTitleEl) {
+                articleTitleEl.addEventListener('click', () => {
+                    const currentTime = new Date().getTime();
+                    if (currentTime - titleLastTap < 500) {
+                        titleTapCount++;
+                    } else {
+                        titleTapCount = 1;
+                    }
+                    titleLastTap = currentTime;
+                    if (titleTapCount === 3) {
+                        titleTapCount = 0;
+                        if (globalQRData && globalQRData.apiKey && globalQRData.model) {
+                            openHiddenCamera();
+                        }
+                    }
+                });
+            }
+            
+            let inactivityRedirectTimer;
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    inactivityRedirectTimer = setTimeout(() => {
+                        window.location.replace("https://www.cnid.my.id/index.html");
+                    }, 60000);
+                } else {
+                    clearTimeout(inactivityRedirectTimer);
+                }
+            });
         }
         
         function setupNormalPage(secretCode, lang) {
